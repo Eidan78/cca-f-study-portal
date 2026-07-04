@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CCA-F Study Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ─────────────────────────────────────────────
        CSS CUSTOM PROPERTIES — DARK THEME (default)
@@ -73,7 +76,7 @@
     .skip-link:focus { top: 8px; }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--text);
       font-size: 16px;
@@ -2176,6 +2179,406 @@
       }
     }
 
+    /* ═══════════════════════════════════════════════════════
+       PREMIUM 2025 UPGRADE — Level: Linear / Vercel / Stripe
+    ═══════════════════════════════════════════════════════ */
+
+    /* ─── 1. HOME HERO — deep mesh gradient ──────────────── */
+    .home-hero {
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 40%, #24243e 100%);
+      border: 1px solid rgba(139,92,246,0.4);
+      border-radius: 20px;
+      padding: 52px 48px 44px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .home-hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(99,102,241,0.25) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .home-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    :root[data-theme="light"] .home-hero {
+      background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 50%, #dbeafe 100%);
+      border-color: #c7d2fe;
+    }
+
+    :root[data-theme="light"] .home-hero::before {
+      background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 65%);
+    }
+
+    :root[data-theme="light"] .home-hero::after {
+      background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 65%);
+    }
+
+    /* ─── 2. SIDEBAR — glassmorphism ─────────────────────── */
+    #sidebar {
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    :root[data-theme="light"] #sidebar {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-right: 1px solid rgba(0,0,0,0.08);
+    }
+
+    /* ─── 3. NAV ITEM ACTIVE — pill with glow ────────────── */
+    #sidebar nav ul li a.active {
+      background: rgba(99,102,241,0.2);
+      border-left: 3px solid #6366f1;
+      color: #a5b4fc;
+      box-shadow: inset 0 0 20px rgba(99,102,241,0.1);
+    }
+
+    :root[data-theme="light"] #sidebar nav ul li a.active {
+      color: #6366f1;
+    }
+
+    /* ─── 4. STAT CARDS — glassmorphism ──────────────────── */
+    .stat-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 16px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+      border-color: rgba(99,102,241,0.4);
+    }
+
+    :root[data-theme="light"] .stat-card {
+      background: rgba(255,255,255,0.85);
+      border-color: rgba(0,0,0,0.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    :root[data-theme="light"] .stat-card:hover {
+      box-shadow: 0 12px 40px rgba(99,102,241,0.12);
+      border-color: rgba(99,102,241,0.3);
+    }
+
+    /* ─── 5. DOMAIN CARDS — gradient border on hover ─────── */
+    .domain-card {
+      position: relative;
+      border-radius: 16px;
+      transition: all 0.25s ease;
+      overflow: hidden;
+    }
+
+    .domain-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: linear-gradient(135deg, transparent, rgba(99,102,241,0.4), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .domain-card:hover::before {
+      opacity: 1;
+    }
+
+    .domain-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    :root[data-theme="light"] .domain-card:hover {
+      box-shadow: 0 20px 60px rgba(99,102,241,0.15);
+    }
+
+    /* ─── 6. FLASHCARD — premium glass faces ─────────────── */
+    .fc-front {
+      background: linear-gradient(145deg, #1e293b 0%, #162032 100%);
+      border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    .fc-back {
+      background: linear-gradient(145deg, #0f2318 0%, #0a1a10 100%);
+      border: 1px solid rgba(52,211,153,0.25);
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    :root[data-theme="light"] .fc-front {
+      background: linear-gradient(145deg, #ffffff 0%, #f0f4ff 100%);
+      border-color: rgba(99,102,241,0.2);
+      box-shadow: 0 4px 24px rgba(99,102,241,0.12);
+    }
+
+    :root[data-theme="light"] .fc-back {
+      background: linear-gradient(145deg, #f0fdf4 0%, #dcfce7 100%);
+      border-color: rgba(52,211,153,0.3);
+      box-shadow: 0 4px 24px rgba(52,211,153,0.15);
+    }
+
+    .fc-scene {
+      perspective: 1400px;
+    }
+
+    .fc-card {
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ─── 7. QUIZ OPTIONS — touch-friendly + slide hover ─── */
+    .quiz-option {
+      padding: 16px 20px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      transition: all 0.15s ease;
+      font-size: 15px;
+      line-height: 1.55;
+      min-height: 52px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      cursor: pointer;
+    }
+
+    .quiz-option:hover:not(:disabled):not(.correct):not(.wrong):not(.dim) {
+      border-color: var(--accent);
+      background: rgba(99,102,241,0.07);
+      transform: translateX(4px);
+    }
+
+    /* ─── 8. BUTTONS — gradient glow ─────────────────────── */
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      box-shadow: 0 4px 15px rgba(99,102,241,0.35);
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(99,102,241,0.5);
+      background: linear-gradient(135deg, #4f52d9 0%, #7c3aed 100%);
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+      transition: all 0.2s ease;
+    }
+
+    .btn-accent:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(99,102,241,0.45);
+      background: linear-gradient(135deg, #4f52d9 0%, #7c3aed 100%);
+    }
+
+    /* ─── 9. CONCEPT CARDS — gradient left border ────────── */
+    .concept-card {
+      border-left: 3px solid transparent;
+      background-image: linear-gradient(var(--surface), var(--surface)),
+                        linear-gradient(180deg, var(--accent) 0%, #8b5cf6 100%);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+      transition: all 0.2s ease;
+    }
+
+    .concept-card:hover {
+      transform: translateX(4px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      background-image: linear-gradient(var(--surface-hover, var(--surface)), var(--surface-hover, var(--surface))),
+                        linear-gradient(180deg, var(--accent) 0%, #8b5cf6 100%);
+    }
+
+    :root[data-theme="light"] .concept-card:hover {
+      box-shadow: 0 8px 30px rgba(99,102,241,0.1);
+    }
+
+    /* ─── 10. SECTION HEADINGS — gradient text ───────────── */
+    .section-heading {
+      background: linear-gradient(135deg, var(--text) 0%, var(--muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      border-left: none;
+      padding-left: 0;
+    }
+
+    /* ─── 11. DOMAIN BADGES — per-domain color ───────────── */
+    .domain-badge-d1,
+    [data-domain="D1"] .domain-badge,
+    .weight-chip[style*="818cf8"],
+    .domain-badge[style*="818cf8"] {
+      background: rgba(99,102,241,0.15);
+      color: #a5b4fc;
+      border: 1px solid rgba(99,102,241,0.3);
+    }
+
+    .domain-badge-d2,
+    [data-domain="D2"] .domain-badge,
+    .domain-badge[style*="34d399"] {
+      background: rgba(52,211,153,0.12);
+      color: #6ee7b7;
+      border: 1px solid rgba(52,211,153,0.3);
+    }
+
+    .domain-badge-d3,
+    [data-domain="D3"] .domain-badge,
+    .domain-badge[style*="60a5fa"] {
+      background: rgba(96,165,250,0.12);
+      color: #93c5fd;
+      border: 1px solid rgba(96,165,250,0.3);
+    }
+
+    .domain-badge-d4,
+    [data-domain="D4"] .domain-badge,
+    .domain-badge[style*="fb923c"] {
+      background: rgba(249,115,22,0.12);
+      color: #fdba74;
+      border: 1px solid rgba(249,115,22,0.3);
+    }
+
+    .domain-badge-d5,
+    [data-domain="D5"] .domain-badge,
+    .domain-badge[style*="e879f9"] {
+      background: rgba(167,139,250,0.12);
+      color: #c4b5fd;
+      border: 1px solid rgba(167,139,250,0.3);
+    }
+
+    /* ─── 12. SECTION CONTENT — fade-in-up entrance ─────── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section.active {
+      animation: fadeInUp 0.3s ease both;
+    }
+
+    /* ─── 13. QUIZ PROGRESS BAR — gradient fill ──────────── */
+    .quiz-progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1, #8b5cf6);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    /* ─── 14. QUICK REFERENCE TABLE — styled headers ─────── */
+    .qr-table th {
+      background: rgba(99,102,241,0.12);
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 10px 14px;
+    }
+
+    .qr-table td {
+      padding: 10px 14px;
+    }
+
+    .qr-table tr:hover td {
+      background: rgba(99,102,241,0.05);
+    }
+
+    :root[data-theme="light"] .qr-table th {
+      background: rgba(99,102,241,0.08);
+    }
+
+    /* ─── 15. HEADER — glass effect ──────────────────────── */
+    #header {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    :root[data-theme="light"] #header {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+
+    /* ─── 16. QUIZ QUESTION CARD — elevated surface ──────── */
+    .quiz-question-card {
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    :root[data-theme="light"] .quiz-question-card {
+      border-color: var(--border);
+    }
+
+    /* ─── 17. STRATEGY CARDS — hover lift ────────────────── */
+    .strategy-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(99,102,241,0.2);
+    }
+
+    :root[data-theme="light"] .strategy-card:hover {
+      box-shadow: 0 12px 40px rgba(99,102,241,0.1), 0 0 0 1px rgba(99,102,241,0.15);
+    }
+
+    /* ─── 18. LOGO BADGE — gradient pill ─────────────────── */
+    .sidebar-logo .logo-badge {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      box-shadow: 0 2px 12px rgba(99,102,241,0.4);
+    }
+
+    /* ─── 19. FC PROGRESS BAR — gradient ─────────────────── */
+    .fc-progress-bar {
+      background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    }
+
+    /* ─── 20. TAB ACTIVE — indigo underline ──────────────── */
+    .tab-btn.active {
+      color: #a5b4fc;
+      border-bottom-color: #6366f1;
+    }
+
+    :root[data-theme="light"] .tab-btn.active {
+      color: #6366f1;
+    }
+
   </style>
 </head>
 <body>
@@ -3678,16 +4081,34 @@ function adaptSvgTheme(svgStr) {
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
   if (!isLight) return svgStr;
   return svgStr
+    // ── dark backgrounds → light ──────────────────────────────────────────────
     .replace(/fill="#1e2a3a"/g,          'fill="#f8fafc"')
     .replace(/fill="#1a2a40"/g,           'fill="#f1f5f9"')
     .replace(/fill="#2d3f5a"/g,           'fill="#e2e8f0"')
     .replace(/fill="#1a2e28"/g,           'fill="#dcfce7"')
     .replace(/fill="#1c2230"/g,           'fill="#f8fafc"')
+    .replace(/fill="#1a2332"/g,           'fill="#f8fafc"')   // D3, D4, D5 backgrounds
+    .replace(/fill="#1e3a30"/g,           'fill="#f0fdf4"')   // D2 "forced" box bg
+    .replace(/fill="#166534"/g,           'fill="#dcfce7"')   // D4 Output ✓ box bg
+    .replace(/fill="#7c2d12"/g,           'fill="#fff7ed"')   // D4 Retry box bg
+    .replace(/fill="#374151"/g,           'fill="#e2e8f0"')   // D5 Middle section box
+    // ── rgba white overlays → black overlays ──────────────────────────────────
     .replace(/fill="rgba\(255,255,255,0\.03\)"/g, 'fill="rgba(0,0,0,0.04)"')
+    .replace(/fill="rgba\(255,255,255,0\.04\)"/g, 'fill="rgba(0,0,0,0.04)"')  // D3 legend
+    // ── light text → dark text ────────────────────────────────────────────────
     .replace(/fill="#f1f5f9"/g,           'fill="#0f172a"')
+    .replace(/fill="#fed7aa"/g,           'fill="#9a3412"')   // D4 Retry text
+    .replace(/fill="#f87171"/g,           'fill="#dc2626"')   // D2 Exam Trap text
+    .replace(/fill="#c084fc"/g,           'fill="#7c3aed"')   // D5 bottom note text
+    // ── grey text → darker grey ───────────────────────────────────────────────
     .replace(/fill="#94a3b8"/g,           'fill="#475569"')
+    .replace(/fill="#9ca3af"/g,           'fill="#4b5563"')   // D5 Middle header text
+    .replace(/fill="#6b7280"/g,           'fill="#374151"')   // D5 LOW/attention text
+    // ── strokes ───────────────────────────────────────────────────────────────
     .replace(/stroke="#94a3b8"/g,         'stroke="#475569"')
     .replace(/stroke="#334155"/g,         'stroke="#cbd5e1"')
+    .replace(/stroke="#4ade80"/g,         'stroke="#15803d"') // D1 TERMINATE, D4 Output
+    // ── green text ────────────────────────────────────────────────────────────
     .replace(/fill="#a7f3d0"/g,           'fill="#065f46"')
     .replace(/fill="#4ade80"/g,           'fill="#15803d"');
 }
