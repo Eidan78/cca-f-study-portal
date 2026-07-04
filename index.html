@@ -2141,7 +2141,7 @@ const DOMAIN_DATA = {
       },
       {
         title: 'Agentic Loop',
-        body:  'stop_reason is a field in the API response object (not assistant text) that tells your code why Claude stopped generating. The fundamental execution cycle: send request → inspect stop_reason → if stop_reason === "tool_use": execute the tool, append result to messages, loop back; if stop_reason === "end_turn": present response to user and terminate. The loop is driven entirely by stop_reason — never by parsing assistant message text.'
+        body:  'stop_reason is a field in the API response object (not assistant text) that tells your code why Claude stopped generating. The fundamental execution cycle: send request → inspect stop_reason → if stop_reason === "tool_use": execute the tool, append result to messages, loop back; if stop_reason === "end_turn": present response to user and terminate. The loop is driven entirely by stop_reason — never by parsing assistant message text. Complete list of stop_reason values: "end_turn" (response completed), "tool_use" (Claude wants to call a tool), "max_tokens" (max_tokens limit reached), "stop_sequence" (stop sequence encountered), "refusal" (Claude refused the request), "pause_turn" (server-side tool loop hit iteration limit — must resend), "model_context_window_exceeded" (context window exceeded, models 4.5+ only).'
       },
       {
         title: 'Coordinator–Subagent Pattern',
@@ -2184,7 +2184,7 @@ const DOMAIN_DATA = {
       },
       {
         title: 'Ciclo Agentico',
-        body:  'stop_reason è un campo nell\'oggetto risposta API (non nel testo dell\'assistente) che dice al tuo codice perché Claude ha smesso di generare. Il ciclo di esecuzione fondamentale: invia richiesta → controlla stop_reason → se stop_reason === "tool_use": esegui lo strumento, aggiungi il risultato ai messaggi, torna all\'inizio; se stop_reason === "end_turn": presenta la risposta all\'utente e termina. Il ciclo è guidato interamente da stop_reason — mai dall\'analisi del testo del messaggio dell\'assistente.'
+        body:  'stop_reason è un campo nell\'oggetto risposta API (non nel testo dell\'assistente) che dice al tuo codice perché Claude ha smesso di generare. Il ciclo di esecuzione fondamentale: invia richiesta → controlla stop_reason → se stop_reason === "tool_use": esegui lo strumento, aggiungi il risultato ai messaggi, torna all\'inizio; se stop_reason === "end_turn": presenta la risposta all\'utente e termina. Il ciclo è guidato interamente da stop_reason — mai dall\'analisi del testo del messaggio dell\'assistente. Elenco completo dei valori stop_reason: "end_turn" (risposta completata), "tool_use" (Claude vuole chiamare un tool), "max_tokens" (limite max_tokens raggiunto), "stop_sequence" (incontrata una stop sequence), "refusal" (Claude ha rifiutato la richiesta), "pause_turn" (loop server-side ha raggiunto il limite iterazioni — richiede reinvio), "model_context_window_exceeded" (context window superata, solo modelli 4.5+).'
       },
       {
         title: 'Pattern Coordinatore–Subagente',
@@ -2221,15 +2221,25 @@ const DOMAIN_DATA = {
     ],
 
     frameworkEn:
-      'stop_reason = "tool_use"  →  execute tool → append result to messages → loop back to model\n' +
-      'stop_reason = "end_turn"  →  present response to user → loop terminates\n\n' +
+      'stop_reason = "tool_use"           →  execute tool → append result to messages → loop back\n' +
+      'stop_reason = "end_turn"           →  present response to user → loop terminates\n' +
+      'stop_reason = "max_tokens"         →  output truncated — handle or increase max_tokens\n' +
+      'stop_reason = "stop_sequence"      →  stop sequence hit → loop terminates\n' +
+      'stop_reason = "refusal"            →  Claude refused — do not retry same request\n' +
+      'stop_reason = "pause_turn"         →  server tool loop limit — resend request to continue\n' +
+      'stop_reason = "model_context_window_exceeded" →  context too large (models 4.5+ only)\n\n' +
       'NEVER parse assistant message text to detect loop termination.\n' +
       'NEVER assume subagents share coordinator context automatically.\n' +
       'ALWAYS use hooks (not prompts) for zero-tolerance compliance requirements.',
 
     frameworkIt:
-      'stop_reason = "tool_use"  →  esegui strumento → aggiungi risultato ai messaggi → torna al modello\n' +
-      'stop_reason = "end_turn"  →  presenta risposta all\'utente → il ciclo termina\n\n' +
+      'stop_reason = "tool_use"           →  esegui strumento → aggiungi risultato → torna al modello\n' +
+      'stop_reason = "end_turn"           →  presenta risposta → il ciclo termina\n' +
+      'stop_reason = "max_tokens"         →  output troncato — gestisci o aumenta max_tokens\n' +
+      'stop_reason = "stop_sequence"      →  stop sequence incontrata → ciclo termina\n' +
+      'stop_reason = "refusal"            →  Claude ha rifiutato — non riprovare uguale\n' +
+      'stop_reason = "pause_turn"         →  limite loop server — reinvia la richiesta per continuare\n' +
+      'stop_reason = "model_context_window_exceeded" →  contesto troppo grande (solo 4.5+)\n\n' +
       'NON analizzare mai il testo del messaggio dell\'assistente per rilevare la terminazione del ciclo.\n' +
       'NON assumere mai che i subagenti condividano automaticamente il contesto del coordinatore.\n' +
       'USA SEMPRE gli hook (non i prompt) per requisiti di conformità a tolleranza zero.',
@@ -2368,6 +2378,18 @@ const DOMAIN_DATA = {
       {
         title: 'MCP Resources',
         body:  'MCP Resources are content catalogs — structured documents such as issue summaries, schema definitions, or knowledge bases — that the agent can consult to understand what data is available before making tool calls. By surfacing available content upfront, resources reduce exploratory tool calls (e.g., listing every table to find the right schema), improving efficiency and reducing token usage.'
+      },
+      {
+        title: 'Client Tools vs Server Tools',
+        body:  'Two fundamental tool categories. CLIENT tools — executed by your code: (1) User-defined tools (you write the schema and implementation); (2) Anthropic-schema client tools: bash, text_editor, memory, computer. When Claude calls a client tool, it responds with stop_reason:"tool_use" + a tool_use block → YOUR code executes the tool → you return a tool_result message. SERVER tools — executed by Anthropic infrastructure: web_search, web_fetch, code_execution, tool_search. Anthropic runs these; you only see results. Claude responds with stop_reason:"end_turn" or "pause_turn" (NOT "tool_use") for server tools.'
+      },
+      {
+        title: 'MCP Connector (API v2025-11-20)',
+        body:  'The current MCP API connector (version 2025-11-20) uses beta header: "anthropic-beta": "mcp-client-2025-11-20" (old 2025-04-04 is deprecated). Configuration: mcp_servers array defines URL, name, authorization_token. tools array uses type:"mcp_toolset" + mcp_server_name to link tools to their server. Only HTTP/SSE transport is supported through the public API (no local stdio). Supports allowlist (default_config.enabled:false + per-tool configs), denylist, and per-tool configuration. The old pattern that put tool_configuration inside mcp_servers is deprecated — it is now separate in the tools array as mcp_toolset.'
+      },
+      {
+        title: 'Prompt Caching',
+        body:  'Prompt caching stores expensive-to-compute prompt prefixes in a cache to reduce latency and cost on repeated calls. Cache write cost: 1.25x base price (5-min TTL) or 2x base price (1-hour TTL). Cache read cost: 0.1x base price (90% savings). Default TTL: 5 minutes. Alternative TTL: 1 hour (at 2x write cost). Max cache breakpoints: 4. Minimum tokens to cache: Fable 5 / Mythos 5: 512 tokens; Opus 4.8 / Sonnet 5 / Sonnet 4.6: 1024 tokens; Haiku 4.5 / Opus 4.6 / Opus 4.5: 4096 tokens. Activated by adding cache_control: {type:"ephemeral"} to a content block.'
       }
     ],
 
@@ -2407,6 +2429,18 @@ const DOMAIN_DATA = {
       {
         title: 'Risorse MCP',
         body:  'Le Risorse MCP sono cataloghi di contenuti — documenti strutturati come riepiloghi di issue, definizioni di schema o basi di conoscenza — che l\'agente può consultare per capire quali dati sono disponibili prima di effettuare chiamate agli strumenti. Rendendo disponibili i contenuti in anticipo, le risorse riducono le chiamate esplorative agli strumenti (es. elencare ogni tabella per trovare lo schema giusto), migliorando l\'efficienza e riducendo l\'uso di token.'
+      },
+      {
+        title: 'Tool Client vs Tool Server',
+        body:  'Due categorie fondamentali di tool. TOOL CLIENT — eseguiti dal tuo codice: (1) Tool definiti dall\'utente (tu scrivi schema e implementazione); (2) Anthropic-schema client tool: bash, text_editor, memory, computer. Quando Claude chiama un tool client, risponde con stop_reason:"tool_use" + un blocco tool_use → IL TUO codice esegue il tool → restituisci un messaggio tool_result. TOOL SERVER — eseguiti dall\'infrastruttura Anthropic: web_search, web_fetch, code_execution, tool_search. Anthropic esegue questi tool; tu vedi solo i risultati. Claude risponde con stop_reason:"end_turn" o "pause_turn" (NON "tool_use") per i tool server.'
+      },
+      {
+        title: 'MCP Connector (API v2025-11-20)',
+        body:  'Il connettore MCP API corrente (versione 2025-11-20) usa il beta header: "anthropic-beta": "mcp-client-2025-11-20" (il vecchio 2025-04-04 è deprecato). Configurazione: array mcp_servers definisce URL, nome, authorization_token. L\'array tools usa type:"mcp_toolset" + mcp_server_name per collegare i tool al loro server. Solo il trasporto HTTP/SSE è supportato tramite l\'API pubblica (no stdio locale). Supporta allowlist (default_config.enabled:false + config per tool), denylist e configurazione per-tool. Il vecchio pattern che metteva tool_configuration dentro mcp_servers è deprecato — ora è separato nell\'array tools come mcp_toolset.'
+      },
+      {
+        title: 'Prompt Caching',
+        body:  'Il prompt caching memorizza i prefix di prompt computazionalmente costosi in cache per ridurre latenza e costo nelle chiamate ripetute. Costo write cache: 1.25x prezzo base (TTL 5 min) o 2x prezzo base (TTL 1 ora). Costo read cache: 0.1x prezzo base (risparmio 90%). TTL default: 5 minuti. TTL alternativo: 1 ora (a 2x costo write). Max breakpoint cache: 4. Token minimi per cachare: Fable 5 / Mythos 5: 512 token; Opus 4.8 / Sonnet 5 / Sonnet 4.6: 1024 token; Haiku 4.5 / Opus 4.6 / Opus 4.5: 4096 token. Attivato aggiungendo cache_control: {type:"ephemeral"} a un blocco di contenuto.'
       }
     ],
 
@@ -2690,7 +2724,7 @@ const DOMAIN_DATA = {
       },
       {
         title: 'Batch API',
-        body:  '50% cost savings, up to 24h processing, NO guaranteed SLA. Use for: overnight reports, weekly audits (non-blocking). NOT for: pre-merge checks, real-time responses (blocking).'
+        body:  '50% cost savings, most batches complete in under 1 hour (max 24h), NO guaranteed SLA (asynchronous). Does NOT support ZDR (Zero Data Retention). Use for: overnight reports, weekly audits, nightly test generation (non-blocking). NOT for: pre-merge checks, real-time responses, or blocking workflows. Use custom_id to correlate batch request/response pairs.'
       },
       {
         title: 'Multi-Pass Review',
@@ -2699,6 +2733,10 @@ const DOMAIN_DATA = {
       {
         title: 'Self-Review Limitation',
         body:  'Generating session retains reasoning context — less likely to question its own decisions. Independent review session catches significantly more issues.'
+      },
+      {
+        title: 'Extended Thinking: Adaptive vs Manual',
+        body:  'ADAPTIVE THINKING (Fable 5, Opus 4.8, Sonnet 5): These models do NOT support manual budget_tokens — passing budget_tokens returns a 400 error. Use "type":"adaptive" and control with effort:"low"|"medium"|"high". Claude decides autonomously when and how much to reason. Fable 5 always uses adaptive thinking. MANUAL BUDGET_TOKENS (Haiku 4.5, Opus 4.5, Sonnet/Opus 4.6 and older): These models support explicit budget_tokens to set a token thinking budget. IMPORTANT CONSTRAINT: tool_choice "any" and tool_choice {type:"tool"} are NOT compatible with extended thinking — use only "auto" or "none".'
       }
     ],
 
@@ -2737,7 +2775,7 @@ const DOMAIN_DATA = {
       },
       {
         title: 'Batch API',
-        body:  '50% di risparmio sui costi, fino a 24h di elaborazione, NESSUN SLA garantito. Usa per: report notturni, audit settimanali (non-bloccante). NON per: controlli pre-merge, risposte in tempo reale (bloccante).'
+        body:  '50% di risparmio sui costi, la maggior parte dei batch finisce in meno di 1 ora (max 24h), NESSUN SLA garantito (asincrono). NON supporta ZDR (Zero Data Retention). Usa per: report notturni, audit settimanali, generazione test notturna (non-bloccante). NON per: controlli pre-merge, risposte in tempo reale o workflow bloccanti. Usa custom_id per correlare coppie richiesta/risposta batch.'
       },
       {
         title: 'Review Multi-Pass',
@@ -2746,6 +2784,10 @@ const DOMAIN_DATA = {
       {
         title: 'Limitazione dell\'Auto-Revisione',
         body:  'La sessione generante mantiene il contesto di ragionamento — meno propensa a mettere in dubbio le proprie decisioni. Una sessione di review indipendente individua significativamente più problemi.'
+      },
+      {
+        title: 'Extended Thinking: Adattivo vs Manuale',
+        body:  'ADAPTIVE THINKING (Fable 5, Opus 4.8, Sonnet 5): Questi modelli NON supportano budget_tokens manuale — passare budget_tokens restituisce un errore 400. Usa "type":"adaptive" e controlla con effort:"low"|"medium"|"high". Claude decide autonomamente quando e quanto ragionare. Fable 5 usa sempre l\'adaptive thinking. BUDGET_TOKENS MANUALE (Haiku 4.5, Opus 4.5, Sonnet/Opus 4.6 e precedenti): Questi modelli supportano budget_tokens esplicito per impostare un budget di ragionamento token. VINCOLO IMPORTANTE: tool_choice "any" e tool_choice {type:"tool"} NON sono compatibili con l\'extended thinking — usa solo "auto" o "none".'
       }
     ],
 
@@ -2860,6 +2902,10 @@ const DOMAIN_DATA = {
       {
         title: 'Source Attribution',
         body:  'In multi-agent synthesis: preserve claim-source mappings. Annotate conflicting stats with source attribution — do NOT arbitrarily select one value.'
+      },
+      {
+        title: 'Current Claude Models & Context Windows',
+        body:  'Model lineup (2026): Fable 5 (claude-fable-5) — 1M context, 128k output, $10/$50 per MTok in/out, always adaptive thinking; Opus 4.8 (claude-opus-4-8) — 1M context, 128k output, $5/$25 per MTok; Sonnet 5 (claude-sonnet-5) — 1M context, 128k output, $3/$15 per MTok; Haiku 4.5 (claude-haiku-4-5) — 200k context, 64k output, $1/$5 per MTok. Fable 5, Opus 4.8, Sonnet 5 use adaptive thinking (no manual budget_tokens). Haiku 4.5 and older models support manual budget_tokens. Context window size affects: how much conversation history fits, document length limits, and multi-turn agent loop depth.'
       }
     ],
 
@@ -2895,6 +2941,10 @@ const DOMAIN_DATA = {
       {
         title: 'Attribuzione della Fonte',
         body:  'Nella sintesi multi-agent: preserva le mappature affermazione-fonte. Annota le statistiche conflittuali con l\'attribuzione della fonte — NON selezionare arbitrariamente un valore.'
+      },
+      {
+        title: 'Modelli Claude Attuali & Finestre di Contesto',
+        body:  'Lineup modelli (2026): Fable 5 (claude-fable-5) — contesto 1M, output 128k, $10/$50 per MTok in/out, sempre adaptive thinking; Opus 4.8 (claude-opus-4-8) — contesto 1M, output 128k, $5/$25 per MTok; Sonnet 5 (claude-sonnet-5) — contesto 1M, output 128k, $3/$15 per MTok; Haiku 4.5 (claude-haiku-4-5) — contesto 200k, output 64k, $1/$5 per MTok. Fable 5, Opus 4.8, Sonnet 5 usano adaptive thinking (no budget_tokens manuale). Haiku 4.5 e modelli precedenti supportano budget_tokens manuale. La dimensione della finestra di contesto influisce su: quanta cronologia conversazionale entra, limiti lunghezza documenti e profondità ciclo agente multi-turno.'
       }
     ],
 
@@ -2979,6 +3029,8 @@ const FLASHCARD_DATA = [
   {d:1, qEn:"What is 'attention dilution' in code review?", qIt:"Cos'è la 'attention dilution' nella code review?", aEn:"Processing too many files at once produces inconsistent, contradictory feedback", aIt:"Elaborare troppi file contemporaneamente produce feedback inconsistente e contraddittorio"},
   {d:1, qEn:"Is LLM self-reported confidence (1–10) a reliable routing signal?", qIt:"La confidenza auto-riportata dall'LLM (1–10) è un segnale di routing affidabile?", aEn:"NO — LLMs are poorly calibrated; self-scored confidence is inconsistent and unreliable. Use explicit categorical criteria instead.", aIt:"NO — gli LLM sono poco calibrati; la confidenza auto-valutata è inconsistente e inaffidabile. Usa criteri categorici espliciti."},
   {d:1, qEn:"Agent escalates routine cases and attempts complex exceptions — root cause?", qIt:"L'agente scala i casi di routine e gestisce le eccezioni complesse — causa principale?", aEn:"Unclear decision boundaries in the prompt. Fix: add explicit escalation criteria + few-shot examples showing the correct decision for edge cases.", aIt:"Confini decisionali poco chiari nel prompt. Soluzione: aggiungi criteri di escalation espliciti + esempi few-shot che mostrano la decisione corretta per i casi limite."},
+  {d:1, qEn:"All 7 stop_reason values — list them?", qIt:"Tutti i 7 valori stop_reason — elencali?", aEn:"end_turn (completed), tool_use (wants tool), max_tokens (truncated), stop_sequence (stop hit), refusal (refused), pause_turn (server loop limit — resend), model_context_window_exceeded (context full, 4.5+ only)", aIt:"end_turn (completata), tool_use (vuole tool), max_tokens (troncata), stop_sequence (stop incontrata), refusal (rifiutata), pause_turn (limite loop server — reinvia), model_context_window_exceeded (contesto pieno, solo 4.5+)"},
+  {d:1, qEn:"stop_reason 'pause_turn' — what does it mean?", qIt:"stop_reason 'pause_turn' — cosa significa?", aEn:"Server-side tool loop reached iteration limit. Unlike end_turn, the conversation is not complete — you must resend the request to continue.", aIt:"Il loop dei tool lato server ha raggiunto il limite di iterazioni. A differenza di end_turn, la conversazione non è completa — devi reinviare la richiesta per continuare."},
   {d:2, qEn:"Primary mechanism LLMs use for tool selection?", qIt:"Meccanismo primario che gli LLM usano per la selezione dei tool?", aEn:"Tool descriptions — always improve these first", aIt:"Le descrizioni dei tool — migliorale sempre per prime"},
   {d:2, qEn:"First fix when tools are being confused?", qIt:"Prima correzione quando i tool vengono confusi?", aEn:"Expand descriptions with input formats, examples, boundaries vs similar tools", aIt:"Espandi le descrizioni con formati di input, esempi, confini rispetto a tool simili"},
   {d:2, qEn:"3 fields a structured error response must include?", qIt:"3 campi che una risposta di errore strutturata deve includere?", aEn:"isRetryable (bool) + errorCategory + human-readable description", aIt:"isRetryable (bool) + errorCategory + descrizione leggibile dall'uomo"},
@@ -2994,6 +3046,10 @@ const FLASHCARD_DATA = [
   {d:2, qEn:"What should tool descriptions include beyond a short label?", qIt:"Cosa devono includere le descrizioni dei tool oltre a un breve label?", aEn:"Input formats, example queries, edge cases, when to use vs similar alternatives", aIt:"Formati di input, query di esempio, casi limite, quando usarlo vs alternative simili"},
   {d:2, qEn:"Difference: access failure vs valid empty result?", qIt:"Differenza: errore di accesso vs risultato vuoto valido?", aEn:"Access failure needs retry; empty result = successful query with no matches", aIt:"Errore di accesso necessita retry; risultato vuoto = query riuscita senza corrispondenze"},
   {d:2, qEn:"What are MCP resources (vs tools)?", qIt:"Cosa sono le MCP resources (vs tool)?", aEn:"Content catalogs (issue summaries, schemas) that reduce exploratory tool calls", aIt:"Cataloghi di contenuto (sommari issue, schemi) che riducono le chiamate esplorative ai tool"},
+  {d:2, qEn:"Client tools vs server tools — key difference?", qIt:"Tool client vs tool server — differenza chiave?", aEn:"Client tools: your code executes them, Claude responds with stop_reason:'tool_use'. Server tools (web_search, code_execution etc.): Anthropic executes them, Claude responds with stop_reason:'end_turn' or 'pause_turn'", aIt:"Tool client: il tuo codice li esegue, Claude risponde con stop_reason:'tool_use'. Tool server (web_search, code_execution ecc.): Anthropic li esegue, Claude risponde con stop_reason:'end_turn' o 'pause_turn'"},
+  {d:2, qEn:"MCP API beta header (current version)?", qIt:"Beta header API MCP (versione corrente)?", aEn:"anthropic-beta: mcp-client-2025-11-20 (old 2025-04-04 is deprecated). tools array uses type:'mcp_toolset' + mcp_server_name", aIt:"anthropic-beta: mcp-client-2025-11-20 (il vecchio 2025-04-04 è deprecato). L'array tools usa type:'mcp_toolset' + mcp_server_name"},
+  {d:2, qEn:"Prompt caching — cache read vs write cost?", qIt:"Prompt caching — costo read vs write cache?", aEn:"Write: 1.25x base (5-min TTL) or 2x base (1-hour TTL). Read: 0.1x base = 90% savings. Max 4 breakpoints.", aIt:"Write: 1.25x base (TTL 5 min) o 2x base (TTL 1 ora). Read: 0.1x base = risparmio 90%. Max 4 breakpoint."},
+  {d:2, qEn:"Minimum tokens to use prompt caching — Haiku 4.5?", qIt:"Token minimi per il prompt caching — Haiku 4.5?", aEn:"4096 tokens (same as Opus 4.6/4.5). Fable5/Mythos5: 512. Opus4.8/Sonnet5/Sonnet4.6: 1024.", aIt:"4096 token (uguale a Opus 4.6/4.5). Fable5/Mythos5: 512. Opus4.8/Sonnet5/Sonnet4.6: 1024."},
   {d:3, qEn:"3 levels of CLAUDE.md hierarchy?", qIt:"3 livelli della gerarchia CLAUDE.md?", aEn:"User (~/.claude/CLAUDE.md), Project (.claude/CLAUDE.md), Directory (subdirectory)", aIt:"User (~/.claude/CLAUDE.md), Project (.claude/CLAUDE.md), Directory (sottodirectory)"},
   {d:3, qEn:"Shared team slash commands — where to create?", qIt:"Slash command condivisi del team — dove crearli?", aEn:".claude/commands/ (version controlled, shared automatically)", aIt:".claude/commands/ (version controlled, condivisi automaticamente)"},
   {d:3, qEn:"Personal slash commands — where?", qIt:"Slash command personali — dove?", aEn:"~/.claude/commands/ (not version controlled)", aIt:"~/.claude/commands/ (non version controlled)"},
@@ -3015,8 +3071,10 @@ const FLASHCARD_DATA = [
   {d:4, qEn:"Most reliable approach for schema-compliant structured output?", qIt:"Approccio più affidabile per output strutturato conforme allo schema?", aEn:"tool_use with JSON schema + forced tool selection", aIt:"tool_use con JSON schema + selezione forzata del tool"},
   {d:4, qEn:"What does strict JSON schema eliminate?", qIt:"Cosa elimina uno schema JSON strict?", aEn:"Syntax errors ONLY — not semantic errors (wrong values, misplaced fields)", aIt:"Solo errori di SINTASSI — non errori semantici (valori errati, campi sbagliati)"},
   {d:4, qEn:"Most effective technique for consistently formatted output?", qIt:"Tecnica più efficace per output formattato in modo coerente?", aEn:"Few-shot examples (2-4) that show reasoning for each choice", aIt:"Esempi few-shot (2-4) che mostrano il ragionamento per ogni scelta"},
-  {d:4, qEn:"Batch API cost savings?", qIt:"Risparmio di costo dell'API Batch?", aEn:"50% cost reduction vs standard API", aIt:"Riduzione del 50% dei costi rispetto all'API standard"},
-  {d:4, qEn:"Batch API maximum processing time?", qIt:"Tempo massimo di elaborazione dell'API Batch?", aEn:"Up to 24 hours — no guaranteed latency SLA", aIt:"Fino a 24 ore — nessun SLA di latenza garantito"},
+  {d:4, qEn:"Batch API cost savings?", qIt:"Risparmio di costo dell'API Batch?", aEn:"50% cost reduction vs standard API. Most batches complete in under 1 hour (max 24h). Does NOT support ZDR (Zero Data Retention).", aIt:"Riduzione del 50% dei costi rispetto all'API standard. La maggior parte dei batch finisce in meno di 1 ora (max 24h). NON supporta ZDR (Zero Data Retention)."},
+  {d:4, qEn:"Batch API maximum processing time?", qIt:"Tempo massimo di elaborazione dell'API Batch?", aEn:"Up to 24 hours — no guaranteed latency SLA. No ZDR support.", aIt:"Fino a 24 ore — nessun SLA di latenza garantito. Nessun supporto ZDR."},
+  {d:4, qEn:"Adaptive thinking vs manual budget_tokens — which models use which?", qIt:"Adaptive thinking vs budget_tokens manuale — quali modelli usano quale?", aEn:"Adaptive (type:'adaptive', effort:'low|medium|high'): Fable 5, Opus 4.8, Sonnet 5 — NO budget_tokens (400 error). Manual budget_tokens: Haiku 4.5, Opus 4.5, Sonnet/Opus 4.6 and older.", aIt:"Adaptive (type:'adaptive', effort:'low|medium|high'): Fable 5, Opus 4.8, Sonnet 5 — NO budget_tokens (errore 400). budget_tokens manuale: Haiku 4.5, Opus 4.5, Sonnet/Opus 4.6 e precedenti."},
+  {d:4, qEn:"tool_choice limitation with extended thinking?", qIt:"Limitazione di tool_choice con extended thinking?", aEn:"tool_choice 'any' and forced {type:'tool'} are NOT compatible with extended thinking. Only 'auto' or 'none' are allowed.", aIt:"tool_choice 'any' e forced {type:'tool'} NON sono compatibili con extended thinking. Sono consentiti solo 'auto' o 'none'."},
   {d:4, qEn:"Batch API — appropriate use case?", qIt:"API Batch — caso d'uso appropriato?", aEn:"Non-blocking, latency-tolerant: overnight reports, weekly audits, nightly test gen", aIt:"Non-bloccante, tollerante alla latenza: report notturni, audit settimanali, generazione test notturna"},
   {d:4, qEn:"Batch API — NOT appropriate for?", qIt:"API Batch — NON appropriata per?", aEn:"Blocking workflows where developers wait: pre-merge checks, real-time responses", aIt:"Workflow bloccanti dove gli sviluppatori aspettano: controlli pre-merge, risposte in tempo reale"},
   {d:4, qEn:"Why use nullable fields in JSON schema?", qIt:"Perché usare campi nullable nello schema JSON?", aEn:"Prevents hallucination when info is absent from source document", aIt:"Previene l'allucinazione quando le informazioni sono assenti dal documento sorgente"},
@@ -3045,6 +3103,8 @@ const FLASHCARD_DATA = [
   {d:5, qEn:"Source attribution requirement in multi-agent synthesis?", qIt:"Requisito di attribuzione della fonte nella sintesi multi-agent?", aEn:"Preserve claim-source mappings — don't compress without them", aIt:"Preserva le mappature affermazione-fonte — non comprimere senza di esse"},
   {d:5, qEn:"Conflicting stats from credible sources — what to do?", qIt:"Statistiche conflittuali da fonti credibili — cosa fare?", aEn:"Annotate conflict with source attribution; do NOT arbitrarily select one value", aIt:"Annota il conflitto con l'attribuzione della fonte; NON selezionare arbitrariamente un valore"},
   {d:5, qEn:"Context degradation symptom in extended sessions?", qIt:"Sintomo di degradazione del contesto in sessioni estese?", aEn:"Model references 'typical patterns' instead of specific data retrieved earlier", aIt:"Il modello riferisce 'pattern tipici' invece dei dati specifici recuperati in precedenza"},
+  {d:5, qEn:"Claude Haiku 4.5 context window size?", qIt:"Dimensione context window di Claude Haiku 4.5?", aEn:"200k tokens (64k max output). Price: $1/$5 per MTok in/out.", aIt:"200k token (output max 64k). Prezzo: $1/$5 per MTok in/out."},
+  {d:5, qEn:"Claude Fable 5 / Opus 4.8 / Sonnet 5 context window?", qIt:"Context window di Claude Fable 5 / Opus 4.8 / Sonnet 5?", aEn:"All have 1M tokens context, 128k max output. Fable5: $10/$50. Opus4.8: $5/$25. Sonnet5: $3/$15 per MTok in/out.", aIt:"Tutti hanno contesto 1M token, output max 128k. Fable5: $10/$50. Opus4.8: $5/$25. Sonnet5: $3/$15 per MTok in/out."},
 ];
 
 const QUIZ_DATA = [
@@ -3134,8 +3194,14 @@ const QUICKREF_DATA = {
   claudemdIt: {title:"Gerarchia CLAUDE.md", rows:[["Livello 1","~/.claude/CLAUDE.md — Livello utente (tutti i progetti)"],["Livello 2",".claude/CLAUDE.md — Livello progetto (questo progetto)"],["Livello 3","subdirectory/CLAUDE.md — Livello directory (solo sottodirectory)"],["Modulare","@import referenzia file esterni"],["Regole",".claude/rules/ con YAML frontmatter paths:"]]},
   errorCatsEn: {title:"Error Categories", rows:[["Transient","Timeout, network — isRetryable: true"],["Validation","Bad input format — isRetryable: true (corrected input)"],["Business","Policy violation — isRetryable: false (needs state change)"],["Permission","Access denied — isRetryable: false (needs privilege change)"]]},
   errorCatsIt: {title:"Categorie di Errore", rows:[["Transient","Timeout, rete — isRetryable: true"],["Validation","Formato input errato — isRetryable: true (input corretto)"],["Business","Violazione policy — isRetryable: false (serve cambio stato)"],["Permission","Accesso negato — isRetryable: false (serve cambio privilegi)"]]},
-  keyNumbersEn: {title:"Key Numbers to Memorize", rows:[["65","Questions on the exam (MCQ, 1 correct out of 4)"],["90 min","Time allowed (~1.5 hours)"],["720/1000","Passing score (scaled 100–1000, no guessing penalty)"],["4 of 6","Scenarios presented at random per sitting"],["4-5","Max tools per agent before reliability degrades"],["2-4","Optimal few-shot examples"],["50%","Batch API cost savings"],["24h","Batch API max processing time"],["3","CLAUDE.md hierarchy levels"]]},
-  keyNumbersIt: {title:"Numeri Chiave da Memorizzare", rows:[["65","Domande nell\'esame (MCQ, 1 risposta corretta su 4)"],["90 min","Tempo a disposizione (~1.5 ore)"],["720/1000","Punteggio minimo (scala 100–1000, nessuna penalità per indovinare)"],["4 di 6","Scenari presentati a random per sessione"],["4-5","Max tool per agent prima che l\'affidabilità degradi"],["2-4","Esempi few-shot ottimali"],["50%","Risparmio costo API Batch"],["24h","Tempo massimo elaborazione API Batch"],["3","Livelli gerarchia CLAUDE.md"]]}
+  modelsEn: {title:"Current Claude Models", rows:[["Model","Context","Max Out","Price in/out (MTok)"],["Fable 5 (claude-fable-5)","1M","128k","$10 / $50"],["Opus 4.8 (claude-opus-4-8)","1M","128k","$5 / $25"],["Sonnet 5 (claude-sonnet-5)","1M","128k","$3 / $15"],["Haiku 4.5 (claude-haiku-4-5)","200k","64k","$1 / $5"],["Adaptive thinking","Fable5/Opus4.8/Sonnet5","NO budget_tokens","use effort:low|medium|high"],["Manual budget_tokens","Haiku4.5/Opus4.5/4.6","supported","older models"]]},
+  modelsIt: {title:"Modelli Claude Attuali", rows:[["Modello","Contesto","Max Out","Prezzo in/out (MTok)"],["Fable 5 (claude-fable-5)","1M","128k","$10 / $50"],["Opus 4.8 (claude-opus-4-8)","1M","128k","$5 / $25"],["Sonnet 5 (claude-sonnet-5)","1M","128k","$3 / $15"],["Haiku 4.5 (claude-haiku-4-5)","200k","64k","$1 / $5"],["Adaptive thinking","Fable5/Opus4.8/Sonnet5","NO budget_tokens","usa effort:low|medium|high"],["budget_tokens manuale","Haiku4.5/Opus4.5/4.6","supportato","modelli precedenti"]]},
+  promptCachingEn: {title:"Prompt Caching", rows:[["Cache write (5-min)","1.25x base price"],["Cache write (1-hour)","2x base price"],["Cache read","0.1x base price (90% savings)"],["Default TTL","5 minutes"],["Alt TTL","1 hour (2x write cost)"],["Max breakpoints","4"],["Min tokens — Fable5/Mythos5","512 tokens"],["Min tokens — Opus4.8/Sonnet5/Sonnet4.6","1024 tokens"],["Min tokens — Haiku4.5/Opus4.6/Opus4.5","4096 tokens"]]},
+  promptCachingIt: {title:"Prompt Caching", rows:[["Write cache (5-min)","1.25x prezzo base"],["Write cache (1-ora)","2x prezzo base"],["Read cache","0.1x prezzo base (risparmio 90%)"],["TTL default","5 minuti"],["TTL alternativo","1 ora (costo write 2x)"],["Max breakpoint","4"],["Min token — Fable5/Mythos5","512 token"],["Min token — Opus4.8/Sonnet5/Sonnet4.6","1024 token"],["Min token — Haiku4.5/Opus4.6/Opus4.5","4096 token"]]},
+  stopReasonsEn: {title:"stop_reason Values", rows:[["end_turn","Response completed normally"],["tool_use","Claude wants to call a client tool → execute and return tool_result"],["max_tokens","Output hit max_tokens limit"],["stop_sequence","A stop sequence was encountered"],["refusal","Claude refused the request — do not retry same"],["pause_turn","Server tool loop hit iteration limit — resend request"],["model_context_window_exceeded","Context too large (models 4.5+ only)"]]},
+  stopReasonsIt: {title:"Valori stop_reason", rows:[["end_turn","Risposta completata normalmente"],["tool_use","Claude vuole chiamare un tool client → esegui e restituisci tool_result"],["max_tokens","Output ha raggiunto il limite max_tokens"],["stop_sequence","Incontrata una stop sequence"],["refusal","Claude ha rifiutato la richiesta — non riprovare uguale"],["pause_turn","Loop server tool ha raggiunto limite iterazioni — reinvia richiesta"],["model_context_window_exceeded","Contesto troppo grande (solo modelli 4.5+)"]]},
+  keyNumbersEn: {title:"Key Numbers to Memorize", rows:[["65","Questions on the exam (MCQ, 1 correct out of 4)"],["90 min","Time allowed (~1.5 hours)"],["720/1000","Passing score (scaled 100–1000, no guessing penalty)"],["4 of 6","Scenarios presented at random per sitting"],["4-5","Max tools per agent before reliability degrades"],["2-4","Optimal few-shot examples"],["50%","Batch API cost savings (most batches < 1 hour, max 24h, no ZDR)"],["4","Max prompt cache breakpoints (min 512–4096 tokens depending on model)"],["90%","Prompt cache read savings (0.1x base price)"],["3","CLAUDE.md hierarchy levels"]]},
+  keyNumbersIt: {title:"Numeri Chiave da Memorizzare", rows:[["65","Domande nell\'esame (MCQ, 1 risposta corretta su 4)"],["90 min","Tempo a disposizione (~1.5 ore)"],["720/1000","Punteggio minimo (scala 100–1000, nessuna penalità per indovinare)"],["4 di 6","Scenari presentati a random per sessione"],["4-5","Max tool per agent prima che l\'affidabilità degradi"],["2-4","Esempi few-shot ottimali"],["50%","Risparmio costo API Batch (max 24h, nessun ZDR)"],["4","Max breakpoint cache prompt (min 512–4096 token secondo il modello)"],["90%","Risparmio lettura cache prompt (0.1x prezzo base)"],["3","Livelli gerarchia CLAUDE.md"]]}
 };
 
 // ─── STATE (rendering engine) ─────────────────────────────────────────────────
@@ -3570,9 +3636,12 @@ function renderQuickRef() {
     <p class="page-subtitle">${l==='en'?'Last-minute cheat sheet — review before the exam':'Scheda di riferimento dell\'ultimo minuto — rivedi prima dell\'esame'}</p>
     <div class="qr-grid">
       ${makeTable(QUICKREF_DATA['exam'+suffix])}
+      ${makeTable(QUICKREF_DATA['models'+suffix])}
+      ${makeTable(QUICKREF_DATA['stopReasons'+suffix])}
       ${makeTable(QUICKREF_DATA['toolChoice'+suffix])}
       ${makeTable(QUICKREF_DATA['claudemd'+suffix])}
       ${makeTable(QUICKREF_DATA['errorCats'+suffix])}
+      ${makeTable(QUICKREF_DATA['promptCaching'+suffix])}
       ${makeTable(QUICKREF_DATA['keyNumbers'+suffix])}
     </div>
     <div class="qr-scenarios">
