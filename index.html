@@ -2170,6 +2170,10 @@ const DOMAIN_DATA = {
       {
         title: 'AgentDefinition',
         body:  'The configuration object that defines a subagent type. It specifies: the agent description (used by the coordinator to select the right subagent), the system prompt (scoped instructions and persona), and tool restrictions (which tools this subagent type is permitted to use). Properly scoped AgentDefinitions prevent privilege escalation and reduce tool confusion.'
+      },
+      {
+        title: 'LLM Confidence Calibration & Decision Boundary Clarity',
+        body:  'LLMs are poorly self-calibrated: asking a model to score its own confidence (1–10) produces inconsistent, uncalibrated numbers — not a trustworthy routing signal. When an agent shows inverted behavior (escalates routine cases, attempts complex exceptions), the root cause is almost always unclear decision boundaries in the prompt. Fix first: explicit categorical escalation criteria + few-shot examples that model the correct decision for edge cases. Add ML classifiers only after explicit criteria fixes have been tried and proven insufficient.'
       }
     ],
 
@@ -2209,6 +2213,10 @@ const DOMAIN_DATA = {
       {
         title: 'AgentDefinition',
         body:  'L\'oggetto di configurazione che definisce un tipo di subagente. Specifica: la descrizione dell\'agente (usata dal coordinatore per selezionare il subagente giusto), il system prompt (istruzioni e persona specifiche) e le restrizioni sugli strumenti (quali strumenti questo tipo di subagente è autorizzato a usare). AgentDefinition correttamente definite prevengono l\'escalation dei privilegi e riducono la confusione degli strumenti.'
+      },
+      {
+        title: 'Calibrazione della Confidenza degli LLM e Confini Decisionali',
+        body:  'Gli LLM sono poco auto-calibrati: chiedere al modello di valutare la propria certezza (1–10) produce numeri inconsistenti e non calibrati — non un segnale di routing affidabile. Quando un agente mostra comportamento invertito (scala i casi di routine, gestisce eccezioni complesse), la causa principale è quasi sempre confini decisionali poco chiari nel prompt. Prima soluzione: criteri di escalation categorici espliciti + esempi few-shot che modellano la decisione corretta per i casi limite. Aggiungi classificatori ML solo dopo che le correzioni dirette ai criteri sono state tentate e si sono dimostrate insufficienti.'
       }
     ],
 
@@ -2434,60 +2442,62 @@ const DOMAIN_DATA = {
       'Passare direttamente a esempi few-shot o ristrutturazione dei parametri quando uno strumento si comporta male — migliora sempre prima la descrizione.'
     ],
 
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360">
-  <defs>
-    <marker id="arrowD2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
-    </marker>
-    <marker id="arrowD2r" markerWidth="8" markerHeight="8" refX="2" refY="3" orient="auto-start-reverse">
-      <path d="M8,0 L8,6 L0,3 z" fill="#34d399"/>
-    </marker>
-  </defs>
-
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300">
   <!-- Background -->
-  <rect width="360" height="360" rx="10" fill="#1e2a3a"/>
+  <rect width="360" height="300" rx="10" fill="#1e2a3a"/>
 
   <!-- Title -->
-  <text x="180" y="26" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#f1f5f9">Coordinator &amp; Sub-Agents</text>
+  <text x="180" y="26" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#f1f5f9">tool_choice Modes</text>
 
-  <!-- CENTER: Coordinator -->
-  <circle cx="180" cy="180" r="46" fill="#34d399" opacity="0.15" stroke="#34d399" stroke-width="2"/>
-  <circle cx="180" cy="180" r="36" fill="#1e2a3a" stroke="#34d399" stroke-width="2"/>
-  <text x="180" y="175" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#34d399">Coordi-</text>
-  <text x="180" y="191" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#34d399">nator</text>
+  <!-- Column headers -->
+  <text x="60" y="52" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#34d399">auto</text>
+  <text x="180" y="52" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#34d399">any</text>
+  <text x="300" y="52" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#34d399">forced</text>
 
-  <!-- TOP: Agent A -->
-  <circle cx="180" cy="54" r="30" fill="#1a2e28" stroke="#34d399" stroke-width="1.5" opacity="0.85"/>
-  <text x="180" y="50" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#a7f3d0">Agent</text>
-  <text x="180" y="64" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#a7f3d0">A</text>
+  <!-- auto box -->
+  <rect x="20" y="60" width="80" height="56" rx="6" fill="#1a2e28" stroke="#34d399" stroke-width="1.5"/>
+  <text x="60" y="80" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#a7f3d0">May return</text>
+  <text x="60" y="94" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#a7f3d0">text OR tool</text>
+  <text x="60" y="108" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#94a3b8">(default)</text>
 
-  <!-- RIGHT: Agent B -->
-  <circle cx="306" cy="180" r="30" fill="#1a2e28" stroke="#34d399" stroke-width="1.5" opacity="0.85"/>
-  <text x="306" y="176" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#a7f3d0">Agent</text>
-  <text x="306" y="190" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#a7f3d0">B</text>
+  <!-- any box -->
+  <rect x="140" y="60" width="80" height="56" rx="6" fill="#1a2e28" stroke="#34d399" stroke-width="1.5"/>
+  <text x="180" y="80" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#a7f3d0">MUST call</text>
+  <text x="180" y="94" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#a7f3d0">SOME tool</text>
+  <text x="180" y="108" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#a7f3d0">(any tool)</text>
 
-  <!-- BOTTOM: Agent C -->
-  <circle cx="180" cy="306" r="30" fill="#1a2e28" stroke="#34d399" stroke-width="1.5" opacity="0.85"/>
-  <text x="180" y="302" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#a7f3d0">Agent</text>
-  <text x="180" y="316" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#a7f3d0">C</text>
+  <!-- forced box (highlighted as best choice for schema compliance) -->
+  <rect x="260" y="60" width="80" height="56" rx="6" fill="#1e3a30" stroke="#34d399" stroke-width="2.5"/>
+  <text x="300" y="80" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#34d399">MUST call</text>
+  <text x="300" y="94" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#34d399">THAT tool</text>
+  <text x="300" y="108" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">(most reliable)</text>
 
-  <!-- LEFT: Agent D -->
-  <circle cx="54" cy="180" r="30" fill="#1a2e28" stroke="#34d399" stroke-width="1.5" opacity="0.85"/>
-  <text x="54" y="176" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#a7f3d0">Agent</text>
-  <text x="54" y="190" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="#a7f3d0">D</text>
+  <!-- Section: when to use -->
+  <text x="180" y="138" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" letter-spacing="0.08em" fill="#94a3b8">WHEN TO USE</text>
 
-  <!-- Bidirectional arrows: center <-> each agent -->
-  <!-- Top -->
-  <line x1="180" y1="144" x2="180" y2="86" stroke="#34d399" stroke-width="1.8" marker-start="url(#arrowD2r)" marker-end="url(#arrowD2)"/>
-  <!-- Right -->
-  <line x1="224" y1="180" x2="274" y2="180" stroke="#34d399" stroke-width="1.8" marker-start="url(#arrowD2r)" marker-end="url(#arrowD2)"/>
-  <!-- Bottom -->
-  <line x1="180" y1="216" x2="180" y2="274" stroke="#34d399" stroke-width="1.8" marker-start="url(#arrowD2r)" marker-end="url(#arrowD2)"/>
-  <!-- Left -->
-  <line x1="136" y1="180" x2="86" y2="180" stroke="#34d399" stroke-width="1.8" marker-start="url(#arrowD2r)" marker-end="url(#arrowD2)"/>
+  <!-- auto use case -->
+  <rect x="20" y="148" width="80" height="50" rx="4" fill="rgba(255,255,255,0.03)" stroke="#334155" stroke-width="1"/>
+  <text x="60" y="167" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#94a3b8">Conversational</text>
+  <text x="60" y="181" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#94a3b8">turns — any</text>
+  <text x="60" y="195" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#94a3b8">response OK</text>
 
-  <!-- No direct connections label -->
-  <text x="180" y="348" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#94a3b8">No direct agent-to-agent connections</text>
+  <!-- any use case -->
+  <rect x="140" y="148" width="80" height="50" rx="4" fill="rgba(255,255,255,0.03)" stroke="#334155" stroke-width="1"/>
+  <text x="180" y="167" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#94a3b8">Guarantee</text>
+  <text x="180" y="181" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#94a3b8">tool invoked</text>
+  <text x="180" y="195" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#94a3b8">(format open)</text>
+
+  <!-- forced use case -->
+  <rect x="260" y="148" width="80" height="50" rx="4" fill="rgba(52,211,153,0.07)" stroke="#34d399" stroke-width="1"/>
+  <text x="300" y="167" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">Schema-</text>
+  <text x="300" y="181" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">compliant</text>
+  <text x="300" y="195" text-anchor="middle" font-family="system-ui,sans-serif" font-size="9" fill="#34d399">output needed</text>
+
+  <!-- Exam trap warning box -->
+  <rect x="20" y="214" width="320" height="62" rx="6" fill="rgba(248,113,113,0.06)" stroke="rgba(248,113,113,0.25)" stroke-width="1"/>
+  <text x="180" y="233" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" font-weight="700" fill="#f87171">&#9888; Exam Trap</text>
+  <text x="180" y="250" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#f1f5f9">Using "auto" when structured output required</text>
+  <text x="180" y="266" text-anchor="middle" font-family="system-ui,sans-serif" font-size="10" fill="#f1f5f9">&#8594; model may return plain text instead of tool call</text>
 </svg>`
   },
 
@@ -2967,6 +2977,8 @@ const FLASHCARD_DATA = [
   {d:1, qEn:"What does --resume <session-name> do in Claude Code?", qIt:"Cosa fa --resume <session-name> in Claude Code?", aEn:"Continues a previously named session with its accumulated context", aIt:"Continua una sessione nominata precedentemente con il suo contesto accumulato"},
   {d:1, qEn:"When is dynamic adaptive decomposition better than prompt chaining?", qIt:"Quando è meglio la decomposizione dynamic adaptive rispetto al prompt chaining?", aEn:"Open-ended investigation tasks where structure isn't known in advance", aIt:"Task di indagine open-ended dove la struttura non è nota in anticipo"},
   {d:1, qEn:"What is 'attention dilution' in code review?", qIt:"Cos'è la 'attention dilution' nella code review?", aEn:"Processing too many files at once produces inconsistent, contradictory feedback", aIt:"Elaborare troppi file contemporaneamente produce feedback inconsistente e contraddittorio"},
+  {d:1, qEn:"Is LLM self-reported confidence (1–10) a reliable routing signal?", qIt:"La confidenza auto-riportata dall'LLM (1–10) è un segnale di routing affidabile?", aEn:"NO — LLMs are poorly calibrated; self-scored confidence is inconsistent and unreliable. Use explicit categorical criteria instead.", aIt:"NO — gli LLM sono poco calibrati; la confidenza auto-valutata è inconsistente e inaffidabile. Usa criteri categorici espliciti."},
+  {d:1, qEn:"Agent escalates routine cases and attempts complex exceptions — root cause?", qIt:"L'agente scala i casi di routine e gestisce le eccezioni complesse — causa principale?", aEn:"Unclear decision boundaries in the prompt. Fix: add explicit escalation criteria + few-shot examples showing the correct decision for edge cases.", aIt:"Confini decisionali poco chiari nel prompt. Soluzione: aggiungi criteri di escalation espliciti + esempi few-shot che mostrano la decisione corretta per i casi limite."},
   {d:2, qEn:"Primary mechanism LLMs use for tool selection?", qIt:"Meccanismo primario che gli LLM usano per la selezione dei tool?", aEn:"Tool descriptions — always improve these first", aIt:"Le descrizioni dei tool — migliorale sempre per prime"},
   {d:2, qEn:"First fix when tools are being confused?", qIt:"Prima correzione quando i tool vengono confusi?", aEn:"Expand descriptions with input formats, examples, boundaries vs similar tools", aIt:"Espandi le descrizioni con formati di input, esempi, confini rispetto a tool simili"},
   {d:2, qEn:"3 fields a structured error response must include?", qIt:"3 campi che una risposta di errore strutturata deve includere?", aEn:"isRetryable (bool) + errorCategory + human-readable description", aIt:"isRetryable (bool) + errorCategory + descrizione leggibile dall'uomo"},
@@ -3000,8 +3012,6 @@ const FLASHCARD_DATA = [
   {d:3, qEn:"Interview pattern in Claude Code — what is it?", qIt:"Pattern interview in Claude Code — cos'è?", aEn:"Claude asks questions to surface considerations the developer may not have anticipated", aIt:"Claude fa domande per far emergere considerazioni che lo sviluppatore potrebbe non aver anticipato"},
   {d:3, qEn:"Test-driven iteration with Claude Code?", qIt:"Iterazione test-driven con Claude Code?", aEn:"Write test suites first, then iterate by sharing test failures", aIt:"Scrivi prima le suite di test, poi itera condividendo i fallimenti dei test"},
   {d:3, qEn:"What does --add-dir flag do?", qIt:"Cosa fa il flag --add-dir?", aEn:"Adds an additional directory to Claude Code's working context", aIt:"Aggiunge una directory aggiuntiva al contesto di lavoro di Claude Code"},
-  {d:3, qEn:"context:fork in SKILL.md — what does it do?", qIt:"context:fork in SKILL.md — cosa fa?", aEn:"Runs the skill in an isolated sub-agent context — prevents verbose output from polluting main conversation", aIt:"Esegue la skill in un contesto sub-agent isolato — previene che output verboso inquini la conversazione principale"},
-  {d:3, qEn:"argument-hint in SKILL.md — what does it do?", qIt:"argument-hint in SKILL.md — cosa fa?", aEn:"Displays a prompt to user when skill is invoked without a required argument, instead of failing silently", aIt:"Mostra un prompt all'utente quando la skill viene invocata senza un argomento richiesto, invece di fallire silenziosamente"},
   {d:4, qEn:"Most reliable approach for schema-compliant structured output?", qIt:"Approccio più affidabile per output strutturato conforme allo schema?", aEn:"tool_use with JSON schema + forced tool selection", aIt:"tool_use con JSON schema + selezione forzata del tool"},
   {d:4, qEn:"What does strict JSON schema eliminate?", qIt:"Cosa elimina uno schema JSON strict?", aEn:"Syntax errors ONLY — not semantic errors (wrong values, misplaced fields)", aIt:"Solo errori di SINTASSI — non errori semantici (valori errati, campi sbagliati)"},
   {d:4, qEn:"Most effective technique for consistently formatted output?", qIt:"Tecnica più efficace per output formattato in modo coerente?", aEn:"Few-shot examples (2-4) that show reasoning for each choice", aIt:"Esempi few-shot (2-4) che mostrano il ragionamento per ogni scelta"},
@@ -3192,7 +3202,7 @@ function renderHome() {
     <div class="home-hero">
       <div class="home-badge">CCA-F</div>
       <h1>${l==='en'?'Claude Certified Architect – Foundations':'Claude Certified Architect – Foundations'}</h1>
-      <p class="home-subtitle">${l==='en'?'Complete exam preparation portal with domain reviews, 86 flashcards, and 40 scenario questions':'Portale completo di preparazione all\'esame con revisione domini, 86 flashcard e 40 domande scenario'}</p>
+      <p class="home-subtitle">${l==='en'?'Complete exam preparation portal with domain reviews, 88 flashcards, and 38 scenario questions':'Portale completo di preparazione all\'esame con revisione domini, 88 flashcard e 38 domande scenario'}</p>
     </div>
     <div class="stats-row">
       <div class="stat-card"><div class="stat-num">65</div><div class="stat-label">${l==='en'?'Questions':'Domande'}</div></div>
@@ -3388,7 +3398,7 @@ function renderQuiz() {
       <h1 class="page-title">${l==='en'?'Quiz':'Quiz'}</h1>
       <div class="quiz-start">
         <div class="quiz-start-icon">🎯</div>
-        <h2>${l==='en'?'40 Scenario Questions':'40 Domande Scenario'}</h2>
+        <h2>${l==='en'?'38 Scenario Questions':'38 Domande Scenario'}</h2>
         <p>${l==='en'?'Test your knowledge with scenario-based questions covering all 5 domains. Questions are randomized each attempt.':'Metti alla prova le tue conoscenze con domande scenario che coprono tutti e 5 i domini. Le domande sono randomizzate ad ogni tentativo.'}</p>
         <button class="btn-primary" onclick="startQuiz()">${l==='en'?'Start Quiz':'Inizia Quiz'}</button>
       </div>`;
