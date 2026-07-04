@@ -511,6 +511,8 @@
       width: 100%;
       max-width: 640px;
       height: auto;
+      overflow: hidden;
+      display: block;
     }
 
 
@@ -2630,7 +2632,7 @@ const DOMAIN_DATA = {
       'Scegliere la scomposizione dinamica adattiva per workflow fissi e prevedibili — usa invece il prompt chaining per sequenze di passi predeterminate.'
     ],
 
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 480">
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 480" overflow="hidden">
   <defs>
     <marker id="arrowD1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
       <path d="M0,0 L0,6 L8,3 z" fill="#818cf8"/>
@@ -2693,8 +2695,8 @@ const DOMAIN_DATA = {
   <line x1="276" y1="274" x2="276" y2="310" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrowD1b)"/>
 
   <!-- TERMINATE box -->
-  <rect x="216" y="312" width="120" height="34" rx="6" fill="#1a2a40" stroke="#4ade80" stroke-width="1.5"/>
-  <text x="276" y="333" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#4ade80">Loop Ends</text>
+  <rect x="206" y="312" width="108" height="34" rx="6" fill="#1a2a40" stroke="#4ade80" stroke-width="1.5"/>
+  <text x="260" y="333" text-anchor="middle" font-family="system-ui,sans-serif" font-size="12" font-weight="600" fill="#4ade80">Loop Ends</text>
 
   <!-- Legend -->
   <rect x="10" y="380" width="300" height="84" rx="6" fill="rgba(255,255,255,0.03)" stroke="#334155" stroke-width="1"/>
@@ -2846,7 +2848,7 @@ const DOMAIN_DATA = {
       'Passare direttamente a esempi few-shot o ristrutturazione dei parametri quando uno strumento si comporta male — migliora sempre prima la descrizione.'
     ],
 
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300">
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300" overflow="hidden">
   <!-- Background -->
   <rect width="360" height="300" rx="10" fill="#1e2a3a"/>
 
@@ -3020,7 +3022,7 @@ const DOMAIN_DATA = {
       'Riprendere una sessione stale molto lunga invece di un fresh start con sommario strutturato'
     ],
 
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" overflow="hidden">
   <defs>
     <marker id="arrowD3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
       <path d="M0,0 L0,6 L8,3 z" fill="#60a5fa"/>
@@ -3191,7 +3193,7 @@ const DOMAIN_DATA = {
       'Usare 10+ esempi few-shot pensando che più sia meglio (2-4 ben scelti è ottimale)'
     ],
 
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320">
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" overflow="hidden">
   <defs>
     <marker id="arrowD4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
       <path d="M0,0 L0,6 L8,3 z" fill="#fb923c"/>
@@ -3346,7 +3348,7 @@ const DOMAIN_DATA = {
       'Riprendere un contesto molto lungo senza /compact (il modello referenzia stati precedenti obsoleti)'
     ],
 
-    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" overflow="hidden">
   <!-- Background -->
   <rect width="400" height="200" rx="10" fill="#1a2332"/>
   <!-- Title -->
