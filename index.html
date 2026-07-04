@@ -1806,6 +1806,374 @@
     ───────────────────────────────────────────── */
     /* Already handled above via .fc-card.flipped */
 
+    /* ═══════════════════════════════════════════════════════
+       REDESIGN — MODERN STUDY PORTAL
+       Applied after existing CSS to override and enhance
+    ═══════════════════════════════════════════════════════ */
+
+    /* ─── UPDATED COLOR PALETTE ─────────────────────────── */
+    :root {
+      --accent:        #6366f1;
+      --accent-hover:  #4f52d9;
+      --accent-glow:   rgba(99,102,241,0.15);
+      --surface-hover: #243047;
+      --gradient-hero: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+    }
+
+    :root[data-theme="light"] {
+      --bg:          #f8fafc;
+      --surface:     #ffffff;
+      --border:      #e2e8f0;
+      --surface-2:   #f1f5f9;
+      --accent:      #6366f1;
+      --accent-hover:#4f52d9;
+      --accent-glow: rgba(99,102,241,0.1);
+    }
+
+    /* ─── SCROLLBAR ──────────────────────────────────────── */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    /* ─── HOME HERO ──────────────────────────────────────── */
+    .home-hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a5f 100%);
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 16px;
+      padding: 48px 40px 40px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    .home-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .home-hero > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    :root[data-theme="light"] .home-hero {
+      background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 50%, #dbeafe 100%);
+      border-color: #c7d2fe;
+    }
+
+    /* ─── SIDEBAR LOGO GRADIENT TEXT ────────────────────── */
+    .sidebar-logo h1 {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    :root[data-theme="light"] .sidebar-logo h1 {
+      background: linear-gradient(135deg, #6366f1, #4f52d9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ─── SIDEBAR NAV ITEMS ─────────────────────────────── */
+    #sidebar nav ul li a {
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    #sidebar nav ul li a:hover {
+      background: var(--accent-glow);
+      color: var(--text);
+      border-left-color: rgba(99,102,241,0.4);
+    }
+
+    #sidebar nav ul li a.active {
+      background: rgba(99,102,241,0.15);
+      color: var(--accent);
+      font-weight: 600;
+      border-left-color: var(--accent);
+    }
+
+    /* ─── CARDS & SURFACES ──────────────────────────────── */
+    .domain-card,
+    .concept-card,
+    .stat-card,
+    .strategy-card,
+    .quiz-start,
+    .quiz-result,
+    .quiz-question-card,
+    .qr-card,
+    .card {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    :root[data-theme="light"] .domain-card,
+    :root[data-theme="light"] .concept-card,
+    :root[data-theme="light"] .stat-card,
+    :root[data-theme="light"] .card {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    .domain-card:hover,
+    .concept-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2), 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2), 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* ─── FLASHCARD FLIP ────────────────────────────────── */
+    .fc-scene {
+      perspective: 1200px;
+      max-width: 680px;
+      min-height: 280px;
+      overflow: visible;
+    }
+
+    .fc-card {
+      min-height: 280px;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .fc-front,
+    .fc-back {
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.08);
+      min-height: 280px;
+    }
+
+    .fc-front {
+      background: linear-gradient(145deg, var(--surface) 0%, #1a2540 100%);
+    }
+
+    .fc-back {
+      background: linear-gradient(145deg, #1a2e1a 0%, #0f1f0f 100%);
+    }
+
+    :root[data-theme="light"] .fc-front {
+      background: linear-gradient(145deg, #ffffff 0%, #f0f4ff 100%);
+      border-color: rgba(0,0,0,0.08);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+    }
+
+    :root[data-theme="light"] .fc-back {
+      background: linear-gradient(145deg, #f0fdf4 0%, #dcfce7 100%);
+      border-color: rgba(0,0,0,0.08);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+    }
+
+    /* ─── QUIZ OPTIONS ──────────────────────────────────── */
+    .quiz-option {
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      transition: all 0.15s ease;
+      font-size: 15px;
+      line-height: 1.5;
+      gap: 12px;
+      background: var(--surface);
+    }
+
+    .quiz-option:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    .quiz-option.correct {
+      border-color: var(--success);
+      background: rgba(34,197,94,0.1);
+      color: inherit;
+    }
+
+    .quiz-option.wrong {
+      border-color: var(--danger);
+      background: rgba(239,68,68,0.1);
+      color: inherit;
+    }
+
+    /* ─── PRIMARY BUTTONS GRADIENT ──────────────────────── */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+      transition: background 0.2s ease, transform 0.1s;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4f52d9 0%, #7c3aed 100%);
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+    }
+
+    .btn-accent:hover {
+      background: linear-gradient(135deg, #4f52d9 0%, #7c3aed 100%);
+    }
+
+    .btn-outline {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-outline:hover {
+      background: var(--accent-glow);
+    }
+
+    /* ─── SECTION HEADING ACCENT BAR ────────────────────── */
+    .section-heading {
+      border-left: 3px solid var(--accent);
+      padding-left: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .page-title {
+      letter-spacing: -0.01em;
+    }
+
+    /* ─── BADGES ────────────────────────────────────────── */
+    .domain-badge,
+    .weight-badge,
+    .weight-chip,
+    .home-badge,
+    .quiz-score-badge {
+      border-radius: 9999px;
+      padding: 3px 10px;
+    }
+
+    /* ─── SIDEBAR BACKDROP ──────────────────────────────── */
+    #sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 49;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+
+    #sidebar-backdrop.visible {
+      display: block;
+    }
+
+    /* ─── RESPONSIVE — MOBILE (max 768px) ──────────────── */
+    @media (max-width: 768px) {
+      :root { --sidebar-width: 0px; }
+
+      #hamburger { display: inline-flex !important; }
+
+      #sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        height: 100vh;
+        z-index: 50;
+        width: 260px;
+        transform: none !important;
+        transition: left 0.3s cubic-bezier(0.4,0,0.2,1);
+        box-shadow: none;
+      }
+
+      #sidebar.open {
+        left: 0;
+        transform: none !important;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.5);
+      }
+
+      #app {
+        margin-left: 0 !important;
+        width: 100% !important;
+      }
+
+      .home-hero {
+        padding: 24px 20px;
+      }
+
+      .home-hero h1,
+      .home-hero h2 {
+        font-size: 1.75rem;
+      }
+
+      .fc-scene {
+        min-height: 320px;
+      }
+
+      .fc-card,
+      .fc-front,
+      .fc-back {
+        min-height: 320px;
+      }
+
+      .fc-filter-btn {
+        min-height: 44px;
+        padding: 10px 14px;
+        font-size: 13px;
+      }
+
+      .quiz-option {
+        padding: 12px 16px;
+        font-size: 14px;
+      }
+
+      .stat-num {
+        font-size: 2rem;
+      }
+
+      .domain-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .concepts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #main {
+        padding: 24px 18px 60px;
+      }
+    }
+
+    /* ─── RESPONSIVE — IPAD (769px–1024px) ─────────────── */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      #sidebar {
+        width: 240px;
+        min-width: 240px;
+      }
+
+      #app {
+        margin-left: 240px;
+      }
+
+      .domain-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .concepts-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .fc-scene {
+        max-width: 580px;
+        min-height: 300px;
+      }
+
+      .fc-card,
+      .fc-front,
+      .fc-back {
+        min-height: 300px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1884,6 +2252,8 @@
     <span data-i18n="footer_text">CCA-F &bull; Study Portal v1.0</span>
   </div>
 </aside>
+
+<div id="sidebar-backdrop"></div>
 
 <!-- =============================================
      APP WRAPPER
@@ -3234,6 +3604,10 @@ function applyLang() {
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────────────
 function navigate(id) {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar')?.classList.remove('open');
+    document.getElementById('sidebar-backdrop')?.classList.remove('visible');
+  }
   currentSection = id;
   document.querySelectorAll('.nav-link').forEach(a => {
     a.classList.toggle('active', a.dataset.section === id);
@@ -3709,10 +4083,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (hamburger) {
     hamburger.addEventListener('click', () => {
       sidebar.classList.toggle('open');
+      document.getElementById('sidebar-backdrop').classList.toggle('visible');
     });
   }
-  document.getElementById('app').addEventListener('click', () => {
-    if (sidebar.classList.contains('open')) sidebar.classList.remove('open');
+  document.getElementById('sidebar-backdrop').addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    document.getElementById('sidebar-backdrop').classList.remove('visible');
   });
 
   // Keyboard navigation for flashcards
@@ -3722,6 +4098,21 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (e.key === 'ArrowLeft') { e.preventDefault(); prevCard(); }
     else if (e.key === ' ') { e.preventDefault(); flipCard(); }
   });
+
+  // Touch swipe for flashcards
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => {
+    if (currentSection !== 'flashcards') return;
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    if (currentSection !== 'flashcards') return;
+    const diff = touchStartX - e.changedTouches[0].screenX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) nextCard();
+      else prevCard();
+    }
+  }, { passive: true });
 
   // Initial render
   navigate('home');
