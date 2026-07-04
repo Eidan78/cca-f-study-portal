@@ -279,24 +279,6 @@
 
     .btn-outline:hover { background: rgba(249,115,22,.1); }
 
-    /* Language toggle */
-    #lang-toggle {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      font-weight: 700;
-      padding: 6px 14px;
-      letter-spacing: .05em;
-      transition: all var(--transition);
-      cursor: pointer;
-    }
-
-    #lang-toggle:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
 
     /* ─────────────────────────────────────────────
        MAIN CONTENT
@@ -2671,7 +2653,6 @@
     <div id="header-controls">
       <button id="hamburger" class="btn-ghost" aria-label="Toggle sidebar" style="display:none">☰</button>
       <button id="theme-toggle" class="btn-ghost" aria-label="Toggle theme" title="Toggle theme">🌙</button>
-      <button id="lang-toggle" aria-label="Toggle language" title="Toggle language">IT</button>
     </div>
   </header>
 
@@ -2770,7 +2751,6 @@
 /* ─────────────────────────────────────────────
    STATE
 ───────────────────────────────────────────── */
-let currentLang = 'en';
 let currentSection = 'home';
 let quizState = { current: 0, score: 0, answered: [] };
 let fcState = { index: 0, flipped: false };
@@ -2796,7 +2776,6 @@ const UI = {
     nav_quickref:    'Quick Reference',
     footer_text:     'CCA-F • Study Portal v1.0',
     header_title:    'CCA-F Study Portal',
-    lang_toggle:     'IT',
     home_title:      'Claude Certified Architect – Foundations',
     home_desc:       'A complete self-study guide covering all five exam domains. Use the domain sections for deep dives, flashcards for rapid recall, and the practice quiz to test readiness.',
     home_tips_title: '💡 Study Tips',
@@ -2837,64 +2816,6 @@ const UI = {
     home_stat_cards:     'Flashcards',
     home_stat_questions: 'Quiz Questions',
   },
-  it: {
-    nav_overview:    'Panoramica',
-    nav_home:        'Home',
-    nav_domains:     'Domini',
-    nav_d1:          'D1 · Architettura Agentica',
-    nav_d2:          'D2 · Strumenti & MCP',
-    nav_d3:          'D3 · Claude Code',
-    nav_d4:          'D4 · Prompt Engineering',
-    nav_d5:          'D5 · Context Management',
-    nav_practice:    'Esercitazione',
-    nav_flashcards:  'Flashcard',
-    nav_quiz:        'Quiz di Pratica',
-    nav_resources:   'Risorse',
-    nav_strategy:    'Strategia d\'Esame',
-    nav_quickref:    'Riferimento Rapido',
-    footer_text:     'CCA-F • Portale di Studio v1.0',
-    header_title:    'Portale di Studio CCA-F',
-    lang_toggle:     'EN',
-    home_title:      'Claude Certified Architect – Foundations',
-    home_desc:       'Una guida completa per l\'auto-studio che copre tutti e cinque i domini dell\'esame. Usa le sezioni di dominio per approfondimenti, le flashcard per il richiamo rapido e il quiz per testare la preparazione.',
-    home_tips_title: '💡 Consigli di Studio',
-    home_tip1:       'Leggi ogni sezione di dominio concentrandoti sui framework decisionali e le trappole d\'esame.',
-    home_tip2:       'Usa le flashcard ogni giorno — punta a 3 passaggi completi prima del giorno dell\'esame.',
-    home_tip3:       'Per ogni domanda del quiz che sbagli, rileggi la sezione di dominio corrispondente.',
-    home_tip4:       'La tabella di riferimento rapido è il tuo promemoria dell\'ultimo giorno — memorizzala.',
-    sec_concepts:    'Concetti Chiave',
-    sec_framework:   'Framework Decisionale',
-    sec_traps:       'Trappole d\'Esame',
-    sec_diagram:     'Diagramma',
-    fc_question:     'DOMANDA',
-    fc_click_reveal: 'Clicca per vedere la risposta',
-    fc_prev:         '← Prec',
-    fc_next:         'Succ →',
-    fc_shuffle:      '🔀 Mescola',
-    fc_restart:      '↺ Ricomincia',
-    fc_of:           'di',
-    quiz_title:      'Quiz di Pratica',
-    quiz_desc:       'Testa le tue conoscenze su tutti i domini.',
-    quiz_start:      'Inizia Quiz',
-    quiz_restart:    '↺ Ricomincia Quiz',
-    quiz_next:       'Prossima Domanda →',
-    quiz_score:      'Punteggio',
-    quiz_results_title: 'Quiz Completato!',
-    quiz_results_desc:  'Il tuo punteggio finale:',
-    quiz_pass:       'PROMOSSO',
-    quiz_fail:       'Continua a Studiare',
-    strat_title:     'Strategia d\'Esame',
-    strat_desc:      'Tattiche collaudate per il giorno dell\'esame CCA-F.',
-    qr_title:        'Riferimento Rapido',
-    qr_desc:         'Fatti chiave, limiti e regole decisionali a colpo d\'occhio.',
-    qr_col_topic:    'Argomento',
-    qr_col_value:    'Valore / Regola',
-    qr_col_note:     'Nota',
-    home_stat_domains:   'Domini',
-    home_stat_concepts:  'Concetti Chiave',
-    home_stat_cards:     'Flashcard',
-    home_stat_questions: 'Domande Quiz',
-  }
 };
 
 /* ─────────────────────────────────────────────
@@ -2905,7 +2826,6 @@ const DOMAIN_DATA = {
   /* ───────────── D1 ───────────── */
   d1: {
     titleEn: 'Agentic Architecture',
-    titleIt: 'Architettura Agentica',
     weight:  '27%',
     color:   '#818cf8',
 
@@ -2952,48 +2872,6 @@ const DOMAIN_DATA = {
       }
     ],
 
-    conceptsIt: [
-      {
-        title: 'Cos\'è un Agente Claude? (Inizia qui)',
-        body:  'Claude è un large language model (LLM) — un\'AI che genera testo prevedendo cosa viene dopo in base al suo addestramento. Un agente è Claude + un ciclo: invece di rispondere una volta e fermarsi, un agente può chiamare strumenti esterni (funzioni che il tuo codice fornisce), ricevere risultati e continuare a lavorare fino al completamento del task. Un tool è qualsiasi funzione esposta a Claude — ricerca, query database, scrittura file, chiamata API. Il ciclo agentico è il codice che guida questo scambio.'
-      },
-      {
-        title: 'Ciclo Agentico',
-        body:  'stop_reason è un campo nell\'oggetto risposta API (non nel testo dell\'assistente) che dice al tuo codice perché Claude ha smesso di generare. Il ciclo di esecuzione fondamentale: invia richiesta → controlla stop_reason → se stop_reason === "tool_use": esegui lo strumento, aggiungi il risultato ai messaggi, torna all\'inizio; se stop_reason === "end_turn": presenta la risposta all\'utente e termina. Il ciclo è guidato interamente da stop_reason — mai dall\'analisi del testo del messaggio dell\'assistente. Elenco completo dei valori stop_reason: "end_turn" (risposta completata), "tool_use" (Claude vuole chiamare un tool), "max_tokens" (limite max_tokens raggiunto), "stop_sequence" (incontrata una stop sequence), "refusal" (Claude ha rifiutato la richiesta), "pause_turn" (loop server-side ha raggiunto il limite iterazioni — richiede reinvio), "model_context_window_exceeded" (context window superata, solo modelli 4.5+).'
-      },
-      {
-        title: 'Pattern Coordinatore–Subagente',
-        body:  'Topologia multi-agente hub-and-spoke. Il coordinatore orchestra il lavoro creando subagenti tramite lo strumento Task. Regola critica: i subagenti NON ereditano automaticamente il contesto del coordinatore — tutte le informazioni rilevanti devono essere passate esplicitamente nella chiamata Task. Assume stato condiviso zero tra agenti a meno che non lo abbia collegato esplicitamente.'
-      },
-      {
-        title: 'Hook (PostToolUse)',
-        body:  'Pensa a un hook come a una funzione middleware. Due tipi: PreToolUse si attiva PRIMA dell\'esecuzione del tool e può bloccarla completamente (usa per conformità a tolleranza zero, es. bloccare rimborsi > $500). PostToolUse si attiva DOPO l\'esecuzione del tool e intercetta il risultato prima che Claude lo elabori (usa per audit logging, trasformazione risultati). Le istruzioni prompt sono probabilistiche; gli hook sono deterministici.'
-      },
-      {
-        title: 'allowedTools + Strumento Task',
-        body:  'Affinché un agente coordinatore possa creare subagenti, deve avere "Task" elencato nel suo array allowedTools. Omettere "Task" da allowedTools impedisce silenziosamente la creazione di subagenti — il coordinatore non potrà delegare il lavoro. Verifica sempre che allowedTools includa ogni strumento di cui l\'agente ha legittimamente bisogno.'
-      },
-      {
-        title: 'fork_session',
-        body:  'Crea rami di esplorazione paralleli da una sessione baseline condivisa. Usa fork_session quando devi provare più approcci simultaneamente senza contaminare il contesto condiviso. Ogni fork è indipendente; i risultati possono essere valutati e si può selezionare il ramo migliore. Ideale per esperimenti di prompt A/B o pianificazione a percorsi multipli.'
-      },
-      {
-        title: 'Strategie di Scomposizione dei Task',
-        body:  'Due pattern: (1) Prompt Chaining — sequenza fissa e predeterminata di passaggi per workflow prevedibili e ben definiti; overhead inferiore, più semplice da debuggare. (2) Dinamico Adattivo — l\'agente decide il passo successivo in runtime in base ai risultati intermedi; adatto per task aperti, esplorativi o altamente variabili. Scegliere il dinamico per workflow fissi aggiunge complessità non necessaria.'
-      },
-      {
-        title: 'Ripresa di Sessione',
-        body:  'Quando si riprende una sessione agentica lunga o obsoleta, generare un sommario strutturato aggiornato (tramite una chiamata di riepilogo) è più affidabile che riprendere dal contesto obsoleto grezzo. Il contesto obsoleto può contenere stato superato, passaggi intermedi falliti o storia irrilevante che fuorvia l\'agente. Preferire il re-briefing esplicito al riuso del contesto grezzo.'
-      },
-      {
-        title: 'AgentDefinition',
-        body:  'L\'oggetto di configurazione che definisce un tipo di subagente. Specifica: la descrizione dell\'agente (usata dal coordinatore per selezionare il subagente giusto), il system prompt (istruzioni e persona specifiche) e le restrizioni sugli strumenti (quali strumenti questo tipo di subagente è autorizzato a usare). AgentDefinition correttamente definite prevengono l\'escalation dei privilegi e riducono la confusione degli strumenti.'
-      },
-      {
-        title: 'Calibrazione della Confidenza degli LLM e Confini Decisionali',
-        body:  'Gli LLM sono poco auto-calibrati: chiedere al modello di valutare la propria certezza (1–10) produce numeri inconsistenti e non calibrati — non un segnale di routing affidabile. Quando un agente mostra comportamento invertito (scala i casi di routine, gestisce eccezioni complesse), la causa principale è quasi sempre confini decisionali poco chiari nel prompt. Prima soluzione: criteri di escalation categorici espliciti + esempi few-shot che modellano la decisione corretta per i casi limite. Aggiungi classificatori ML solo dopo che le correzioni dirette ai criteri sono state tentate e si sono dimostrate insufficienti.'
-      }
-    ],
 
     frameworkEn:
       'stop_reason = "tool_use"           →  execute tool → append result to messages → loop back\n' +
@@ -3007,18 +2885,6 @@ const DOMAIN_DATA = {
       'NEVER assume subagents share coordinator context automatically.\n' +
       'ALWAYS use hooks (not prompts) for zero-tolerance compliance requirements.',
 
-    frameworkIt:
-      'stop_reason = "tool_use"           →  esegui strumento → aggiungi risultato → torna al modello\n' +
-      'stop_reason = "end_turn"           →  presenta risposta → il ciclo termina\n' +
-      'stop_reason = "max_tokens"         →  output troncato — gestisci o aumenta max_tokens\n' +
-      'stop_reason = "stop_sequence"      →  stop sequence incontrata → ciclo termina\n' +
-      'stop_reason = "refusal"            →  Claude ha rifiutato — non riprovare uguale\n' +
-      'stop_reason = "pause_turn"         →  limite loop server — reinvia la richiesta per continuare\n' +
-      'stop_reason = "model_context_window_exceeded" →  contesto troppo grande (solo 4.5+)\n\n' +
-      'NON analizzare mai il testo del messaggio dell\'assistente per rilevare la terminazione del ciclo.\n' +
-      'NON assumere mai che i subagenti condividano automaticamente il contesto del coordinatore.\n' +
-      'USA SEMPRE gli hook (non i prompt) per requisiti di conformità a tolleranza zero.',
-
     trapsEn: [
       'Parsing assistant message text for phrases like "I\'ve completed the task" instead of checking stop_reason — this is fragile and incorrect.',
       'Assuming subagents automatically inherit coordinator context — they do not; pass all required state explicitly in the Task call.',
@@ -3027,13 +2893,6 @@ const DOMAIN_DATA = {
       'Choosing dynamic adaptive decomposition for fixed, predictable workflows — use prompt chaining for predetermined step sequences instead.'
     ],
 
-    trapsIt: [
-      'Analizzare il testo del messaggio dell\'assistente cercando frasi come "Ho completato il task" invece di controllare stop_reason — questo è fragile e scorretto.',
-      'Assumere che i subagenti ereditino automaticamente il contesto del coordinatore — non lo fanno; passa tutto lo stato richiesto esplicitamente nella chiamata Task.',
-      'Usare istruzioni prompt per controlli di conformità a tolleranza zero — usa invece hook: PreToolUse per bloccare l\'esecuzione del tool prima che giri, PostToolUse per intercettare i risultati dopo l\'esecuzione.',
-      'Dimenticare di includere "Task" nell\'array allowedTools del coordinatore — impedisce silenziosamente la creazione di subagenti.',
-      'Scegliere la scomposizione dinamica adattiva per workflow fissi e prevedibili — usa invece il prompt chaining per sequenze di passi predeterminate.'
-    ],
 
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 480" overflow="hidden">
   <defs>
@@ -3113,7 +2972,6 @@ const DOMAIN_DATA = {
   /* ───────────── D2 ───────────── */
   d2: {
     titleEn: 'Tool Design & MCP',
-    titleIt: 'Progettazione Strumenti & MCP',
     weight:  '18%',
     color:   '#34d399',
 
@@ -3168,56 +3026,6 @@ const DOMAIN_DATA = {
       }
     ],
 
-    conceptsIt: [
-      {
-        title: 'Cos\'è MCP? (Model Context Protocol)',
-        body:  'MCP è un protocollo standard aperto per connettere Claude a strumenti e sorgenti dati esterne. Un server MCP espone tool (funzioni che Claude può chiamare) e risorse (cataloghi di dati che Claude può leggere). Il file `.mcp.json` del tuo progetto dice a Claude Code dove trovare i server MCP. Pensa a MCP come a una spina standardizzata: qualsiasi server conforme funziona con qualsiasi client conforme, senza codice di integrazione personalizzato.'
-      },
-      {
-        title: 'Descrizione Strumento: Meccanismo di Selezione Primario',
-        body:  'La descrizione dello strumento è il meccanismo PRIMARIO con cui il modello seleziona quale strumento chiamare. Quando uno strumento viene confuso o sottoutilizzato, il primo passo di rimedio è sempre espandere e chiarire la descrizione — prima di aggiungere esempi, prima di ristrutturare i parametri. Una descrizione precisa e specifica con le condizioni di utilizzo migliora drasticamente l\'affidabilità della selezione.'
-      },
-      {
-        title: 'Categorie di Errore',
-        body:  'Quattro categorie distinte di errori: (1) Transitorio — guasti temporanei come timeout o errori di rete, sempre riprovabile; (2) Validazione — input errato o mal formato dal modello, riprovabile con input corretto; (3) Business — input valido che viola la policy di dominio (es. "fondi insufficienti"), non riprovabile senza un cambio di stato; (4) Permesso — autorizzazione negata, non riprovabile senza cambio di privilegi.'
-      },
-      {
-        title: 'Schema di Risposta Errore Strutturata',
-        body:  'Le risposte di errore dovrebbero includere: isRetryable (booleano — consente al ciclo agente di decidere se riprovare), errorCategory (una delle quattro categorie sopra) e una stringa descrittiva leggibile dall\'uomo. Questo formato strutturato consente al ciclo agente di gestire gli errori in modo programmatico piuttosto che fare affidamento sull\'interpretazione del modello di messaggi di errore in testo libero.'
-      },
-      {
-        title: 'Modalità tool_choice',
-        body:  '"auto" (default): il modello può chiamare uno strumento O restituire una risposta testuale — nessuna garanzia di invocazione strumento; "any": il modello DEVE chiamare almeno uno strumento dalla lista fornita — garantisce l\'invocazione; forzato {type:"tool", name:"x"}: il modello DEVE chiamare esattamente lo strumento specificato — garantisce output strutturato specifico. Usa "auto" per turni conversazionali, "any"/"forzato" quando è richiesto output strutturato.'
-      },
-      {
-        title: 'Posizioni di Configurazione MCP',
-        body:  'Due ambiti: (1) Livello progetto — memorizzato in .mcp.json nella root del progetto, versionato con il codebase, condiviso con il team; (2) Livello utente — memorizzato in ~/.claude.json (home utente), configurazione personale non condivisa con il team. Il livello progetto è preferito per la coerenza del team. Non mettere mai la config del server MCP in CLAUDE.md — quel file è per testo di guida, non per config strutturata.'
-      },
-      {
-        title: 'Strumenti con Ambito: Massimo 4–5 per Agente',
-        body:  'Fornire più di 4–5 strumenti a un singolo agente degrada l\'affidabilità della selezione degli strumenti. La capacità del modello di identificare correttamente lo strumento giusto diminuisce al crescere del set di strumenti. Quando un agente ha bisogno di più di 5 strumenti, suddividi in sub-agenti specializzati ciascuno con un toolset focalizzato. Questo è un limite pratico rigido supportato dal comportamento osservato del modello, non una linea guida morbida.'
-      },
-      {
-        title: 'Pattern di Fallback per lo Strumento Edit',
-        body:  'Lo strumento Edit fallisce quando la stringa target non è univoca nel file (corrispondenza ambigua). La sequenza di fallback è: prima, fornisci più contesto circostante per rendere la corrispondenza univoca; se ancora insufficiente, torna a Read (per recuperare il contenuto corrente) seguito da Write (per riscrivere l\'intero file). Non indovinare mai il contesto — leggi prima, poi scrivi.'
-      },
-      {
-        title: 'Risorse MCP',
-        body:  'Le Risorse MCP sono cataloghi di contenuti — documenti strutturati come riepiloghi di issue, definizioni di schema o basi di conoscenza — che l\'agente può consultare per capire quali dati sono disponibili prima di effettuare chiamate agli strumenti. Rendendo disponibili i contenuti in anticipo, le risorse riducono le chiamate esplorative agli strumenti (es. elencare ogni tabella per trovare lo schema giusto), migliorando l\'efficienza e riducendo l\'uso di token.'
-      },
-      {
-        title: 'Tool Client vs Tool Server',
-        body:  'Due categorie fondamentali di tool. TOOL CLIENT — eseguiti dal tuo codice: (1) Tool definiti dall\'utente (tu scrivi schema e implementazione); (2) Anthropic-schema client tool: bash, text_editor, memory, computer. Quando Claude chiama un tool client, risponde con stop_reason:"tool_use" + un blocco tool_use → IL TUO codice esegue il tool → restituisci un messaggio tool_result. TOOL SERVER — eseguiti dall\'infrastruttura Anthropic: web_search, web_fetch, code_execution, tool_search. Anthropic esegue questi tool; tu vedi solo i risultati. Claude risponde con stop_reason:"end_turn" o "pause_turn" (NON "tool_use") per i tool server.'
-      },
-      {
-        title: 'MCP Connector (API v2025-11-20)',
-        body:  'Il connettore MCP API corrente (versione 2025-11-20) usa il beta header: "anthropic-beta": "mcp-client-2025-11-20" (il vecchio 2025-04-04 è deprecato). Configurazione: array mcp_servers definisce URL, nome, authorization_token. L\'array tools usa type:"mcp_toolset" + mcp_server_name per collegare i tool al loro server. Solo il trasporto HTTP/SSE è supportato tramite l\'API pubblica (no stdio locale). Supporta allowlist (default_config.enabled:false + config per tool), denylist e configurazione per-tool. Il vecchio pattern che metteva tool_configuration dentro mcp_servers è deprecato — ora è separato nell\'array tools come mcp_toolset.'
-      },
-      {
-        title: 'Prompt Caching',
-        body:  'Il prompt caching memorizza i prefix di prompt computazionalmente costosi in cache per ridurre latenza e costo nelle chiamate ripetute. Costo write cache: 1.25x prezzo base (TTL 5 min) o 2x prezzo base (TTL 1 ora). Costo read cache: 0.1x prezzo base (risparmio 90%). TTL default: 5 minuti. TTL alternativo: 1 ora (a 2x costo write). Max breakpoint cache: 4. Token minimi per cachare: Fable 5: 512 token; Opus 4.8 / Sonnet 5 / Sonnet 4.6: 1024 token; Haiku 4.5 / Opus 4.6 / Opus 4.5: 4096 token. Attivato aggiungendo cache_control: {type:"ephemeral"} a un blocco di contenuto.'
-      }
-    ],
 
     frameworkEn:
       'Need guaranteed structured output?    →  Use forced tool_choice {type:"tool",name:"x"}\n' +
@@ -3227,14 +3035,6 @@ const DOMAIN_DATA = {
       'Empty result [] from tool?            →  isRetryable:false, isError:false (— [] is a SUCCESS)\n' +
       'MCP config needed by team?            →  .mcp.json (project-level, version-controlled)',
 
-    frameworkIt:
-      'Hai bisogno di output strutturato garantito? →  Usa tool_choice forzato {type:"tool",name:"x"}\n' +
-      'Hai bisogno di UNA QUALSIASI chiamata tool?  →  Usa tool_choice "any"\n' +
-      'Strumento confuso / selezioni errate?        →  Migliora prima la descrizione (prima degli esempi)\n' +
-      'L\'agente ha 6+ strumenti?                   →  Suddividi in sub-agenti specializzati (max 4–5 ciascuno)\n' +
-      'Risultato vuoto [] dallo strumento?          →  isRetryable:false, isError:false (— [] è un SUCCESSO)\n' +
-      'Config MCP necessaria al team?               →  .mcp.json (livello progetto, versionato)',
-
     trapsEn: [
       'Using tool_choice "auto" when structured output is required — "auto" may return plain text instead of invoking the tool.',
       'Returning isError:true for a valid empty result (e.g., an empty array []) — empty results are successes, not errors; isError:false is correct.',
@@ -3243,13 +3043,6 @@ const DOMAIN_DATA = {
       'Jumping straight to few-shot examples or parameter restructuring when a tool is misbehaving — always improve the description first.'
     ],
 
-    trapsIt: [
-      'Usare tool_choice "auto" quando è richiesto output strutturato — "auto" può restituire testo normale invece di invocare lo strumento.',
-      'Restituire isError:true per un risultato vuoto valido (es. array vuoto []) — i risultati vuoti sono successi, non errori; isError:false è corretto.',
-      'Aggiungere più di 4–5 strumenti a un singolo agente senza suddividere in agenti specializzati — degrada l\'affidabilità della selezione.',
-      'Mettere la configurazione del server MCP in CLAUDE.md invece di .mcp.json — CLAUDE.md è per guida leggibile dall\'uomo, non per config analizzata dalla macchina.',
-      'Passare direttamente a esempi few-shot o ristrutturazione dei parametri quando uno strumento si comporta male — migliora sempre prima la descrizione.'
-    ],
 
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 300" overflow="hidden">
   <!-- Background -->
@@ -3313,7 +3106,6 @@ const DOMAIN_DATA = {
   /* ───────────── D3 ───────────── */
   d3: {
     titleEn: 'Claude Code',
-    titleIt: 'Claude Code',
     weight:  '20%',
     color:   '#60a5fa',
 
@@ -3356,44 +3148,6 @@ const DOMAIN_DATA = {
       }
     ],
 
-    conceptsIt: [
-      {
-        title: 'Cos\'è CI/CD? (Claude Code nelle Pipeline)',
-        body:  'CI/CD (Continuous Integration / Continuous Delivery) è una pipeline automatizzata che si esegue ogni volta che il codice viene pubblicato: compila, testa e facoltativamente distribuisce il codice senza interazione umana. Poiché nessuno sta guardando, qualsiasi strumento che si ferma e chiede "sei sicuro?" bloccherà la pipeline indefinitamente. Claude Code in CI deve essere eseguito con il flag -p / --print per disabilitare i prompt interattivi. Usa una sessione Claude Code SEPARATA per la code review (la sessione che ha scritto il codice ha bias cognitivo verso il proprio output).'
-      },
-      {
-        title: 'Gerarchia CLAUDE.md',
-        body:  'User (~/.claude/CLAUDE.md) → Project (.claude/CLAUDE.md) → Directory (sottodirectory CLAUDE.md). Ogni livello aggiunge contesto. @import referenzia file esterni per la modularità.'
-      },
-      {
-        title: 'Comandi Personalizzati',
-        body:  'Comandi condivisi del team: .claude/commands/ (version controlled). Comandi personali: ~/.claude/commands/. Invocati come /nome-comando in chat.'
-      },
-      {
-        title: 'Skills & SKILL.md',
-        body:  'Archiviati in .claude/skills/. Tre proprietà frontmatter critiche: (1) context:fork — esegue la skill in un contesto sub-agent isolato, impedendo che l\'output verboso inquini la conversazione principale; usalo per skill che generano output lungo. (2) allowed-tools — limita quali tool la skill può usare, delimitando i permessi. (3) argument-hint — mostra un prompt all\'utente quando la skill viene invocata senza un argomento richiesto, invece di fallire silenziosamente. Quando una skill genera 500 righe di output e intasa il contesto principale, la soluzione è context:fork.'
-      },
-      {
-        title: 'Regole Path-Specifiche',
-        body:  'Directory .claude/rules/ con YAML frontmatter paths: [\'**/*.py\']. Attiva le regole SOLO per i file corrispondenti in TUTTE le directory — più preciso del CLAUDE.md di directory.'
-      },
-      {
-        title: 'Plan Mode vs Diretto',
-        body:  'Plan mode: modifiche architetturali multi-file complesse, approcci multipli validi. Diretto: modifiche semplici e delimitate, bug fix su file singolo. Scegli in base alla complessità del task.'
-      },
-      {
-        title: 'Integrazione CI/CD',
-        body:  'Flag -p / --print per la modalità non-interattiva. --output-format json per output strutturato della pipeline. Usa una sessione SEPARATA per la code review (la sessione generante ha bias cognitivo).'
-      },
-      {
-        title: 'Gestione delle Sessioni',
-        body:  '--resume <nome> continua sessioni con nome. Per sessioni lunghe interrotte: fresh start con sommario strutturato + modifiche specifiche ai file è più affidabile della ripresa del contesto stale.'
-      },
-      {
-        title: '@import & Modularità',
-        body:  '@import in CLAUDE.md referenzia file esterni. Abilita standard per-package nei monorepo. Mantiene il CLAUDE.md root conciso estraendo il contesto rilevante.'
-      }
-    ],
 
     frameworkEn:
       'Simple scoped change?           →  Direct execution\n' +
@@ -3401,13 +3155,6 @@ const DOMAIN_DATA = {
       'Shared team tooling?            →  .claude/commands/\n' +
       'Personal tooling?               →  ~/.claude/commands/\n' +
       'CI pipeline?                    →  -p flag + separate review session',
-
-    frameworkIt:
-      'Modifica semplice e delimitata?     →  Esecuzione diretta\n' +
-      'Complessa multi-file + design?      →  Plan mode\n' +
-      'Tool condivisi del team?            →  .claude/commands/\n' +
-      'Tool personali?                     →  ~/.claude/commands/\n' +
-      'Pipeline CI?                        →  flag -p + sessione di review separata',
 
     trapsEn: [
       'Using ~/.claude/commands/ for team commands (not version controlled — teammates won\'t have them)',
@@ -3417,13 +3164,6 @@ const DOMAIN_DATA = {
       'Resuming a very long stale session instead of fresh start with structured summary'
     ],
 
-    trapsIt: [
-      'Usare ~/.claude/commands/ per i comandi del team (non version controlled — i colleghi non li avranno)',
-      'Eseguire generazione del codice e review nella STESSA sessione CI (la sessione generante ha bias di ragionamento)',
-      'Aggiungere regole solo-Python al CLAUDE.md root (si carica per TUTTI i file, spreca token)',
-      'Dimenticare il flag -p nella pipeline CI (Claude Code chiede in modo interattivo, bloccando la pipeline)',
-      'Riprendere una sessione stale molto lunga invece di un fresh start con sommario strutturato'
-    ],
 
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" overflow="hidden">
   <defs>
@@ -3460,7 +3200,6 @@ const DOMAIN_DATA = {
   /* ───────────── D4 ───────────── */
   d4: {
     titleEn: 'Prompt Engineering',
-    titleIt: 'Prompt Engineering',
     weight:  '20%',
     color:   '#fb923c',
 
@@ -3515,56 +3254,6 @@ const DOMAIN_DATA = {
       }
     ],
 
-    conceptsIt: [
-      {
-        title: 'Cos\'è un System Prompt? (Inizia qui)',
-        body:  'Un system prompt è un blocco di istruzioni inviato a Claude prima che la conversazione inizi — imposta la persona, le regole e le capacità per l\'intera sessione. A differenza dei messaggi utente, il system prompt è invisibile all\'utente finale. Esempio: "Sei un agente di assistenza clienti. Discuti solo di resi prodotto. Sii sempre cortese." Le istruzioni nel prompt sono probabilistiche — Claude le segue solitamente, ma con un tasso di fallimento non nullo (usa hook per regole a zero-tolleranza).'
-      },
-      {
-        title: 'Cosa sono gli esempi Few-Shot?',
-        body:  'Few-shot significa fornire 2–4 coppie esempio input→output nel prompt per mostrare a Claude esattamente il formato o il ragionamento desiderato. Zero-shot = nessun esempio; one-shot = un esempio; few-shot = 2–4 esempi. Più di 4 aggiunge overhead di token con rendimenti decrescenti. Il few-shot è particolarmente efficace per insegnare a Claude come gestire casi limite o input ambigui in modo coerente.'
-      },
-      {
-        title: 'Cos\'è un JSON Schema?',
-        body:  'Uno schema JSON è una specifica che definisce la struttura esatta, i nomi dei campi, i tipi e i vincoli che un oggetto JSON deve soddisfare. Quando Claude usa tool_use con uno schema, genera output che corrisponde a quella struttura. La modalità strict elimina gli errori di sintassi (tipi errati, campi richiesti mancanti) ma non può prevenire gli errori semantici (un valore plausibile ma sbagliato).'
-      },
-      {
-        title: 'Strategia di Output Strutturato',
-        body:  'tool_use + JSON schema + selezione forzata del tool = più affidabile. Lo schema strict elimina SOLO errori di sintassi — NON errori semantici (valori errati, campi sbagliati).'
-      },
-      {
-        title: 'Modalità tool_choice (vedi anche D2)',
-        body:  '\'auto\': il modello può restituire testo normale. \'any\': DEVE chiamare UN QUALSIASI tool. Forzato {type:\'tool\',name:\'x\'}: DEVE chiamare QUEL tool specifico. Usa forzato per conformità schema garantita. "auto" è il default — non usarlo quando è richiesto output strutturato.'
-      },
-      {
-        title: 'Campi Nullable',
-        body:  'Contrassegna i campi opzionali come nullable nello schema JSON. Previene le allucinazioni quando le informazioni sono assenti — il modello restituisce null invece di fabbricare un valore.'
-      },
-      {
-        title: 'Esempi Few-Shot',
-        body:  '2-4 esempi che mostrano il ragionamento per casi ambigui/limite = più efficace per formato coerente. Più esempi aggiungono overhead di token senza beneficio proporzionale.'
-      },
-      {
-        title: 'Retry-with-Error-Feedback',
-        body:  'Aggiungi errori di validazione specifici al prompt per il retry. INEFFICACE quando le informazioni sono semplicemente assenti dalla fonte — funziona solo per errori di formato/sintassi.'
-      },
-      {
-        title: 'Batch API',
-        body:  '50% di risparmio sui costi, la maggior parte dei batch finisce in meno di 1 ora (max 24h), NESSUN SLA garantito (asincrono). NON supporta ZDR (Zero Data Retention). Usa per: report notturni, audit settimanali, generazione test notturna (non-bloccante). NON per: controlli pre-merge, risposte in tempo reale o workflow bloccanti. Usa custom_id per correlare coppie richiesta/risposta batch.'
-      },
-      {
-        title: 'Review Multi-Pass',
-        body:  'Pass di analisi locale per-file (attenzione focalizzata) + pass di integrazione cross-file separato (problemi trasversali). Previene la diluizione dell\'attenzione su PR grandi.'
-      },
-      {
-        title: 'Limitazione dell\'Auto-Revisione',
-        body:  'La sessione generante mantiene il contesto di ragionamento — meno propensa a mettere in dubbio le proprie decisioni. Una sessione di review indipendente individua significativamente più problemi.'
-      },
-      {
-        title: 'Extended Thinking: Adattivo vs Manuale',
-        body:  'ADAPTIVE THINKING (Fable 5, Opus 4.8, Sonnet 5): Questi modelli NON supportano budget_tokens manuale — passare budget_tokens restituisce un errore 400. Usa "type":"adaptive" e controlla con effort:"low"|"medium"|"high". Claude decide autonomamente quando e quanto ragionare. Fable 5 usa sempre l\'adaptive thinking. BUDGET_TOKENS MANUALE (Haiku 4.5, Opus 4.5, Sonnet/Opus 4.6 e precedenti): Questi modelli supportano budget_tokens esplicito per impostare un budget di ragionamento token. VINCOLO IMPORTANTE: tool_choice "any" e tool_choice {type:"tool"} NON sono compatibili con l\'extended thinking — usa solo "auto" o "none".'
-      }
-    ],
 
     frameworkEn:
       'Need schema compliance?         →  forced tool_choice + JSON schema\n' +
@@ -3572,13 +3261,6 @@ const DOMAIN_DATA = {
       'Non-blocking batch work?        →  Batch API\n' +
       'Large PR review?                →  multi-pass\n' +
       'CI review?                      →  independent session',
-
-    frameworkIt:
-      'Conformità schema richiesta?    →  tool_choice forzato + JSON schema\n' +
-      'Campo opzionale assente?        →  campo nullable nello schema\n' +
-      'Lavoro batch non-bloccante?     →  Batch API\n' +
-      'Review di PR grande?            →  multi-pass\n' +
-      'Review in CI?                   →  sessione indipendente',
 
     trapsEn: [
       'Using Batch API for blocking workflows (pre-merge checks) — up to 24h latency is unacceptable',
@@ -3588,13 +3270,6 @@ const DOMAIN_DATA = {
       'Using 10+ few-shot examples thinking more is better (2-4 well-chosen is optimal)'
     ],
 
-    trapsIt: [
-      'Usare la Batch API per workflow bloccanti (controlli pre-merge) — latenza fino a 24h è inaccettabile',
-      'Pensare che lo schema JSON strict prevenga errori semantici (previene solo errori di sintassi)',
-      'Fare retry con error feedback quando i dati sono assenti dalla fonte (il retry non può creare dati)',
-      'Usare la stessa sessione che ha generato il codice per revisionarlo (bias di ancoraggio cognitivo)',
-      'Usare 10+ esempi few-shot pensando che più sia meglio (2-4 ben scelti è ottimale)'
-    ],
 
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" overflow="hidden">
   <defs>
@@ -3641,7 +3316,6 @@ const DOMAIN_DATA = {
   /* ───────────── D5 ───────────── */
   d5: {
     titleEn: 'Context Management',
-    titleIt: 'Gestione del Contesto',
     weight:  '15%',
     color:   '#e879f9',
 
@@ -3684,56 +3358,12 @@ const DOMAIN_DATA = {
       }
     ],
 
-    conceptsIt: [
-      {
-        title: 'Effetto Lost-in-Middle',
-        body:  'Inizio e FINE del contesto elaborati in modo affidabile. Il MEZZO è de-prioritizzato. Posiziona le informazioni critiche all\'INIZIO con intestazioni di sezione esplicite.'
-      },
-      {
-        title: 'Case Facts Block',
-        body:  'Fatti strutturati persistenti (importi, date, ID, numeri caso) mantenuti in CIMA al contesto. Aggiornati dopo ogni tool call rilevante. Previene la degradazione del contesto.'
-      },
-      {
-        title: 'Trigger di Escalation',
-        body:  'Escalation quando: il cliente richiede esplicitamente un umano, esiste un gap/eccezione di policy, nessun progresso significativo possibile. NON basato su sentiment o complessità da soli.'
-      },
-      {
-        title: 'Corrispondenze Multiple di Clienti',
-        body:  'Quando la ricerca restituisce più corrispondenze: richiedi identificatori aggiuntivi (num. account, email, data di nascita). NON usare selezione euristica — rischio di elaborare il cliente sbagliato.'
-      },
-      {
-        title: 'Contesto di Errore Strutturato',
-        body:  'La risposta di errore deve includere: tipo di errore + query tentata + risultati parziali + approcci alternativi. Consente il recupero intelligente del coordinator.'
-      },
-      {
-        title: 'Compressione del Contesto',
-        body:  '/compact riduce il contesto nelle sessioni estese. I file scratchpad persistono i risultati chiave attraverso i confini del contesto. Usa subagent per indagini specifiche.'
-      },
-      {
-        title: 'Trappola dell\'Accuratezza Aggregata',
-        body:  'Un\'accuratezza complessiva del 97% può nascondere un\'accuratezza del 60% su tipi di documento specifici. Valida per tipo di documento E campo. Usa campionamento casuale stratificato.'
-      },
-      {
-        title: 'Attribuzione della Fonte',
-        body:  'Nella sintesi multi-agent: preserva le mappature affermazione-fonte. Annota le statistiche conflittuali con l\'attribuzione della fonte — NON selezionare arbitrariamente un valore.'
-      },
-      {
-        title: 'Modelli Claude Attuali & Finestre di Contesto',
-        body:  'Lineup modelli (2026): Fable 5 (claude-fable-5) — contesto 1M, output 128k, $10/$50 per MTok in/out, sempre adaptive thinking; Opus 4.8 (claude-opus-4-8) — contesto 1M, output 128k, $5/$25 per MTok; Sonnet 5 (claude-sonnet-5) — contesto 1M, output 128k, $3/$15 per MTok; Haiku 4.5 (claude-haiku-4-5) — contesto 200k, output 64k, $1/$5 per MTok. Fable 5, Opus 4.8, Sonnet 5 usano adaptive thinking (no budget_tokens manuale). Haiku 4.5 e modelli precedenti supportano budget_tokens manuale. La dimensione della finestra di contesto influisce su: quanta cronologia conversazionale entra, limiti lunghezza documenti e profondità ciclo agente multi-turno.'
-      }
-    ],
 
     frameworkEn:
       'Critical info?                  →  place at START of context\n' +
       'Extended session degrading?     →  /compact + scratchpad files\n' +
       'Multiple matches?               →  request more identifiers\n' +
       'Sentiment-based escalation?     →  NO, use explicit triggers',
-
-    frameworkIt:
-      'Info critica?                       →  posiziona all\'INIZIO del contesto\n' +
-      'Sessione estesa che degrada?        →  /compact + file scratchpad\n' +
-      'Corrispondenze multiple?            →  richiedi più identificatori\n' +
-      'Escalation basata sul sentiment?    →  NO, usa trigger espliciti',
 
     trapsEn: [
       'Placing critical findings in the MIDDLE of aggregated documents (lost-in-middle effect)',
@@ -3743,13 +3373,6 @@ const DOMAIN_DATA = {
       'Resuming very long context without /compact (model references outdated earlier states)'
     ],
 
-    trapsIt: [
-      'Posizionare i risultati critici nel MEZZO dei documenti aggregati (effetto lost-in-middle)',
-      'Fare escalation in base al sentiment del cliente (proxy inaffidabile per la complessità reale)',
-      'Usare la selezione euristica quando più record cliente corrispondono (rischio cliente sbagliato)',
-      'Fidarsi del 97% di accuratezza aggregata senza controllare le prestazioni per tipo di documento',
-      'Riprendere un contesto molto lungo senza /compact (il modello referenzia stati precedenti obsoleti)'
-    ],
 
     svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" overflow="hidden">
   <!-- Background -->
@@ -3782,145 +3405,145 @@ const DOMAIN_DATA = {
 }; // closes DOMAIN_DATA
 
 const FLASHCARD_DATA = [
-  {d:1, qEn:"What happens when stop_reason='tool_use'?", qIt:"Cosa succede quando stop_reason='tool_use'?", aEn:"Execute the tool, append result to conversation history, loop back", aIt:"Esegui il tool, aggiungi il risultato alla cronologia, torna al ciclo"},
-  {d:1, qEn:"What happens when stop_reason='end_turn'?", qIt:"Cosa succede quando stop_reason='end_turn'?", aEn:"Present response to user — loop terminates", aIt:"Presenta la risposta all'utente — il ciclo termina"},
-  {d:1, qEn:"What does PostToolUse hook do?", qIt:"Cosa fa il hook PostToolUse?", aEn:"Fires AFTER tool execution; intercepts results before the model processes them — use for audit logging and result transformation. To BLOCK tool execution before it runs, use PreToolUse.", aIt:"Si attiva DOPO l'esecuzione del tool; intercetta i risultati prima che il modello li elabori — usare per audit logging e trasformazione risultati. Per BLOCCARE l'esecuzione del tool prima che giri, usare PreToolUse."},
-  {d:1, qEn:"Hooks vs prompts: which gives deterministic compliance?", qIt:"Hook vs prompt: quale garantisce conformità deterministica?", aEn:"Hooks are deterministic; prompt instructions are probabilistic", aIt:"I hook sono deterministici; le istruzioni nel prompt sono probabilistiche"},
-  {d:1, qEn:"What must allowedTools contain for coordinator to spawn subagents?", qIt:"Cosa deve contenere allowedTools per il coordinator per creare subagent?", aEn:"The 'Task' tool", aIt:"Il tool 'Task'"},
-  {d:1, qEn:"Do subagents automatically inherit coordinator context?", qIt:"I subagent ereditano automaticamente il contesto del coordinator?", aEn:"NO — context must be explicitly provided in the subagent prompt", aIt:"NO — il contesto deve essere fornito esplicitamente nel prompt del subagent"},
-  {d:1, qEn:"What are the coordinator's 4 responsibilities?", qIt:"Quali sono le 4 responsabilità del coordinator?", aEn:"Task decomposition, delegation, result aggregation, routing decisions", aIt:"Scomposizione task, delega, aggregazione risultati, decisioni di routing"},
-  {d:1, qEn:"What does fork_session create?", qIt:"Cosa crea fork_session?", aEn:"Independent parallel exploration branches from a shared baseline", aIt:"Branch di esplorazione parallela indipendenti da una baseline comune"},
-  {d:1, qEn:"Anti-pattern: how NOT to detect loop termination?", qIt:"Anti-pattern: come NON rilevare la terminazione del ciclo?", aEn:"Never parse assistant text for phrases like 'I've completed the task' — always check stop_reason", aIt:"Non analizzare il testo dell'assistente per frasi come 'Ho completato' — controlla sempre stop_reason"},
-  {d:1, qEn:"When to use hooks instead of prompt instructions?", qIt:"Quando usare hook invece di istruzioni nel prompt?", aEn:"When deterministic compliance is required (financial operations, identity verification)", aIt:"Quando è richiesta conformità deterministica (operazioni finanziarie, verifica identità)"},
-  {d:1, qEn:"Prompt chaining vs dynamic adaptive — when to use chaining?", qIt:"Prompt chaining vs dynamic adaptive — quando usare chaining?", aEn:"Fixed, predictable multi-step reviews with known structure", aIt:"Revisioni multi-step fisse e prevedibili con struttura nota"},
-  {d:1, qEn:"What does AgentDefinition configure?", qIt:"Cosa configura AgentDefinition?", aEn:"Descriptions, system prompts, and tool restrictions per subagent type", aIt:"Descrizioni, system prompt e restrizioni tool per tipo di subagent"},
-  {d:1, qEn:"Fresh summary vs --resume with stale context — which is more reliable?", qIt:"Sommario fresco vs --resume con contesto stale — quale è più affidabile?", aEn:"Fresh start with structured summary + specific file changes mentioned", aIt:"Fresh start con sommario strutturato + modifiche specifiche ai file menzionate"},
-  {d:1, qEn:"What structured info should an escalation handoff include?", qIt:"Quali info strutturate deve includere un handoff di escalation?", aEn:"Customer ID, root cause, amounts involved, recommended action", aIt:"ID cliente, causa radice, importi coinvolti, azione raccomandata"},
-  {d:1, qEn:"In hub-and-spoke, who manages inter-subagent communication?", qIt:"Nell'hub-and-spoke, chi gestisce la comunicazione tra subagent?", aEn:"The coordinator — subagents NEVER communicate directly", aIt:"Il coordinator — i subagent NON comunicano mai direttamente"},
-  {d:1, qEn:"What is the hub-and-spoke multi-agent pattern?", qIt:"Cos'è il pattern multi-agent hub-and-spoke?", aEn:"Coordinator manages ALL inter-subagent communication centrally", aIt:"Il coordinator gestisce TUTTA la comunicazione tra subagent centralmente"},
-  {d:1, qEn:"Risk of overly narrow task decomposition?", qIt:"Rischio di una scomposizione dei task troppo ristretta?", aEn:"Incomplete coverage — e.g., 'creative industries' decomposed only as visual arts", aIt:"Copertura incompleta — es. 'industrie creative' scomposta solo come arti visive"},
-  {d:1, qEn:"What does --resume <session-name> do in Claude Code?", qIt:"Cosa fa --resume <session-name> in Claude Code?", aEn:"Continues a previously named session with its accumulated context", aIt:"Continua una sessione nominata precedentemente con il suo contesto accumulato"},
-  {d:1, qEn:"When is dynamic adaptive decomposition better than prompt chaining?", qIt:"Quando è meglio la decomposizione dynamic adaptive rispetto al prompt chaining?", aEn:"Open-ended investigation tasks where structure isn't known in advance", aIt:"Task di indagine open-ended dove la struttura non è nota in anticipo"},
-  {d:1, qEn:"What is 'attention dilution' in code review?", qIt:"Cos'è la 'attention dilution' nella code review?", aEn:"Processing too many files at once produces inconsistent, contradictory feedback", aIt:"Elaborare troppi file contemporaneamente produce feedback inconsistente e contraddittorio"},
-  {d:1, qEn:"Is LLM self-reported confidence (1–10) a reliable routing signal?", qIt:"La confidenza auto-riportata dall'LLM (1–10) è un segnale di routing affidabile?", aEn:"NO — LLMs are poorly calibrated; self-scored confidence is inconsistent and unreliable. Use explicit categorical criteria instead.", aIt:"NO — gli LLM sono poco calibrati; la confidenza auto-valutata è inconsistente e inaffidabile. Usa criteri categorici espliciti."},
-  {d:1, qEn:"Agent escalates routine cases and attempts complex exceptions — root cause?", qIt:"L'agente scala i casi di routine e gestisce le eccezioni complesse — causa principale?", aEn:"Unclear decision boundaries in the prompt. Fix: add explicit escalation criteria + few-shot examples showing the correct decision for edge cases.", aIt:"Confini decisionali poco chiari nel prompt. Soluzione: aggiungi criteri di escalation espliciti + esempi few-shot che mostrano la decisione corretta per i casi limite."},
-  {d:1, qEn:"All 7 stop_reason values — list them?", qIt:"Tutti i 7 valori stop_reason — elencali?", aEn:"end_turn (completed), tool_use (wants tool), max_tokens (truncated), stop_sequence (stop hit), refusal (refused), pause_turn (server loop limit — resend), model_context_window_exceeded (context full, 4.5+ only)", aIt:"end_turn (completata), tool_use (vuole tool), max_tokens (troncata), stop_sequence (stop incontrata), refusal (rifiutata), pause_turn (limite loop server — reinvia), model_context_window_exceeded (contesto pieno, solo 4.5+)"},
-  {d:1, qEn:"stop_reason 'pause_turn' — what does it mean?", qIt:"stop_reason 'pause_turn' — cosa significa?", aEn:"Server-side tool loop reached iteration limit. Unlike end_turn, the conversation is not complete — you must resend the request to continue.", aIt:"Il loop dei tool lato server ha raggiunto il limite di iterazioni. A differenza di end_turn, la conversazione non è completa — devi reinviare la richiesta per continuare."},
-  {d:2, qEn:"Primary mechanism LLMs use for tool selection?", qIt:"Meccanismo primario che gli LLM usano per la selezione dei tool?", aEn:"Tool descriptions — always improve these first", aIt:"Le descrizioni dei tool — migliorale sempre per prime"},
-  {d:2, qEn:"First fix when tools are being confused?", qIt:"Prima correzione quando i tool vengono confusi?", aEn:"Expand descriptions with input formats, examples, boundaries vs similar tools", aIt:"Espandi le descrizioni con formati di input, esempi, confini rispetto a tool simili"},
-  {d:2, qEn:"3 fields a structured error response must include?", qIt:"3 campi che una risposta di errore strutturata deve includere?", aEn:"isRetryable (bool) + errorCategory + human-readable description", aIt:"isRetryable (bool) + errorCategory + descrizione leggibile dall'uomo"},
-  {d:2, qEn:"4 error categories and their isRetryable value?", qIt:"4 categorie di errore e il loro valore isRetryable?", aEn:"Transient: true | Validation: true (corrected input) | Business: false (needs state change) | Permission: false (needs privilege change)", aIt:"Transient: true | Validation: true (input corretto) | Business: false (serve cambio stato) | Permission: false (serve cambio privilegi)"},
-  {d:2, qEn:"tool_choice 'auto' — what can happen?", qIt:"tool_choice 'auto' — cosa può succedere?", aEn:"Model may return plain text instead of calling any tool", aIt:"Il modello può restituire testo normale invece di chiamare qualsiasi tool"},
-  {d:2, qEn:"tool_choice 'any' — what does it guarantee?", qIt:"tool_choice 'any' — cosa garantisce?", aEn:"Model MUST call a tool (guarantees structured output)", aIt:"Il modello DEVE chiamare un tool (garantisce output strutturato)"},
-  {d:2, qEn:"How do you force a specific tool call?", qIt:"Come si forza la chiamata a un tool specifico?", aEn:"{type:'tool', name:'extract_data'} — model MUST call that exact tool", aIt:"{type:'tool', name:'extract_data'} — il modello DEVE chiamare esattamente quel tool"},
-  {d:2, qEn:"Project-level MCP config file?", qIt:"File di config MCP a livello di progetto?", aEn:".mcp.json (version controlled, shared with team)", aIt:".mcp.json (version controlled, condiviso con il team)"},
-  {d:2, qEn:"User-level MCP config file?", qIt:"File di config MCP a livello utente?", aEn:"~/.claude.json (personal, not version controlled)", aIt:"~/.claude.json (personale, non version controlled)"},
-  {d:2, qEn:"Why limit agent tools to 4-5?", qIt:"Perché limitare i tool degli agent a 4-5?", aEn:"More than 4-5 tools degrades selection reliability", aIt:"Più di 4-5 tool degrada l'affidabilità della selezione"},
-  {d:2, qEn:"Grep vs Glob — difference?", qIt:"Grep vs Glob — differenza?", aEn:"Grep = content search; Glob = file path pattern matching", aIt:"Grep = ricerca contenuto; Glob = pattern matching sui percorsi file"},
-  {d:2, qEn:"When does Edit fall back to Read+Write?", qIt:"Quando Edit ricade su Read+Write?", aEn:"When text match is not unique in the file", aIt:"Quando la corrispondenza del testo non è univoca nel file"},
-  {d:2, qEn:"What should tool descriptions include beyond a short label?", qIt:"Cosa devono includere le descrizioni dei tool oltre a un breve label?", aEn:"Input formats, example queries, edge cases, when to use vs similar alternatives", aIt:"Formati di input, query di esempio, casi limite, quando usarlo vs alternative simili"},
-  {d:2, qEn:"Difference: access failure vs valid empty result?", qIt:"Differenza: errore di accesso vs risultato vuoto valido?", aEn:"Access failure needs retry; empty result = successful query with no matches", aIt:"Errore di accesso necessita retry; risultato vuoto = query riuscita senza corrispondenze"},
-  {d:2, qEn:"What are MCP resources (vs tools)?", qIt:"Cosa sono le MCP resources (vs tool)?", aEn:"Content catalogs (issue summaries, schemas) that reduce exploratory tool calls", aIt:"Cataloghi di contenuto (sommari issue, schemi) che riducono le chiamate esplorative ai tool"},
-  {d:2, qEn:"Client tools vs server tools — key difference?", qIt:"Tool client vs tool server — differenza chiave?", aEn:"Client tools: your code executes them, Claude responds with stop_reason:'tool_use'. Server tools (web_search, code_execution etc.): Anthropic executes them, Claude responds with stop_reason:'end_turn' or 'pause_turn'", aIt:"Tool client: il tuo codice li esegue, Claude risponde con stop_reason:'tool_use'. Tool server (web_search, code_execution ecc.): Anthropic li esegue, Claude risponde con stop_reason:'end_turn' o 'pause_turn'"},
-  {d:2, qEn:"MCP API beta header (current version)?", qIt:"Beta header API MCP (versione corrente)?", aEn:"anthropic-beta: mcp-client-2025-11-20 (old 2025-04-04 is deprecated). tools array uses type:'mcp_toolset' + mcp_server_name", aIt:"anthropic-beta: mcp-client-2025-11-20 (il vecchio 2025-04-04 è deprecato). L'array tools usa type:'mcp_toolset' + mcp_server_name"},
-  {d:2, qEn:"Prompt caching — cache read vs write cost?", qIt:"Prompt caching — costo read vs write cache?", aEn:"Write: 1.25x base (5-min TTL) or 2x base (1-hour TTL). Read: 0.1x base = 90% savings. Max 4 breakpoints.", aIt:"Write: 1.25x base (TTL 5 min) o 2x base (TTL 1 ora). Read: 0.1x base = risparmio 90%. Max 4 breakpoint."},
-  {d:2, qEn:"Minimum tokens to use prompt caching — Haiku 4.5?", qIt:"Token minimi per il prompt caching — Haiku 4.5?", aEn:"4096 tokens (same as Opus 4.6/4.5). Fable5: 512. Opus4.8/Sonnet5/Sonnet4.6: 1024.", aIt:"4096 token (uguale a Opus 4.6/4.5). Fable5: 512. Opus4.8/Sonnet5/Sonnet4.6: 1024."},
-  {d:3, qEn:"3 levels of CLAUDE.md hierarchy?", qIt:"3 livelli della gerarchia CLAUDE.md?", aEn:"User (~/.claude/CLAUDE.md), Project (.claude/CLAUDE.md), Directory (subdirectory)", aIt:"User (~/.claude/CLAUDE.md), Project (.claude/CLAUDE.md), Directory (sottodirectory)"},
-  {d:3, qEn:"Shared team slash commands — where to create?", qIt:"Slash command condivisi del team — dove crearli?", aEn:".claude/commands/ (version controlled, shared automatically)", aIt:".claude/commands/ (version controlled, condivisi automaticamente)"},
-  {d:3, qEn:"Personal slash commands — where?", qIt:"Slash command personali — dove?", aEn:"~/.claude/commands/ (not version controlled)", aIt:"~/.claude/commands/ (non version controlled)"},
-  {d:3, qEn:"context:fork in SKILL.md — what does it do?", qIt:"context:fork in SKILL.md — cosa fa?", aEn:"Runs the skill in an isolated sub-agent, prevents context pollution", aIt:"Esegue lo skill in un sub-agent isolato, previene la contaminazione del contesto"},
-  {d:3, qEn:"When to use plan mode?", qIt:"Quando usare la modalità plan?", aEn:"Complex tasks: large-scale changes, multiple valid approaches, multi-file architectural decisions", aIt:"Task complessi: modifiche su larga scala, approcci multipli validi, decisioni architetturali multi-file"},
-  {d:3, qEn:"CI/CD non-interactive mode flag?", qIt:"Flag modalità non-interattiva CI/CD?", aEn:"-p or --print", aIt:"-p o --print"},
-  {d:3, qEn:"Why use a different session for code review in CI?", qIt:"Perché usare una sessione diversa per code review in CI?", aEn:"Generating session retains reasoning context and is less likely to catch its own errors", aIt:"La sessione generante mantiene il contesto di ragionamento ed è meno propensa a rilevare i propri errori"},
-  {d:3, qEn:"@import in CLAUDE.md — purpose?", qIt:"@import in CLAUDE.md — scopo?", aEn:"References external files to keep CLAUDE.md modular (e.g., per-package standards)", aIt:"Referenzia file esterni per mantenere CLAUDE.md modulare (es. standard per-package)"},
-  {d:3, qEn:"Path-specific rules advantage over directory CLAUDE.md?", qIt:"Vantaggio delle regole path-specific rispetto al CLAUDE.md di directory?", aEn:"Glob patterns target files by type ACROSS ALL directories (e.g., **/*.test.tsx)", aIt:"I pattern glob targettano file per tipo IN TUTTE le directory (es. **/*.test.tsx)"},
-  {d:3, qEn:".claude/rules/ directory — what goes there?", qIt:"Directory .claude/rules/ — cosa ci va?", aEn:"Topic-specific rule files with YAML frontmatter paths: fields for conditional activation", aIt:"File di regole specifici per argomento con YAML frontmatter paths: per attivazione condizionale"},
-  {d:3, qEn:"argument-hint in SKILL.md — purpose?", qIt:"argument-hint in SKILL.md — scopo?", aEn:"Prompts user for required parameters when skill is invoked without arguments", aIt:"Chiede all'utente i parametri richiesti quando lo skill viene invocato senza argomenti"},
-  {d:3, qEn:"allowed-tools in SKILL.md — purpose?", qIt:"allowed-tools in SKILL.md — scopo?", aEn:"Restricts which tools are accessible during skill execution", aIt:"Limita quali tool sono accessibili durante l'esecuzione dello skill"},
-  {d:3, qEn:"--output-format json in CI — when to use?", qIt:"--output-format json in CI — quando usarlo?", aEn:"When pipeline needs structured machine-readable output", aIt:"Quando la pipeline necessita output strutturato leggibile dalla macchina"},
-  {d:3, qEn:"Direct execution vs plan mode — when to use direct?", qIt:"Esecuzione diretta vs plan mode — quando usare diretto?", aEn:"Simple, well-scoped changes: single-file bug fix, adding a validation check", aIt:"Modifiche semplici e delimitate: bug fix su file singolo, aggiunta di una validazione"},
-  {d:3, qEn:"What does CLAUDE.md provide to CI-invoked Claude Code?", qIt:"Cosa fornisce CLAUDE.md a Claude Code invocato in CI?", aEn:"Project context: testing standards, review criteria, coding conventions", aIt:"Contesto del progetto: standard di test, criteri di review, convenzioni di codifica"},
-  {d:3, qEn:"Interview pattern in Claude Code — what is it?", qIt:"Pattern interview in Claude Code — cos'è?", aEn:"Claude asks questions to surface considerations the developer may not have anticipated", aIt:"Claude fa domande per far emergere considerazioni che lo sviluppatore potrebbe non aver anticipato"},
-  {d:3, qEn:"Test-driven iteration with Claude Code?", qIt:"Iterazione test-driven con Claude Code?", aEn:"Write test suites first, then iterate by sharing test failures", aIt:"Scrivi prima le suite di test, poi itera condividendo i fallimenti dei test"},
-  {d:3, qEn:"What does --add-dir flag do?", qIt:"Cosa fa il flag --add-dir?", aEn:"Adds an additional directory to Claude Code's working context", aIt:"Aggiunge una directory aggiuntiva al contesto di lavoro di Claude Code"},
-  {d:4, qEn:"Most reliable approach for schema-compliant structured output?", qIt:"Approccio più affidabile per output strutturato conforme allo schema?", aEn:"tool_use with JSON schema + forced tool selection", aIt:"tool_use con JSON schema + selezione forzata del tool"},
-  {d:4, qEn:"What does strict JSON schema eliminate?", qIt:"Cosa elimina uno schema JSON strict?", aEn:"Syntax errors ONLY — not semantic errors (wrong values, misplaced fields)", aIt:"Solo errori di SINTASSI — non errori semantici (valori errati, campi sbagliati)"},
-  {d:4, qEn:"Most effective technique for consistently formatted output?", qIt:"Tecnica più efficace per output formattato in modo coerente?", aEn:"Few-shot examples (2-4) that show reasoning for each choice", aIt:"Esempi few-shot (2-4) che mostrano il ragionamento per ogni scelta"},
-  {d:4, qEn:"Batch API cost savings?", qIt:"Risparmio di costo dell'API Batch?", aEn:"50% cost reduction vs standard API. Most batches complete in under 1 hour (max 24h). Does NOT support ZDR (Zero Data Retention).", aIt:"Riduzione del 50% dei costi rispetto all'API standard. La maggior parte dei batch finisce in meno di 1 ora (max 24h). NON supporta ZDR (Zero Data Retention)."},
-  {d:4, qEn:"Batch API maximum processing time?", qIt:"Tempo massimo di elaborazione dell'API Batch?", aEn:"Up to 24 hours — no guaranteed latency SLA. No ZDR support.", aIt:"Fino a 24 ore — nessun SLA di latenza garantito. Nessun supporto ZDR."},
-  {d:4, qEn:"Adaptive thinking vs manual budget_tokens — which models use which?", qIt:"Adaptive thinking vs budget_tokens manuale — quali modelli usano quale?", aEn:"Adaptive (type:'adaptive', effort:'low|medium|high'): Fable 5, Opus 4.8, Sonnet 5 — NO budget_tokens (400 error). Manual budget_tokens: Haiku 4.5, Opus 4.5, Sonnet/Opus 4.6 and older.", aIt:"Adaptive (type:'adaptive', effort:'low|medium|high'): Fable 5, Opus 4.8, Sonnet 5 — NO budget_tokens (errore 400). budget_tokens manuale: Haiku 4.5, Opus 4.5, Sonnet/Opus 4.6 e precedenti."},
-  {d:4, qEn:"tool_choice limitation with extended thinking?", qIt:"Limitazione di tool_choice con extended thinking?", aEn:"tool_choice 'any' and forced {type:'tool'} are NOT compatible with extended thinking. Only 'auto' or 'none' are allowed.", aIt:"tool_choice 'any' e forced {type:'tool'} NON sono compatibili con extended thinking. Sono consentiti solo 'auto' o 'none'."},
-  {d:4, qEn:"Batch API — appropriate use case?", qIt:"API Batch — caso d'uso appropriato?", aEn:"Non-blocking, latency-tolerant: overnight reports, weekly audits, nightly test gen", aIt:"Non-bloccante, tollerante alla latenza: report notturni, audit settimanali, generazione test notturna"},
-  {d:4, qEn:"Batch API — NOT appropriate for?", qIt:"API Batch — NON appropriata per?", aEn:"Blocking workflows where developers wait: pre-merge checks, real-time responses", aIt:"Workflow bloccanti dove gli sviluppatori aspettano: controlli pre-merge, risposte in tempo reale"},
-  {d:4, qEn:"Why use nullable fields in JSON schema?", qIt:"Perché usare campi nullable nello schema JSON?", aEn:"Prevents hallucination when info is absent from source document", aIt:"Previene l'allucinazione quando le informazioni sono assenti dal documento sorgente"},
-  {d:4, qEn:"Retry-with-error-feedback — when is it ineffective?", qIt:"Retry-with-error-feedback — quando è inefficace?", aEn:"When information is simply absent from the source document (not a format error)", aIt:"Quando le informazioni sono semplicemente assenti dal documento sorgente (non è un errore di formato)"},
-  {d:4, qEn:"Self-review limitation?", qIt:"Limitazione dell'auto-revisione?", aEn:"Generating session retains reasoning context — less likely to question its own decisions", aIt:"La sessione generante mantiene il contesto di ragionamento — meno propensa a mettere in dubbio le proprie decisioni"},
-  {d:4, qEn:"Multi-pass review strategy?", qIt:"Strategia di review multi-pass?", aEn:"Per-file local analysis passes + separate cross-file integration pass", aIt:"Pass di analisi locale per-file + pass di integrazione cross-file separato"},
-  {d:4, qEn:"Explicit criteria vs vague instructions for CI review?", qIt:"Criteri espliciti vs istruzioni vaghe per CI review?", aEn:"Explicit categorical criteria ('flag only X, skip Y') dramatically reduce false positives", aIt:"Criteri categorici espliciti ('segnala solo X, salta Y') riducono drasticamente i falsi positivi"},
-  {d:4, qEn:"How many few-shot examples for ambiguous case handling?", qIt:"Quanti esempi few-shot per la gestione di casi ambigui?", aEn:"2-4 examples that show reasoning for why one action was chosen over alternatives", aIt:"2-4 esempi che mostrano il ragionamento per cui un'azione è stata scelta rispetto alle alternative"},
-  {d:4, qEn:"custom_id in Batch API — purpose?", qIt:"custom_id nell'API Batch — scopo?", aEn:"Correlates batch request/response pairs so you can match results to inputs", aIt:"Correla le coppie richiesta/risposta batch per abbinare i risultati agli input"},
-  {d:4, qEn:"High false positive rate — what does it destroy?", qIt:"Alto tasso di falsi positivi — cosa distrugge?", aEn:"Developer trust — even in accurate categories, adjacent false positives erode trust", aIt:"La fiducia degli sviluppatori — anche nelle categorie accurate, i falsi positivi adiacenti erodono la fiducia"},
-  {d:4, qEn:"tool_choice 'any' vs forced — key difference?", qIt:"tool_choice 'any' vs forzato — differenza chiave?", aEn:"'any' = must call SOME tool; forced = must call THAT SPECIFIC tool", aIt:"'any' = deve chiamare UN QUALSIASI tool; forzato = deve chiamare QUEL SPECIFICO tool"},
-  {d:4, qEn:"When to use few-shot for extraction tasks?", qIt:"Quando usare few-shot per task di estrazione?", aEn:"When informal measurements or varied document structures cause hallucination", aIt:"Quando misurazioni informali o strutture documentali variate causano allucinazioni"},
-  {d:4, qEn:"Aggregate accuracy 97% — why is this misleading?", qIt:"Accuratezza aggregata 97% — perché è fuorviante?", aEn:"May mask poor performance on specific document types or fields", aIt:"Può mascherare prestazioni scarse su tipi di documento o campi specifici"},
-  {d:5, qEn:"Lost-in-middle effect — where is attention lowest?", qIt:"Effetto lost-in-middle — dove è più bassa l'attenzione?", aEn:"The MIDDLE of long inputs — beginning and end are processed reliably", aIt:"Il MEZZO degli input lunghi — inizio e fine vengono elaborati in modo affidabile"},
-  {d:5, qEn:"What is a 'case facts block'?", qIt:"Cos'è un 'case facts block'?", aEn:"Persistent structured facts (amounts, dates, IDs) kept at TOP of context", aIt:"Fatti strutturati persistenti (importi, date, ID) mantenuti in CIMA al contesto"},
-  {d:5, qEn:"Where to place key findings in aggregated inputs?", qIt:"Dove posizionare i risultati chiave negli input aggregati?", aEn:"At the BEGINNING with explicit section headers", aIt:"All'INIZIO con intestazioni di sezione esplicite"},
-  {d:5, qEn:"3 appropriate escalation triggers?", qIt:"3 trigger di escalation appropriati?", aEn:"Customer explicitly requests human, policy exception/gap exists, no meaningful progress possible", aIt:"Cliente richiede esplicitamente un umano, esiste un'eccezione/gap di policy, nessun progresso significativo possibile"},
-  {d:5, qEn:"Is sentiment-based escalation reliable?", qIt:"L'escalation basata sul sentiment è affidabile?", aEn:"NO — sentiment is an unreliable proxy for actual case complexity", aIt:"NO — il sentiment è un proxy inaffidabile per la complessità reale del caso"},
-  {d:5, qEn:"Multiple customer matches returned — what to do?", qIt:"Restituite più corrispondenze cliente — cosa fare?", aEn:"Request additional identifiers — do NOT use heuristic selection", aIt:"Richiedi identificatori aggiuntivi — NON usare la selezione euristica"},
-  {d:5, qEn:"Structured error context must include what?", qIt:"Il contesto di errore strutturato deve includere cosa?", aEn:"Failure type + attempted query + partial results + alternative approaches", aIt:"Tipo di errore + query tentata + risultati parziali + approcci alternativi"},
-  {d:5, qEn:"Access failure vs valid empty result — difference?", qIt:"Errore di accesso vs risultato vuoto valido — differenza?", aEn:"Access failure needs retry; empty result = successful query, no matches found", aIt:"Errore di accesso necessita retry; risultato vuoto = query riuscita, nessuna corrispondenza trovata"},
-  {d:5, qEn:"/compact command — what does it do?", qIt:"Comando /compact — cosa fa?", aEn:"Reduces context usage in extended exploration sessions", aIt:"Riduce l'utilizzo del contesto nelle sessioni di esplorazione estese"},
-  {d:5, qEn:"Scratchpad files — when to use?", qIt:"File scratchpad — quando usarli?", aEn:"To persist key findings across context boundaries in large codebase exploration", aIt:"Per persistere i risultati chiave attraverso i confini del contesto nell'esplorazione di grandi codebase"},
-  {d:5, qEn:"Aggregate accuracy 97% — why check per document type?", qIt:"Accuratezza aggregata 97% — perché controllare per tipo di documento?", aEn:"Aggregate hides poor performance on specific types; validate by document type AND field", aIt:"L'aggregato nasconde prestazioni scarse su tipi specifici; valida per tipo di documento E campo"},
-  {d:5, qEn:"Stratified random sampling — purpose?", qIt:"Campionamento casuale stratificato — scopo?", aEn:"Measure error rates in high-confidence extractions; detect novel error patterns", aIt:"Misurare i tassi di errore nelle estrazioni ad alta confidenza; rilevare nuovi pattern di errore"},
-  {d:5, qEn:"Source attribution requirement in multi-agent synthesis?", qIt:"Requisito di attribuzione della fonte nella sintesi multi-agent?", aEn:"Preserve claim-source mappings — don't compress without them", aIt:"Preserva le mappature affermazione-fonte — non comprimere senza di esse"},
-  {d:5, qEn:"Conflicting stats from credible sources — what to do?", qIt:"Statistiche conflittuali da fonti credibili — cosa fare?", aEn:"Annotate conflict with source attribution; do NOT arbitrarily select one value", aIt:"Annota il conflitto con l'attribuzione della fonte; NON selezionare arbitrariamente un valore"},
-  {d:5, qEn:"Context degradation symptom in extended sessions?", qIt:"Sintomo di degradazione del contesto in sessioni estese?", aEn:"Model references 'typical patterns' instead of specific data retrieved earlier", aIt:"Il modello riferisce 'pattern tipici' invece dei dati specifici recuperati in precedenza"},
-  {d:5, qEn:"Claude Haiku 4.5 context window size?", qIt:"Dimensione context window di Claude Haiku 4.5?", aEn:"200k tokens (64k max output). Price: $1/$5 per MTok in/out.", aIt:"200k token (output max 64k). Prezzo: $1/$5 per MTok in/out."},
-  {d:5, qEn:"Claude Fable 5 / Opus 4.8 / Sonnet 5 context window?", qIt:"Context window di Claude Fable 5 / Opus 4.8 / Sonnet 5?", aEn:"All have 1M tokens context, 128k max output. Fable5: $10/$50. Opus4.8: $5/$25. Sonnet5: $3/$15 per MTok in/out.", aIt:"Tutti hanno contesto 1M token, output max 128k. Fable5: $10/$50. Opus4.8: $5/$25. Sonnet5: $3/$15 per MTok in/out."},
+  {d:1, qEn:"What happens when stop_reason='tool_use'?", aEn:"Execute the tool, append result to conversation history, loop back"},
+  {d:1, qEn:"What happens when stop_reason='end_turn'?", aEn:"Present response to user — loop terminates"},
+  {d:1, qEn:"What does PostToolUse hook do?", aEn:"Fires AFTER tool execution; intercepts results before the model processes them — use for audit logging and result transformation. To BLOCK tool execution before it runs, use PreToolUse."},
+  {d:1, qEn:"Hooks vs prompts: which gives deterministic compliance?", aEn:"Hooks are deterministic; prompt instructions are probabilistic"},
+  {d:1, qEn:"What must allowedTools contain for coordinator to spawn subagents?", aEn:"The 'Task' tool"},
+  {d:1, qEn:"Do subagents automatically inherit coordinator context?", aEn:"NO — context must be explicitly provided in the subagent prompt"},
+  {d:1, qEn:"What are the coordinator's 4 responsibilities?", aEn:"Task decomposition, delegation, result aggregation, routing decisions"},
+  {d:1, qEn:"What does fork_session create?", aEn:"Independent parallel exploration branches from a shared baseline"},
+  {d:1, qEn:"Anti-pattern: how NOT to detect loop termination?", aEn:"Never parse assistant text for phrases like 'I've completed the task' — always check stop_reason"},
+  {d:1, qEn:"When to use hooks instead of prompt instructions?", aEn:"When deterministic compliance is required (financial operations, identity verification)"},
+  {d:1, qEn:"Prompt chaining vs dynamic adaptive — when to use chaining?", aEn:"Fixed, predictable multi-step reviews with known structure"},
+  {d:1, qEn:"What does AgentDefinition configure?", aEn:"Descriptions, system prompts, and tool restrictions per subagent type"},
+  {d:1, qEn:"Fresh summary vs --resume with stale context — which is more reliable?", aEn:"Fresh start with structured summary + specific file changes mentioned"},
+  {d:1, qEn:"What structured info should an escalation handoff include?", aEn:"Customer ID, root cause, amounts involved, recommended action"},
+  {d:1, qEn:"In hub-and-spoke, who manages inter-subagent communication?", aEn:"The coordinator — subagents NEVER communicate directly"},
+  {d:1, qEn:"What is the hub-and-spoke multi-agent pattern?", aEn:"Coordinator manages ALL inter-subagent communication centrally"},
+  {d:1, qEn:"Risk of overly narrow task decomposition?", aEn:"Incomplete coverage — e.g., 'creative industries' decomposed only as visual arts"},
+  {d:1, qEn:"What does --resume <session-name> do in Claude Code?", aEn:"Continues a previously named session with its accumulated context"},
+  {d:1, qEn:"When is dynamic adaptive decomposition better than prompt chaining?", aEn:"Open-ended investigation tasks where structure isn't known in advance"},
+  {d:1, qEn:"What is 'attention dilution' in code review?", aEn:"Processing too many files at once produces inconsistent, contradictory feedback"},
+  {d:1, qEn:"Is LLM self-reported confidence (1–10) a reliable routing signal?", aEn:"NO — LLMs are poorly calibrated; self-scored confidence is inconsistent and unreliable. Use explicit categorical criteria instead."},
+  {d:1, qEn:"Agent escalates routine cases and attempts complex exceptions — root cause?", aEn:"Unclear decision boundaries in the prompt. Fix: add explicit escalation criteria + few-shot examples showing the correct decision for edge cases."},
+  {d:1, qEn:"All 7 stop_reason values — list them?", aEn:"end_turn (completed), tool_use (wants tool), max_tokens (truncated), stop_sequence (stop hit), refusal (refused), pause_turn (server loop limit — resend), model_context_window_exceeded (context full, 4.5+ only)"},
+  {d:1, qEn:"stop_reason 'pause_turn' — what does it mean?", aEn:"Server-side tool loop reached iteration limit. Unlike end_turn, the conversation is not complete — you must resend the request to continue."},
+  {d:2, qEn:"Primary mechanism LLMs use for tool selection?", aEn:"Tool descriptions — always improve these first"},
+  {d:2, qEn:"First fix when tools are being confused?", aEn:"Expand descriptions with input formats, examples, boundaries vs similar tools"},
+  {d:2, qEn:"3 fields a structured error response must include?", aEn:"isRetryable (bool) + errorCategory + human-readable description"},
+  {d:2, qEn:"4 error categories and their isRetryable value?", aEn:"Transient: true | Validation: true (corrected input) | Business: false (needs state change) | Permission: false (needs privilege change)"},
+  {d:2, qEn:"tool_choice 'auto' — what can happen?", aEn:"Model may return plain text instead of calling any tool"},
+  {d:2, qEn:"tool_choice 'any' — what does it guarantee?", aEn:"Model MUST call a tool (guarantees structured output)"},
+  {d:2, qEn:"How do you force a specific tool call?", aEn:"{type:'tool', name:'extract_data'} — model MUST call that exact tool"},
+  {d:2, qEn:"Project-level MCP config file?", aEn:".mcp.json (version controlled, shared with team)"},
+  {d:2, qEn:"User-level MCP config file?", aEn:"~/.claude.json (personal, not version controlled)"},
+  {d:2, qEn:"Why limit agent tools to 4-5?", aEn:"More than 4-5 tools degrades selection reliability"},
+  {d:2, qEn:"Grep vs Glob — difference?", aEn:"Grep = content search; Glob = file path pattern matching"},
+  {d:2, qEn:"When does Edit fall back to Read+Write?", aEn:"When text match is not unique in the file"},
+  {d:2, qEn:"What should tool descriptions include beyond a short label?", aEn:"Input formats, example queries, edge cases, when to use vs similar alternatives"},
+  {d:2, qEn:"Difference: access failure vs valid empty result?", aEn:"Access failure needs retry; empty result = successful query with no matches"},
+  {d:2, qEn:"What are MCP resources (vs tools)?", aEn:"Content catalogs (issue summaries, schemas) that reduce exploratory tool calls"},
+  {d:2, qEn:"Client tools vs server tools — key difference?", aEn:"Client tools: your code executes them, Claude responds with stop_reason:'tool_use'. Server tools (web_search, code_execution etc.): Anthropic executes them, Claude responds with stop_reason:'end_turn' or 'pause_turn'"},
+  {d:2, qEn:"MCP API beta header (current version)?", aEn:"anthropic-beta: mcp-client-2025-11-20 (old 2025-04-04 is deprecated). tools array uses type:'mcp_toolset' + mcp_server_name"},
+  {d:2, qEn:"Prompt caching — cache read vs write cost?", aEn:"Write: 1.25x base (5-min TTL) or 2x base (1-hour TTL). Read: 0.1x base = 90% savings. Max 4 breakpoints."},
+  {d:2, qEn:"Minimum tokens to use prompt caching — Haiku 4.5?", aEn:"4096 tokens (same as Opus 4.6/4.5). Fable5: 512. Opus4.8/Sonnet5/Sonnet4.6: 1024."},
+  {d:3, qEn:"3 levels of CLAUDE.md hierarchy?", aEn:"User (~/.claude/CLAUDE.md), Project (.claude/CLAUDE.md), Directory (subdirectory)"},
+  {d:3, qEn:"Shared team slash commands — where to create?", aEn:".claude/commands/ (version controlled, shared automatically)"},
+  {d:3, qEn:"Personal slash commands — where?", aEn:"~/.claude/commands/ (not version controlled)"},
+  {d:3, qEn:"context:fork in SKILL.md — what does it do?", aEn:"Runs the skill in an isolated sub-agent, prevents context pollution"},
+  {d:3, qEn:"When to use plan mode?", aEn:"Complex tasks: large-scale changes, multiple valid approaches, multi-file architectural decisions"},
+  {d:3, qEn:"CI/CD non-interactive mode flag?", aEn:"-p or --print"},
+  {d:3, qEn:"Why use a different session for code review in CI?", aEn:"Generating session retains reasoning context and is less likely to catch its own errors"},
+  {d:3, qEn:"@import in CLAUDE.md — purpose?", aEn:"References external files to keep CLAUDE.md modular (e.g., per-package standards)"},
+  {d:3, qEn:"Path-specific rules advantage over directory CLAUDE.md?", aEn:"Glob patterns target files by type ACROSS ALL directories (e.g., **/*.test.tsx)"},
+  {d:3, qEn:".claude/rules/ directory — what goes there?", aEn:"Topic-specific rule files with YAML frontmatter paths: fields for conditional activation"},
+  {d:3, qEn:"argument-hint in SKILL.md — purpose?", aEn:"Prompts user for required parameters when skill is invoked without arguments"},
+  {d:3, qEn:"allowed-tools in SKILL.md — purpose?", aEn:"Restricts which tools are accessible during skill execution"},
+  {d:3, qEn:"--output-format json in CI — when to use?", aEn:"When pipeline needs structured machine-readable output"},
+  {d:3, qEn:"Direct execution vs plan mode — when to use direct?", aEn:"Simple, well-scoped changes: single-file bug fix, adding a validation check"},
+  {d:3, qEn:"What does CLAUDE.md provide to CI-invoked Claude Code?", aEn:"Project context: testing standards, review criteria, coding conventions"},
+  {d:3, qEn:"Interview pattern in Claude Code — what is it?", aEn:"Claude asks questions to surface considerations the developer may not have anticipated"},
+  {d:3, qEn:"Test-driven iteration with Claude Code?", aEn:"Write test suites first, then iterate by sharing test failures"},
+  {d:3, qEn:"What does --add-dir flag do?", aEn:"Adds an additional directory to Claude Code's working context"},
+  {d:4, qEn:"Most reliable approach for schema-compliant structured output?", aEn:"tool_use with JSON schema + forced tool selection"},
+  {d:4, qEn:"What does strict JSON schema eliminate?", aEn:"Syntax errors ONLY — not semantic errors (wrong values, misplaced fields)"},
+  {d:4, qEn:"Most effective technique for consistently formatted output?", aEn:"Few-shot examples (2-4) that show reasoning for each choice"},
+  {d:4, qEn:"Batch API cost savings?", aEn:"50% cost reduction vs standard API. Most batches complete in under 1 hour (max 24h). Does NOT support ZDR (Zero Data Retention)."},
+  {d:4, qEn:"Batch API maximum processing time?", aEn:"Up to 24 hours — no guaranteed latency SLA. No ZDR support."},
+  {d:4, qEn:"Adaptive thinking vs manual budget_tokens — which models use which?", aEn:"Adaptive (type:'adaptive', effort:'low|medium|high'): Fable 5, Opus 4.8, Sonnet 5 — NO budget_tokens (400 error). Manual budget_tokens: Haiku 4.5, Opus 4.5, Sonnet/Opus 4.6 and older."},
+  {d:4, qEn:"tool_choice limitation with extended thinking?", aEn:"tool_choice 'any' and forced {type:'tool'} are NOT compatible with extended thinking. Only 'auto' or 'none' are allowed."},
+  {d:4, qEn:"Batch API — appropriate use case?", aEn:"Non-blocking, latency-tolerant: overnight reports, weekly audits, nightly test gen"},
+  {d:4, qEn:"Batch API — NOT appropriate for?", aEn:"Blocking workflows where developers wait: pre-merge checks, real-time responses"},
+  {d:4, qEn:"Why use nullable fields in JSON schema?", aEn:"Prevents hallucination when info is absent from source document"},
+  {d:4, qEn:"Retry-with-error-feedback — when is it ineffective?", aEn:"When information is simply absent from the source document (not a format error)"},
+  {d:4, qEn:"Self-review limitation?", aEn:"Generating session retains reasoning context — less likely to question its own decisions"},
+  {d:4, qEn:"Multi-pass review strategy?", aEn:"Per-file local analysis passes + separate cross-file integration pass"},
+  {d:4, qEn:"Explicit criteria vs vague instructions for CI review?", aEn:"Explicit categorical criteria ('flag only X, skip Y') dramatically reduce false positives"},
+  {d:4, qEn:"How many few-shot examples for ambiguous case handling?", aEn:"2-4 examples that show reasoning for why one action was chosen over alternatives"},
+  {d:4, qEn:"custom_id in Batch API — purpose?", aEn:"Correlates batch request/response pairs so you can match results to inputs"},
+  {d:4, qEn:"High false positive rate — what does it destroy?", aEn:"Developer trust — even in accurate categories, adjacent false positives erode trust"},
+  {d:4, qEn:"tool_choice 'any' vs forced — key difference?", aEn:"'any' = must call SOME tool; forced = must call THAT SPECIFIC tool"},
+  {d:4, qEn:"When to use few-shot for extraction tasks?", aEn:"When informal measurements or varied document structures cause hallucination"},
+  {d:4, qEn:"Aggregate accuracy 97% — why is this misleading?", aEn:"May mask poor performance on specific document types or fields"},
+  {d:5, qEn:"Lost-in-middle effect — where is attention lowest?", aEn:"The MIDDLE of long inputs — beginning and end are processed reliably"},
+  {d:5, qEn:"What is a 'case facts block'?", aEn:"Persistent structured facts (amounts, dates, IDs) kept at TOP of context"},
+  {d:5, qEn:"Where to place key findings in aggregated inputs?", aEn:"At the BEGINNING with explicit section headers"},
+  {d:5, qEn:"3 appropriate escalation triggers?", aEn:"Customer explicitly requests human, policy exception/gap exists, no meaningful progress possible"},
+  {d:5, qEn:"Is sentiment-based escalation reliable?", aEn:"NO — sentiment is an unreliable proxy for actual case complexity"},
+  {d:5, qEn:"Multiple customer matches returned — what to do?", aEn:"Request additional identifiers — do NOT use heuristic selection"},
+  {d:5, qEn:"Structured error context must include what?", aEn:"Failure type + attempted query + partial results + alternative approaches"},
+  {d:5, qEn:"Access failure vs valid empty result — difference?", aEn:"Access failure needs retry; empty result = successful query, no matches found"},
+  {d:5, qEn:"/compact command — what does it do?", aEn:"Reduces context usage in extended exploration sessions"},
+  {d:5, qEn:"Scratchpad files — when to use?", aEn:"To persist key findings across context boundaries in large codebase exploration"},
+  {d:5, qEn:"Aggregate accuracy 97% — why check per document type?", aEn:"Aggregate hides poor performance on specific types; validate by document type AND field"},
+  {d:5, qEn:"Stratified random sampling — purpose?", aEn:"Measure error rates in high-confidence extractions; detect novel error patterns"},
+  {d:5, qEn:"Source attribution requirement in multi-agent synthesis?", aEn:"Preserve claim-source mappings — don't compress without them"},
+  {d:5, qEn:"Conflicting stats from credible sources — what to do?", aEn:"Annotate conflict with source attribution; do NOT arbitrarily select one value"},
+  {d:5, qEn:"Context degradation symptom in extended sessions?", aEn:"Model references 'typical patterns' instead of specific data retrieved earlier"},
+  {d:5, qEn:"Claude Haiku 4.5 context window size?", aEn:"200k tokens (64k max output). Price: $1/$5 per MTok in/out."},
+  {d:5, qEn:"Claude Fable 5 / Opus 4.8 / Sonnet 5 context window?", aEn:"All have 1M tokens context, 128k max output. Fable5: $10/$50. Opus4.8: $5/$25. Sonnet5: $3/$15 per MTok in/out."},
 ];
 
 const QUIZ_DATA = [
-  {d:1, qEn:"Production: 12% of cases skip get_customer, calling lookup_order with just the customer name, causing misidentified accounts. Most effective fix?", qIt:"Produzione: il 12% dei casi salta get_customer, chiamando lookup_order solo con il nome cliente, causando account errati. Correzione più efficace?", opts:[{en:"Programmatic prerequisite gate blocking lookup_order until get_customer returns verified ID",it:"Gate prerequisito programmatico che blocca lookup_order finché get_customer non restituisce un ID verificato"},{en:"Enhance system prompt: 'verification is mandatory before order operations'",it:"Migliora system prompt: 'la verifica è obbligatoria prima delle operazioni sugli ordini'"},{en:"Add few-shot examples showing agent always calling get_customer first",it:"Aggiungi esempi few-shot che mostrano l'agent che chiama sempre get_customer per primo"},{en:"Routing classifier enabling only appropriate tools per request type",it:"Classificatore di routing che abilita solo i tool appropriati per tipo di richiesta"}], correct:0, expEn:"Hooks/gates give deterministic guarantees. The agent already fails 12% despite knowing the rule — prompt changes are probabilistic and can't eliminate the failure. For financial/identity operations, 'usually works' is not acceptable.", expIt:"Hook/gate danno garanzie deterministiche. L'agent già fallisce il 12% nonostante conosca la regola — le modifiche al prompt sono probabilistiche e non possono eliminare il fallimento. Per operazioni finanziarie/identità, 'di solito funziona' non è accettabile."},
-  {d:1, qEn:"Agent achieves 55% FCR (First Contact Resolution) vs 80% target — escalates standard replacements but attempts complex policy exceptions. Most effective fix?", qIt:"L'agent raggiunge il 55% FCR (First Contact Resolution — risoluzioni al primo contatto) vs target 80% — scala le sostituzioni standard ma tenta eccezioni di policy complesse. Correzione più efficace?", opts:[{en:"Explicit escalation criteria with few-shot examples (when to escalate vs resolve)",it:"Criteri di escalation espliciti con esempi few-shot (quando scalare vs risolvere)"},{en:"Agent self-reports confidence 1-10, route to humans below threshold",it:"L'agent auto-riporta confidenza 1-10, instrada agli umani sotto la soglia"},{en:"Deploy classifier on historical tickets to predict escalation",it:"Distribuire classificatore sui ticket storici per prevedere l'escalation"},{en:"Sentiment analysis: escalate when frustration exceeds threshold",it:"Analisi del sentiment: scala quando la frustrazione supera la soglia"}], correct:0, expEn:"Unclear decision boundaries = fix the criteria directly. Self-reported confidence is poorly calibrated. Classifier is over-engineered when prompt hasn't been tried. Sentiment doesn't correlate with case complexity.", expIt:"Confini decisionali poco chiari = correggi i criteri direttamente. La confidenza auto-riportata è mal calibrata. Il classificatore è sovra-ingegnerizzato quando il prompt non è stato tentato. Il sentiment non correla con la complessità del caso."},
-  {d:1, qEn:"Multi-agent research on 'AI impact on creative industries' returns only visual arts — missing music, writing, film. Coordinator logs show visual-arts-only subtasks. Root cause?", qIt:"Ricerca multi-agent su 'impatto AI sulle industrie creative' restituisce solo arti visive — mancano musica, scrittura, film. I log del coordinator mostrano sottoattività solo sulle arti visive. Causa principale?", opts:[{en:"Synthesis agent lacks gap-detection instructions",it:"L'agent di sintesi manca di istruzioni per il rilevamento dei gap"},{en:"Web search queries not comprehensive enough",it:"Le query di ricerca web non sono abbastanza complete"},{en:"Coordinator task decomposition too narrow, missing relevant domains",it:"La scomposizione dei task del coordinator è troppo ristretta, mancano domini rilevanti"},{en:"Document analysis uses overly restrictive relevance criteria",it:"L'analisi dei documenti usa criteri di rilevanza troppo restrittivi"}], correct:2, expEn:"Coordinator logs directly reveal the cause. All subagents executed correctly within their assigned scope. When subagents succeed individually but output has gaps, look at coordinator decomposition — it didn't assign the right scope.", expIt:"I log del coordinator rivelano direttamente la causa. Tutti i subagent hanno eseguito correttamente nel loro ambito assegnato. Quando i subagent hanno successo individualmente ma l'output ha gap, guarda la scomposizione del coordinator."},
-  {d:1, qEn:"Loop occasionally stops mid-task with incomplete responses. Code checks if assistant text contains 'I\\'ve completed the task' to decide when to stop. Root cause?", qIt:"Il ciclo si ferma occasionalmente a metà task con risposte incomplete. Il codice controlla se il testo dell'assistente contiene 'Ho completato il task' per decidere quando fermarsi. Causa principale?", opts:[{en:"System prompt doesn't instruct completing all steps before responding",it:"Il system prompt non istruisce a completare tutti i passaggi prima di rispondere"},{en:"Model generates completion phrases mid-task — check stop_reason field instead",it:"Il modello genera frasi di completamento a metà task — controlla invece il campo stop_reason"},{en:"Context window too small causing truncation",it:"La finestra di contesto è troppo piccola causando troncamento"},{en:"Add max-iteration counter as primary termination mechanism",it:"Aggiungi un contatore di iterazioni massime come meccanismo di terminazione primario"}], correct:1, expEn:"Never parse natural language for termination. Model can generate 'I\\'ve completed' mid-task before more tool calls. Always check API stop_reason: 'tool_use' = loop continues, 'end_turn' = loop terminates.", expIt:"Non analizzare il linguaggio naturale per la terminazione. Il modello può generare 'Ho completato' a metà task prima di ulteriori chiamate al tool. Controlla sempre stop_reason: 'tool_use' = ciclo continua, 'end_turn' = ciclo termina."},
-  {d:1, qEn:"Coordinator delegates to web research subagent with only 'Research AI in healthcare'. Subagent ignores coordinator's earlier finding that client wants EU-focused data. Fix?", qIt:"Il coordinator delega al subagent di ricerca web solo con 'Ricerca AI in sanità'. Il subagent ignora la scoperta precedente del coordinator che il cliente vuole dati focalizzati sull'UE. Correzione?", opts:[{en:"Enable context inheritance in AgentDefinition",it:"Abilita l'ereditarietà del contesto in AgentDefinition"},{en:"Use --resume to share session state",it:"Usa --resume per condividere lo stato della sessione"},{en:"Explicitly include EU-focus requirement in the subagent prompt",it:"Includi esplicitamente il requisito di focus UE nel prompt del subagent"},{en:"Configure shared memory via .mcp.json",it:"Configura memoria condivisa tramite .mcp.json"}], correct:2, expEn:"Subagents have ISOLATED context — no automatic inheritance of coordinator history. All relevant context must be explicitly included in the subagent's prompt.", expIt:"I subagent hanno contesto ISOLATO — nessuna ereditarietà automatica della cronologia del coordinator. Tutto il contesto rilevante deve essere incluso esplicitamente nel prompt del subagent."},
-  {d:1, qEn:"Coordinator fails to spawn subagents — SDK throws 'Task tool not available'. Fix?", qIt:"Il coordinator non riesce a creare subagent — SDK lancia 'Task tool not available'. Correzione?", opts:[{en:"Add 'Task' to coordinator's allowedTools",it:"Aggiungi 'Task' agli allowedTools del coordinator"},{en:"Add subagent names to coordinator's allowedTools",it:"Aggiungi i nomi dei subagent agli allowedTools del coordinator"},{en:"Enable multi-agent mode in AgentDefinition",it:"Abilita la modalità multi-agent in AgentDefinition"},{en:"Set coordinator as root in session config",it:"Imposta il coordinator come root nella config della sessione"}], correct:0, expEn:"The coordinator spawns subagents via the 'Task' tool. If 'Task' is not in allowedTools, spawning fails. This is the required tool for multi-agent orchestration.", expIt:"Il coordinator crea subagent tramite il tool 'Task'. Se 'Task' non è in allowedTools, la creazione fallisce. Questo è il tool richiesto per l'orchestrazione multi-agent."},
-  {d:1, qEn:"Refunds over $500 MUST always require manager approval — zero exceptions. Which approach guarantees this?", qIt:"I rimborsi superiori a $500 DEVONO sempre richiedere l'approvazione del manager — zero eccezioni. Quale approccio lo garantisce?", opts:[{en:"PreToolUse hook blocking process_refund if amount > $500",it:"Hook PreToolUse che blocca process_refund se l'importo > $500"},{en:"System prompt: 'Always require manager approval for refunds over $500'",it:"System prompt: 'Richiedi sempre l'approvazione del manager per rimborsi superiori a $500'"},{en:"Few-shot examples showing approval flow for large refunds",it:"Esempi few-shot che mostrano il flusso di approvazione per rimborsi grandi"},{en:"Routing classifier detecting large refund requests",it:"Classificatore di routing che rileva richieste di rimborso grandi"}], correct:0, expEn:"Zero-exception compliance requires deterministic enforcement. Hooks provide this — prompts have non-zero failure rates. A PreToolUse hook inspects call parameters and blocks execution before the tool runs. Only a hook (programmatic gate) is provably deterministic. Classifiers and prompts have non-zero error rates; even 0.001% misclassification is unacceptable for zero-tolerance rules.", expIt:"La conformità a zero eccezioni richiede applicazione deterministica. I hook lo forniscono — i prompt hanno tassi di fallimento non nulli. Un hook PreToolUse ispeziona i parametri della chiamata e blocca l'esecuzione prima che il tool giri. Solo un hook (gate programmatico) è deterministicamente provabile. Classificatori e prompt hanno tassi di errore non nulli; anche lo 0,001% è inaccettabile per regole a zero-tolleranza."},
-  {d:5, qEn:"Customer says 'I just want to speak to a human agent right now.' Agent is close to resolving and continues investigating. What should it do?", qIt:"Il cliente dice 'Voglio solo parlare con un agente umano adesso.' L'agent è vicino alla risoluzione e continua a investigare. Cosa dovrebbe fare?", opts:[{en:"Finish investigation — resolution rate matters more",it:"Finisci l'indagine — il tasso di risoluzione conta di più"},{en:"Honor the explicit human request immediately",it:"Rispetta immediatamente la richiesta esplicita dell'umano"},{en:"Ask why they want human before deciding",it:"Chiedi perché vogliono un umano prima di decidere"},{en:"One more resolution attempt, then transfer",it:"Un altro tentativo di risoluzione, poi trasferisci"}], correct:1, expEn:"Explicit customer requests for human agents must be honored IMMEDIATELY. This is a non-negotiable escalation trigger regardless of how close to resolution.", expIt:"Le richieste esplicite del cliente per agenti umani devono essere rispettate IMMEDIATAMENTE. Questo è un trigger di escalation non negoziabile indipendentemente da quanto si è vicini alla risoluzione."},
-  {d:1, qEn:"Session with 40+ tool calls was interrupted. Resume or fresh start?", qIt:"Sessione con 40+ chiamate al tool è stata interrotta. Riprendere o fresh start?", opts:[{en:"Always --resume for context continuity",it:"Sempre --resume per continuità del contesto"},{en:"Fresh start with structured summary; mention specific file changes for targeted re-analysis",it:"Fresh start con sommario strutturato; menziona modifiche specifiche ai file per ri-analisi mirata"},{en:"Use /compact then --resume",it:"Usa /compact poi --resume"},{en:"Copy conversation history to new session",it:"Copia la cronologia della conversazione in una nuova sessione"}], correct:1, expEn:"Fresh start with structured summary is more reliable than resuming stale context. Accumulated tool results from long sessions cause inconsistencies — model references outdated states.", expIt:"Il fresh start con sommario strutturato è più affidabile che riprendere contesto stale. I risultati tool accumulati nelle sessioni lunghe causano inconsistenze — il modello fa riferimento a stati obsoleti."},
-  {d:1, qEn:"Multi-agent system: subagent A needs data from subagent B. How should this work?", qIt:"Sistema multi-agent: il subagent A ha bisogno di dati dal subagent B. Come dovrebbe funzionare?", opts:[{en:"Configure direct subagent-to-subagent communication",it:"Configura comunicazione diretta subagent-a-subagent"},{en:"Route all inter-subagent communication through the coordinator",it:"Instrada tutta la comunicazione inter-subagent attraverso il coordinator"},{en:"Shared MCP server for data exchange",it:"Server MCP condiviso per lo scambio di dati"},{en:"Shared session state accessible by all subagents",it:"Stato sessione condiviso accessibile a tutti i subagent"}], correct:1, expEn:"Hub-and-spoke: coordinator manages ALL inter-subagent communication. Direct subagent communication bypasses coordinator control, making the system unpredictable.", expIt:"Hub-and-spoke: il coordinator gestisce TUTTA la comunicazione inter-subagent. La comunicazione diretta tra subagent bypassa il controllo del coordinator, rendendo il sistema imprevedibile."},
-  {d:1, qEn:"PR review: security → performance → docs, always in that order. Which decomposition approach?", qIt:"PR review: sicurezza → performance → docs, sempre in quell'ordine. Quale approccio di scomposizione?", opts:[{en:"Dynamic adaptive decomposition to discover structure",it:"Scomposizione dynamic adaptive per scoprire la struttura"},{en:"Prompt chaining for this fixed sequential workflow",it:"Prompt chaining per questo workflow sequenziale fisso"},{en:"Single comprehensive prompt with all criteria",it:"Singolo prompt completo con tutti i criteri"},{en:"Routing classifier to select review type per PR",it:"Classificatore di routing per selezionare il tipo di review per PR"}], correct:1, expEn:"Prompt chaining is ideal for fixed, predictable sequences known in advance. Dynamic adaptive is for open-ended tasks where structure isn't predetermined.", expIt:"Il prompt chaining è ideale per sequenze fisse e prevedibili note in anticipo. Dynamic adaptive è per task open-ended dove la struttura non è predeterminata."},
-  {d:2, qEn:"Agent calls get_customer for order queries instead of lookup_order — both have minimal descriptions. First step?", qIt:"L'agent chiama get_customer per le query degli ordini invece di lookup_order — entrambi hanno descrizioni minimali. Primo passo?", opts:[{en:"Few-shot examples showing 5-8 order queries routing to lookup_order",it:"Esempi few-shot che mostrano 5-8 query ordini instradati a lookup_order"},{en:"Consolidate into single lookup_entity tool",it:"Consolida in un singolo tool lookup_entity"},{en:"Routing layer pre-selecting tools by keyword",it:"Layer di routing che pre-seleziona i tool per keyword"},{en:"Expand each tool's description with input formats, examples, when to use vs alternatives",it:"Espandi la descrizione di ogni tool con formati di input, esempi, quando usarlo vs alternative"}], correct:3, expEn:"Tool descriptions are the PRIMARY selection mechanism. Minimal descriptions force guessing. Expanding is the lowest-effort, highest-leverage fix. Few-shot adds overhead without fixing root cause.", expIt:"Le descrizioni dei tool sono il meccanismo di selezione PRIMARIO. Le descrizioni minimali forzano l'indovinare. Espandere è la correzione con il minimo sforzo e il massimo impatto."},
-  {d:2, qEn:"Subagent times out during web search. Best error propagation to coordinator?", qIt:"Il subagent va in timeout durante la ricerca web. Migliore propagazione dell'errore al coordinator?", opts:[{en:"Structured error: failure type + attempted query + partial results + alternatives",it:"Errore strutturato: tipo di errore + query tentata + risultati parziali + alternative"},{en:"Exponential backoff in subagent, return 'search unavailable' after retries",it:"Backoff esponenziale nel subagent, restituisce 'search unavailable' dopo i retry"},{en:"Catch timeout, return empty result marked as successful",it:"Cattura timeout, restituisce risultato vuoto contrassegnato come riuscito"},{en:"Propagate exception to top-level handler terminating entire workflow",it:"Propaga l'eccezione al gestore di primo livello terminando l'intero workflow"}], correct:0, expEn:"Rich structured error enables intelligent recovery. The coordinator needs failure type, what was attempted, partials, and alternatives. Hiding context ('unavailable') prevents intelligent recovery.", expIt:"L'errore strutturato ricco abilita il recupero intelligente. Il coordinator ha bisogno del tipo di errore, cosa è stato tentato, risultati parziali e alternative."},
-  {d:2, qEn:"Must guarantee Claude ALWAYS returns structured JSON, never plain text. Which tool_choice?", qIt:"Deve garantire che Claude restituisca SEMPRE JSON strutturato, mai testo normale. Quale tool_choice?", opts:[{en:"tool_choice: 'auto'",it:"tool_choice: 'auto'"},{en:"tool_choice: 'any'",it:"tool_choice: 'any'"},{en:"Forced: {type:'tool', name:'extract_data'}",it:"Forzato: {type:'tool', name:'extract_data'}"},{en:"'Always respond in JSON' in system prompt",it:"'Rispondi sempre in JSON' nel system prompt"}], correct:2, expEn:"Forced selection guarantees Claude calls THAT specific tool — the most reliable way to guarantee a specific structure. 'any' guarantees SOME tool call but not which format. 'auto' may return plain text.", expIt:"La selezione forzata garantisce che Claude chiami QUEL specifico tool — il modo più affidabile per garantire una struttura specifica."},
-  {d:2, qEn:"New developer needs team's internal database MCP tool automatically. Where to configure?", qIt:"Un nuovo sviluppatore ha bisogno del tool MCP del database interno del team automaticamente. Dove configurare?", opts:[{en:"User-level ~/.claude.json",it:"Livello utente ~/.claude.json"},{en:"Project-level .mcp.json",it:"Livello progetto .mcp.json"},{en:"Manually share config file",it:"Condividi manualmente il file di config"},{en:"Add to CLAUDE.md",it:"Aggiungi a CLAUDE.md"}], correct:1, expEn:".mcp.json is version-controlled — new developers get MCP config automatically on clone/pull. User-level requires manual setup per developer. CLAUDE.md is for instructions, not MCP configuration.", expIt:".mcp.json è version-controlled — i nuovi sviluppatori ottengono la config MCP automaticamente al clone/pull."},
-  {d:2, qEn:"Agent with 18 specialized tools frequently calls the wrong tool. Best fix?", qIt:"L'agent con 18 tool specializzati chiama frequentemente il tool sbagliato. Migliore correzione?", opts:[{en:"Better descriptions for all 18 tools",it:"Descrizioni migliori per tutti i 18 tool"},{en:"System prompt examples for each tool",it:"Esempi nel system prompt per ogni tool"},{en:"Scope each specialized agent to 4-5 role-relevant tools",it:"Limita ogni agent specializzato a 4-5 tool rilevanti per il ruolo"},{en:"Increase context window",it:"Aumenta la finestra di contesto"}], correct:2, expEn:"More than 4-5 tools degrades selection reliability fundamentally. Split into specialized agents each with their relevant tool subset. Better descriptions help but don't solve the overloaded-context root cause.", expIt:"Più di 4-5 tool degrada fondamentalmente l'affidabilità della selezione. Dividi in agent specializzati ciascuno con il proprio sottoinsieme di tool rilevanti."},
-  {d:2, qEn:"Edit tool fails: 'multiple matches found'. Correct fallback?", qIt:"Il tool Edit fallisce: 'multiple matches found'. Fallback corretto?", opts:[{en:"Use Bash with sed",it:"Usa Bash con sed"},{en:"Provide more surrounding context in old_string to make it unique; if impossible, Read + Write",it:"Fornisci più contesto circostante in old_string per renderlo univoco; se impossibile, Read + Write"},{en:"Delete and recreate the file",it:"Elimina e ricrea il file"},{en:"Use find/replace",it:"Usa find/replace"}], correct:1, expEn:"First: provide more context in old_string to achieve uniqueness. If truly impossible: Read + Write is the proper fallback. sed introduces risks. Delete/recreate loses metadata.", expIt:"Prima: fornisci più contesto in old_string per ottenere unicità. Se davvero impossibile: Read + Write è il fallback corretto."},
-  {d:2, qEn:"Tool returns empty array [] for no results, but agent keeps retrying thinking it failed. Fix?", qIt:"Il tool restituisce array vuoto [] per nessun risultato, ma l'agent continua a fare retry pensando che sia fallito. Correzione?", opts:[{en:"Return isError:true to make empty state explicit",it:"Restituisci isError:true per rendere esplicito lo stato vuoto"},{en:"Return null instead of []",it:"Restituisci null invece di []"},{en:"Ensure empty result has clear success signal, distinct from actual failures",it:"Assicurati che il risultato vuoto abbia un chiaro segnale di successo, distinto dai veri fallimenti"},{en:"Add retry logic inside tool",it:"Aggiungi logica di retry all'interno del tool"}], correct:2, expEn:"Empty array is VALID successful response — query executed, found nothing. Never return isError:true for successful empty queries. Design the response schema so success/failure signals are unambiguous.", expIt:"Array vuoto è una risposta di successo VALIDA — query eseguita, niente trovato. Non restituire mai isError:true per query vuote riuscite."},
-  {d:3, qEn:"Create /review command available to all developers automatically on clone. Where?", qIt:"Crea comando /review disponibile a tutti gli sviluppatori automaticamente al clone. Dove?", opts:[{en:".claude/commands/ in project repository",it:".claude/commands/ nel repository del progetto"},{en:"~/.claude/commands/ on each developer's machine",it:"~/.claude/commands/ su ogni macchina dello sviluppatore"},{en:"CLAUDE.md at project root",it:"CLAUDE.md nella radice del progetto"},{en:".claude/config.json with commands array",it:".claude/config.json con array commands"}], correct:0, expEn:".claude/commands/ is version-controlled project scope. New developers get it automatically. ~/.claude/commands/ requires per-developer manual setup. CLAUDE.md is for context/instructions, not command definitions.", expIt:".claude/commands/ è nell'ambito del progetto con version control. I nuovi sviluppatori lo ottengono automaticamente."},
-  {d:3, qEn:"Restructuring monolith to microservices — changes across dozens of files, decisions about service boundaries. Approach?", qIt:"Ristrutturazione monolite in microservizi — modifiche su decine di file, decisioni sui confini dei servizi. Approccio?", opts:[{en:"Direct execution, incremental changes",it:"Esecuzione diretta, modifiche incrementali"},{en:"Plan mode to explore, understand dependencies, design before making changes",it:"Modalità plan per esplorare, capire le dipendenze, progettare prima di fare modifiche"},{en:"Direct execution with comprehensive upfront instructions",it:"Esecuzione diretta con istruzioni complete preventive"},{en:"Start direct, switch to plan mode if complexity increases",it:"Inizia diretto, passa alla modalità plan se la complessità aumenta"}], correct:1, expEn:"Plan mode is designed for complex multi-file architectural changes with multiple valid approaches. It enables safe exploration and design BEFORE committing — critical when early decisions have cascading consequences.", expIt:"La modalità plan è progettata per modifiche architetturali multi-file complesse con approcci multipli validi."},
-  {d:3, qEn:"Python formatting rules should activate ONLY for .py files anywhere in the monorepo. Best approach?", qIt:"Le regole di formattazione Python devono attivarsi SOLO per i file .py ovunque nel monorepo. Approccio migliore?", opts:[{en:"Directory-level CLAUDE.md in each Python directory",it:"CLAUDE.md a livello di directory in ogni directory Python"},{en:".claude/rules/ with YAML paths: ['**/*.py']",it:".claude/rules/ con YAML paths: ['**/*.py']"},{en:"Add Python rules to root CLAUDE.md with file extension notes",it:"Aggiungi regole Python al root CLAUDE.md con note sull'estensione del file"},{en:"Separate CLAUDE.md per language",it:"CLAUDE.md separato per linguaggio"}], correct:1, expEn:".claude/rules/ with glob paths activates rules conditionally for matching files ACROSS ALL directories. Directory CLAUDE.md only covers that specific directory. Root CLAUDE.md loads always (wastes tokens for non-Python work).", expIt:".claude/rules/ con percorsi glob attiva le regole condizionalmente per i file corrispondenti IN TUTTE le directory."},
-  {d:3, qEn:"Skill generates 500 lines of verbose debug output cluttering main context. Fix?", qIt:"Lo skill genera 500 righe di output di debug verboso che intasa il contesto principale. Correzione?", opts:[{en:"Use /compact after skill completes",it:"Usa /compact dopo il completamento dello skill"},{en:"Set context:fork in skill's SKILL.md",it:"Imposta context:fork nel SKILL.md dello skill"},{en:"Redirect skill output to log file",it:"Reindirizza l'output dello skill al file di log"},{en:"Increase context window",it:"Aumenta la finestra di contesto"}], correct:1, expEn:"context:fork runs skill in isolated sub-agent. Verbose output stays in sub-agent context; only summary/result returns to main context. Direct solution for context pollution.", expIt:"context:fork esegue lo skill in un sub-agent isolato. L'output verboso rimane nel contesto del sub-agent; solo il sommario/risultato torna al contesto principale."},
-  {d:3, qEn:"Claude Code fails in CI pipeline — interactively prompts for user confirmation. Fix?", qIt:"Claude Code fallisce nella pipeline CI — chiede interattivamente la conferma dell'utente. Correzione?", opts:[{en:"-p / --print flag for non-interactive mode",it:"-p / --print flag per la modalità non-interattiva"},{en:"CLAUDE_INTERACTIVE=false env var",it:"Variabile d'ambiente CLAUDE_INTERACTIVE=false"},{en:"--no-input flag",it:"Flag --no-input"},{en:"'No interactive prompts' in CLAUDE.md",it:"'Nessun prompt interattivo' in CLAUDE.md"}], correct:0, expEn:"-p (--print) runs Claude Code in non-interactive CI mode. The env var, --no-input flag, and CLAUDE.md approach don't exist or can't override interactive behavior.", expIt:"-p (--print) esegue Claude Code in modalità CI non-interattiva. La var d'ambiente, il flag --no-input e l'approccio CLAUDE.md non esistono o non possono sovrascrivere il comportamento interattivo."},
-  {d:3, qEn:"Same CI session generates code then reviews it — missing obvious bugs. Why and fix?", qIt:"La stessa sessione CI genera il codice e poi lo revisiona — mancano bug ovvi. Perché e correzione?", opts:[{en:"Add more review criteria to system prompt",it:"Aggiungi più criteri di review al system prompt"},{en:"Use separate Claude Code session for review",it:"Usa una sessione Claude Code separata per la review"},{en:"Run multiple review passes in same session",it:"Esegui più pass di review nella stessa sessione"},{en:"Use temperature=0 for deterministic review",it:"Usa temperature=0 per review deterministica"}], correct:1, expEn:"Generating session is cognitively anchored to its decisions — less likely to question them. An independent review session without prior reasoning context catches significantly more issues.", expIt:"La sessione generante è ancorata cognitivamente alle sue decisioni — meno propensa a metterle in discussione. Una sessione di review indipendente cattura significativamente più problemi."},
-  {d:3, qEn:"Monorepo with 8 packages each with different standards. Managing single CLAUDE.md is unwieldy. Best?", qIt:"Monorepo con 8 package ognuno con standard diversi. Gestire un singolo CLAUDE.md è ingombrante. Meglio?", opts:[{en:"One comprehensive CLAUDE.md covering all",it:"Un unico CLAUDE.md completo che copre tutto"},{en:"Separate CLAUDE.md per package directory",it:"CLAUDE.md separato per directory package"},{en:"@import in root CLAUDE.md referencing each package's standards",it:"@import nel root CLAUDE.md che referenzia gli standard di ogni package"},{en:"Environment variables to switch context",it:"Variabili d'ambiente per cambiare contesto"}], correct:2, expEn:"@import keeps CLAUDE.md modular — root file imports per-package standards. This is the designed solution for modular CLAUDE.md management in large repos. Option B (separate CLAUDE.md per directory) works but forces Claude to read multiple disconnected files without a unified root. @import in root CLAUDE.md is the designed solution: it creates ONE root that pulls in package-specific files — the root is always loaded, package files are pulled on demand.", expIt:"@import mantiene CLAUDE.md modulare — il file root importa gli standard per-package. Questa è la soluzione progettata per la gestione modulare di CLAUDE.md in repo grandi. L'opzione B (CLAUDE.md separato per directory) funziona ma costringe Claude a leggere più file disconnessi senza una root unificata. @import nel root CLAUDE.md è la soluzione progettata: crea UNA root che importa i file per-package — la root è sempre caricata, i file per-package vengono importati su richiesta."},
-  {d:3, qEn:"User invokes /analyze without required file path. Which SKILL.md property handles this?", qIt:"L'utente invoca /analyze senza il percorso file richiesto. Quale proprietà SKILL.md gestisce questo?", opts:[{en:"required-args",it:"required-args"},{en:"argument-hint",it:"argument-hint"},{en:"default-args",it:"default-args"},{en:"parameters",it:"parameters"}], correct:1, expEn:"argument-hint prompts users for required parameters when skill is invoked without them, providing a helpful prompt rather than cryptic failure.", expIt:"argument-hint chiede agli utenti i parametri richiesti quando lo skill viene invocato senza di essi, fornendo un prompt utile piuttosto che un fallimento criptico."},
-  {d:4, qEn:"Blocking pre-merge check AND overnight tech debt report. Manager wants both on Batch API for 50% savings. Evaluation?", qIt:"Controllo pre-merge bloccante E report tech debt notturno. Il manager vuole entrambi sull'API Batch per risparmiare il 50%. Valutazione?", opts:[{en:"Both batch — status polling handles the wait",it:"Entrambi batch — il polling dello stato gestisce l'attesa"},{en:"Batch for overnight only; real-time for pre-merge",it:"Batch solo per notturno; real-time per pre-merge"},{en:"Both real-time to avoid ordering issues",it:"Entrambi real-time per evitare problemi di ordinamento"},{en:"Both batch with timeout fallback to real-time",it:"Entrambi batch con fallback timeout a real-time"}], correct:1, expEn:"Batch API has up to 24h processing, no guaranteed SLA. Perfect for overnight reports (non-blocking). Completely unsuitable for blocking pre-merge checks where developers wait.", expIt:"L'API Batch ha fino a 24 ore di elaborazione, nessun SLA garantito. Perfetta per report notturni (non-bloccanti). Completamente inadatta per controlli pre-merge bloccanti."},
-  {d:4, qEn:"14-file PR review: single pass produces inconsistent results — detailed for some files, superficial for others, contradictory comments. Fix?", qIt:"PR review con 14 file: un singolo pass produce risultati inconsistenti — dettagliati per alcuni file, superficiali per altri, commenti contraddittori. Correzione?", opts:[{en:"Three independent passes; flag issues in 2+ passes",it:"Tre pass indipendenti; segnala problemi in 2+ pass"},{en:"Per-file local analysis + separate cross-file integration pass",it:"Analisi locale per-file + pass di integrazione cross-file separato"},{en:"Increase context window to process all files together",it:"Aumenta la finestra di contesto per elaborare tutti i file insieme"},{en:"Run review twice, take intersection",it:"Esegui la review due volte, prendi l'intersezione"}], correct:1, expEn:"Attention dilution: many files at once = inconsistent feedback. Split into per-file local passes (focused attention per file) + cross-file integration pass for cross-cutting issues.", expIt:"Diluizione dell'attenzione: molti file contemporaneamente = feedback inconsistente. Dividi in pass locali per-file + pass di integrazione cross-file."},
-  {d:4, qEn:"Extract invoice data into strict JSON schema. Most reliable approach for schema compliance?", qIt:"Estrai dati fattura in schema JSON strict. Approccio più affidabile per la conformità allo schema?", opts:[{en:"'Return only valid JSON matching this schema' in system prompt",it:"'Restituisci solo JSON valido corrispondente a questo schema' nel system prompt"},{en:"tool_use with JSON schema + forced tool selection",it:"tool_use con JSON schema + selezione forzata del tool"},{en:"Parse JSON from any response with try/catch",it:"Analizza JSON da qualsiasi risposta con try/catch"},{en:"Output format instructions + post-processing validator",it:"Istruzioni formato output + validatore post-processing"}], correct:1, expEn:"tool_use + JSON schema + forced selection: model MUST call the tool, SDK validates against schema. System prompt is probabilistic. Parsing arbitrary output is fragile.", expIt:"tool_use + JSON schema + selezione forzata: il modello DEVE chiamare il tool, SDK valida rispetto allo schema. Il system prompt è probabilistico."},
-  {d:4, qEn:"Extraction system fabricates values for optional invoice fields that are absent. Fix in schema?", qIt:"Il sistema di estrazione fabbrica valori per campi fattura opzionali assenti. Correzione nello schema?", opts:[{en:"Mark all optional fields as required with empty string defaults",it:"Contrassegna tutti i campi opzionali come richiesti con valori predefiniti stringa vuota"},{en:"Use nullable fields to allow null when absent",it:"Usa campi nullable per consentire null quando assente"},{en:"Post-process to remove suspicious values",it:"Post-elabora per rimuovere valori sospetti"},{en:"Query source again for absent fields",it:"Interroga nuovamente la fonte per i campi assenti"}], correct:1, expEn:"Nullable fields give the model a legitimate way to express absence without hallucinating. Required+empty-string is semantically wrong. Post-processing can't reliably detect fabrications.", expIt:"I campi nullable danno al modello un modo legittimo per esprimere assenza senza allucinare. Richiesto+stringa-vuota è semanticamente errato."},
-  {d:4, qEn:"CI review: 40% false positives, developer trust eroding. Tried 'be conservative' — no improvement. Next?", qIt:"CI review: 40% falsi positivi, fiducia degli sviluppatori in erosione. Provato 'sii conservativo' — nessun miglioramento. Prossimo?", opts:[{en:"'Only report high-confidence findings'",it:"'Riporta solo risultati ad alta confidenza'"},{en:"Explicit categorical criteria: what to flag (bugs, security) vs skip (style, local patterns)",it:"Criteri categorici espliciti: cosa segnalare (bug, sicurezza) vs saltare (stile, pattern locali)"},{en:"Reduce number of checks",it:"Riduci il numero di controlli"},{en:"Lower temperature",it:"Abbassa la temperature"}], correct:1, expEn:"Vague instructions don't give concrete decision boundaries. Explicit categorical criteria define exactly what is and isn't reportable. Temperature affects randomness, not judgment quality.", expIt:"Le istruzioni vaghe non danno confini decisionali concreti. I criteri categorici espliciti definiscono esattamente cosa è e non è segnalabile."},
-  {d:4, qEn:"Retry-with-error-feedback keeps failing for invoices missing 'purchase_order_number'. Why?", qIt:"Il retry-with-error-feedback continua a fallire per le fatture a cui manca 'purchase_order_number'. Perché?", opts:[{en:"Retry prompt format is wrong",it:"Il formato del prompt di retry è sbagliato"},{en:"Need more retries",it:"Servono più retry"},{en:"Info is absent from source — retry is ineffective for absent data",it:"Le informazioni sono assenti dalla fonte — il retry è inefficace per dati assenti"},{en:"Validation logic has a bug",it:"La logica di validazione ha un bug"}], correct:2, expEn:"Retry-with-error-feedback works for FORMAT errors. It's ineffective when data simply doesn't exist in the source. For absent fields, use nullable schema fields and handle null gracefully downstream.", expIt:"Il retry-with-error-feedback funziona per errori di FORMATO. È inefficace quando i dati semplicemente non esistono nella fonte. Per campi assenti, usa campi nullable."},
-  {d:4, qEn:"Few-shot extraction prompt — how many examples and what should they show?", qIt:"Prompt di estrazione few-shot — quanti esempi e cosa dovrebbero mostrare?", opts:[{en:"10+ examples covering all document variations",it:"10+ esempi che coprono tutte le variazioni del documento"},{en:"1 example showing ideal case",it:"1 esempio che mostra il caso ideale"},{en:"2-4 examples showing reasoning for ambiguous/edge cases",it:"2-4 esempi che mostrano il ragionamento per casi ambigui/edge"},{en:"As many as fit in context window",it:"Quanti ne entrano nella finestra di contesto"}], correct:2, expEn:"2-4 well-chosen examples demonstrating reasoning for ambiguous cases teach generalization. Too many add token overhead without proportionate benefit. The goal is teaching judgment, not memorization.", expIt:"2-4 esempi ben scelti che dimostrano il ragionamento per casi ambigui insegnano la generalizzazione. Troppi aggiungono overhead di token senza beneficio proporzionato."},
-  {d:5, qEn:"Customer reports 3 issues. Agent handles first two perfectly but references 'standard processing times' instead of specific loyalty points lookup from earlier. Root cause?", qIt:"Il cliente riporta 3 problemi. L'agent gestisce perfettamente i primi due ma fa riferimento a 'tempi di elaborazione standard' invece di specifiche ricerche punti fedeltà precedenti. Causa principale?", opts:[{en:"Loyalty points system returned error agent is masking",it:"Il sistema punti fedeltà ha restituito un errore che l'agent sta mascherando"},{en:"Agent handles only one issue per conversation",it:"L'agent gestisce solo un problema per conversazione"},{en:"Context degradation — earlier tool results being deprioritized as conversation grows",it:"Degradazione del contesto — i risultati tool precedenti vengono depriorizzati man mano che la conversazione cresce"},{en:"System prompt instructs generic guidance for uncertain situations",it:"Il system prompt istruisce una guida generica per situazioni incerte"}], correct:2, expEn:"Context degradation: in extended conversations, earlier tool results get deprioritized. Model falls back on general knowledge. Fix: extract key facts into a persistent case facts block at top of context.", expIt:"Degradazione del contesto: nelle conversazioni estese, i risultati tool precedenti vengono depriorizzati. Il modello ricorre alla conoscenza generale."},
-  {d:5, qEn:"Long aggregated research document — key findings from middle consistently omitted from summaries. Fix?", qIt:"Lungo documento di ricerca aggregato — i risultati chiave dal mezzo vengono costantemente omessi dai sommari. Correzione?", opts:[{en:"Place key findings at end for better recall",it:"Posiziona i risultati chiave alla fine per un migliore richiamo"},{en:"Place key findings at BEGINNING with explicit section headers",it:"Posiziona i risultati chiave all'INIZIO con intestazioni di sezione esplicite"},{en:"Create separate summary document for middle findings",it:"Crea un documento sommario separato per i risultati centrali"},{en:"Split document into smaller chunks",it:"Dividi il documento in parti più piccole"}], correct:1, expEn:"Lost-in-middle: models reliably process BEGINNING and END; middle may be omitted. Place critical information at the beginning with explicit headers.", expIt:"Lost-in-middle: i modelli elaborano in modo affidabile INIZIO e FINE; il mezzo può essere omesso. Posiziona le informazioni critiche all'inizio."},
-  {d:5, qEn:"Tool returns 3 customers matching 'John Smith'. Agent should?", qIt:"Il tool restituisce 3 clienti corrispondenti a 'John Smith'. L'agent dovrebbe?", opts:[{en:"Select most recently active account using heuristics",it:"Seleziona l'account più recentemente attivo usando euristiche"},{en:"Request additional identifiers to disambiguate",it:"Richiedi identificatori aggiuntivi per disambiguare"},{en:"Present all 3 to customer and let them choose",it:"Presenta tutti e 3 al cliente e lascia che scelgano"},{en:"Escalate to human for disambiguation",it:"Scala a un umano per la disambiguazione"}], correct:1, expEn:"Multiple matches require clarification via additional identifiers (account #, email, DOB) — NOT heuristic selection which risks wrong-customer processing. Presenting all 3 exposes PII. Escalation is disproportionate.", expIt:"Le corrispondenze multiple richiedono chiarimento tramite identificatori aggiuntivi — NON selezione euristica che rischia elaborazione del cliente sbagliato."},
-  {d:5, qEn:"Extended codebase exploration — model gives generic answers ('typically in MVC...') instead of referencing specific files discovered earlier. Fix?", qIt:"Esplorazione estesa del codebase — il modello dà risposte generiche ('tipicamente in MVC...') invece di fare riferimento a file specifici scoperti in precedenza. Correzione?", opts:[{en:"Increase token limit",it:"Aumenta il limite di token"},{en:"Restart session from scratch",it:"Riavvia la sessione da zero"},{en:"/compact + subagents for specific investigations + scratchpad files for key findings",it:"/compact + subagent per indagini specifiche + file scratchpad per risultati chiave"},{en:"Add all discovered files to system prompt",it:"Aggiungi tutti i file scoperti al system prompt"}], correct:2, expEn:"/compact reduces noise. Subagents for specific investigations keep focused questions out of main context. Scratchpad files persist findings across boundaries. Restart loses discovered context.", expIt:"/compact riduce il rumore. I subagent per indagini specifiche mantengono le domande focalizzate fuori dal contesto principale. I file scratchpad persistono i risultati."},
-  {d:5, qEn:"Extraction system: 97% overall accuracy. Management wants to automate all high-confidence extractions. First step?", qIt:"Sistema di estrazione: 97% di accuratezza complessiva. Il management vuole automatizzare tutte le estrazioni ad alta confidenza. Primo passo?", opts:[{en:"Automate immediately — 97% is excellent",it:"Automatizza immediatamente — il 97% è eccellente"},{en:"Validate accuracy by document type and field before automating",it:"Valida l'accuratezza per tipo di documento e campo prima di automatizzare"},{en:"Add human review for low-confidence only",it:"Aggiungi revisione umana solo per bassa confidenza"},{en:"Monitor for 30 days",it:"Monitora per 30 giorni"}], correct:1, expEn:"97% aggregate can hide 60% accuracy on specific document types or fields. Before automating, validate stratified by document type AND field. Use stratified random sampling even in high-confidence bucket.", expIt:"Il 97% aggregato può nascondere il 60% di accuratezza su tipi di documento o campi specifici. Prima di automatizzare, valida stratificato per tipo di documento E campo."},
+  {d:1, qEn:"Production: 12% of cases skip get_customer, calling lookup_order with just the customer name, causing misidentified accounts. Most effective fix?", opts:[{en:"Programmatic prerequisite gate blocking lookup_order until get_customer returns verified ID"},{en:"Enhance system prompt: 'verification is mandatory before order operations'"},{en:"Add few-shot examples showing agent always calling get_customer first"},{en:"Routing classifier enabling only appropriate tools per request type"}], correct:0, expEn:"Hooks/gates give deterministic guarantees. The agent already fails 12% despite knowing the rule — prompt changes are probabilistic and can't eliminate the failure. For financial/identity operations, 'usually works' is not acceptable."},
+  {d:1, qEn:"Agent achieves 55% FCR (First Contact Resolution) vs 80% target — escalates standard replacements but attempts complex policy exceptions. Most effective fix?", opts:[{en:"Explicit escalation criteria with few-shot examples (when to escalate vs resolve)"},{en:"Agent self-reports confidence 1-10, route to humans below threshold"},{en:"Deploy classifier on historical tickets to predict escalation"},{en:"Sentiment analysis: escalate when frustration exceeds threshold"}], correct:0, expEn:"Unclear decision boundaries = fix the criteria directly. Self-reported confidence is poorly calibrated. Classifier is over-engineered when prompt hasn't been tried. Sentiment doesn't correlate with case complexity."},
+  {d:1, qEn:"Multi-agent research on 'AI impact on creative industries' returns only visual arts — missing music, writing, film. Coordinator logs show visual-arts-only subtasks. Root cause?", opts:[{en:"Synthesis agent lacks gap-detection instructions"},{en:"Web search queries not comprehensive enough"},{en:"Coordinator task decomposition too narrow, missing relevant domains"},{en:"Document analysis uses overly restrictive relevance criteria"}], correct:2, expEn:"Coordinator logs directly reveal the cause. All subagents executed correctly within their assigned scope. When subagents succeed individually but output has gaps, look at coordinator decomposition — it didn't assign the right scope."},
+  {d:1, qEn:"Loop occasionally stops mid-task with incomplete responses. Code checks if assistant text contains 'I\\'ve completed the task' to decide when to stop. Root cause?", opts:[{en:"System prompt doesn't instruct completing all steps before responding"},{en:"Model generates completion phrases mid-task — check stop_reason field instead"},{en:"Context window too small causing truncation"},{en:"Add max-iteration counter as primary termination mechanism"}], correct:1, expEn:"Never parse natural language for termination. Model can generate 'I\\'ve completed' mid-task before more tool calls. Always check API stop_reason: 'tool_use' = loop continues, 'end_turn' = loop terminates."},
+  {d:1, qEn:"Coordinator delegates to web research subagent with only 'Research AI in healthcare'. Subagent ignores coordinator's earlier finding that client wants EU-focused data. Fix?", opts:[{en:"Enable context inheritance in AgentDefinition"},{en:"Use --resume to share session state"},{en:"Explicitly include EU-focus requirement in the subagent prompt"},{en:"Configure shared memory via .mcp.json"}], correct:2, expEn:"Subagents have ISOLATED context — no automatic inheritance of coordinator history. All relevant context must be explicitly included in the subagent's prompt."},
+  {d:1, qEn:"Coordinator fails to spawn subagents — SDK throws 'Task tool not available'. Fix?", opts:[{en:"Add 'Task' to coordinator's allowedTools"},{en:"Add subagent names to coordinator's allowedTools"},{en:"Enable multi-agent mode in AgentDefinition"},{en:"Set coordinator as root in session config"}], correct:0, expEn:"The coordinator spawns subagents via the 'Task' tool. If 'Task' is not in allowedTools, spawning fails. This is the required tool for multi-agent orchestration."},
+  {d:1, qEn:"Refunds over $500 MUST always require manager approval — zero exceptions. Which approach guarantees this?", opts:[{en:"PreToolUse hook blocking process_refund if amount > $500"},{en:"System prompt: 'Always require manager approval for refunds over $500'"},{en:"Few-shot examples showing approval flow for large refunds"},{en:"Routing classifier detecting large refund requests"}], correct:0, expEn:"Zero-exception compliance requires deterministic enforcement. Hooks provide this — prompts have non-zero failure rates. A PreToolUse hook inspects call parameters and blocks execution before the tool runs. Only a hook (programmatic gate) is provably deterministic. Classifiers and prompts have non-zero error rates; even 0.001% misclassification is unacceptable for zero-tolerance rules."},
+  {d:5, qEn:"Customer says 'I just want to speak to a human agent right now.' Agent is close to resolving and continues investigating. What should it do?", opts:[{en:"Finish investigation — resolution rate matters more"},{en:"Honor the explicit human request immediately"},{en:"Ask why they want human before deciding"},{en:"One more resolution attempt, then transfer"}], correct:1, expEn:"Explicit customer requests for human agents must be honored IMMEDIATELY. This is a non-negotiable escalation trigger regardless of how close to resolution."},
+  {d:1, qEn:"Session with 40+ tool calls was interrupted. Resume or fresh start?", opts:[{en:"Always --resume for context continuity"},{en:"Fresh start with structured summary; mention specific file changes for targeted re-analysis"},{en:"Use /compact then --resume"},{en:"Copy conversation history to new session"}], correct:1, expEn:"Fresh start with structured summary is more reliable than resuming stale context. Accumulated tool results from long sessions cause inconsistencies — model references outdated states."},
+  {d:1, qEn:"Multi-agent system: subagent A needs data from subagent B. How should this work?", opts:[{en:"Configure direct subagent-to-subagent communication"},{en:"Route all inter-subagent communication through the coordinator"},{en:"Shared MCP server for data exchange"},{en:"Shared session state accessible by all subagents"}], correct:1, expEn:"Hub-and-spoke: coordinator manages ALL inter-subagent communication. Direct subagent communication bypasses coordinator control, making the system unpredictable."},
+  {d:1, qEn:"PR review: security → performance → docs, always in that order. Which decomposition approach?", opts:[{en:"Dynamic adaptive decomposition to discover structure"},{en:"Prompt chaining for this fixed sequential workflow"},{en:"Single comprehensive prompt with all criteria"},{en:"Routing classifier to select review type per PR"}], correct:1, expEn:"Prompt chaining is ideal for fixed, predictable sequences known in advance. Dynamic adaptive is for open-ended tasks where structure isn't predetermined."},
+  {d:2, qEn:"Agent calls get_customer for order queries instead of lookup_order — both have minimal descriptions. First step?", opts:[{en:"Few-shot examples showing 5-8 order queries routing to lookup_order"},{en:"Consolidate into single lookup_entity tool"},{en:"Routing layer pre-selecting tools by keyword"},{en:"Expand each tool's description with input formats, examples, when to use vs alternatives"}], correct:3, expEn:"Tool descriptions are the PRIMARY selection mechanism. Minimal descriptions force guessing. Expanding is the lowest-effort, highest-leverage fix. Few-shot adds overhead without fixing root cause."},
+  {d:2, qEn:"Subagent times out during web search. Best error propagation to coordinator?", opts:[{en:"Structured error: failure type + attempted query + partial results + alternatives"},{en:"Exponential backoff in subagent, return 'search unavailable' after retries"},{en:"Catch timeout, return empty result marked as successful"},{en:"Propagate exception to top-level handler terminating entire workflow"}], correct:0, expEn:"Rich structured error enables intelligent recovery. The coordinator needs failure type, what was attempted, partials, and alternatives. Hiding context ('unavailable') prevents intelligent recovery."},
+  {d:2, qEn:"Must guarantee Claude ALWAYS returns structured JSON, never plain text. Which tool_choice?", opts:[{en:"tool_choice: 'auto'"},{en:"tool_choice: 'any'"},{en:"Forced: {type:'tool', name:'extract_data'}"},{en:"'Always respond in JSON' in system prompt"}], correct:2, expEn:"Forced selection guarantees Claude calls THAT specific tool — the most reliable way to guarantee a specific structure. 'any' guarantees SOME tool call but not which format. 'auto' may return plain text."},
+  {d:2, qEn:"New developer needs team's internal database MCP tool automatically. Where to configure?", opts:[{en:"User-level ~/.claude.json"},{en:"Project-level .mcp.json"},{en:"Manually share config file"},{en:"Add to CLAUDE.md"}], correct:1, expEn:".mcp.json is version-controlled — new developers get MCP config automatically on clone/pull. User-level requires manual setup per developer. CLAUDE.md is for instructions, not MCP configuration."},
+  {d:2, qEn:"Agent with 18 specialized tools frequently calls the wrong tool. Best fix?", opts:[{en:"Better descriptions for all 18 tools"},{en:"System prompt examples for each tool"},{en:"Scope each specialized agent to 4-5 role-relevant tools"},{en:"Increase context window"}], correct:2, expEn:"More than 4-5 tools degrades selection reliability fundamentally. Split into specialized agents each with their relevant tool subset. Better descriptions help but don't solve the overloaded-context root cause."},
+  {d:2, qEn:"Edit tool fails: 'multiple matches found'. Correct fallback?", opts:[{en:"Use Bash with sed"},{en:"Provide more surrounding context in old_string to make it unique; if impossible, Read + Write"},{en:"Delete and recreate the file"},{en:"Use find/replace"}], correct:1, expEn:"First: provide more context in old_string to achieve uniqueness. If truly impossible: Read + Write is the proper fallback. sed introduces risks. Delete/recreate loses metadata."},
+  {d:2, qEn:"Tool returns empty array [] for no results, but agent keeps retrying thinking it failed. Fix?", opts:[{en:"Return isError:true to make empty state explicit"},{en:"Return null instead of []"},{en:"Ensure empty result has clear success signal, distinct from actual failures"},{en:"Add retry logic inside tool"}], correct:2, expEn:"Empty array is VALID successful response — query executed, found nothing. Never return isError:true for successful empty queries. Design the response schema so success/failure signals are unambiguous."},
+  {d:3, qEn:"Create /review command available to all developers automatically on clone. Where?", opts:[{en:".claude/commands/ in project repository"},{en:"~/.claude/commands/ on each developer's machine"},{en:"CLAUDE.md at project root"},{en:".claude/config.json with commands array"}], correct:0, expEn:".claude/commands/ is version-controlled project scope. New developers get it automatically. ~/.claude/commands/ requires per-developer manual setup. CLAUDE.md is for context/instructions, not command definitions."},
+  {d:3, qEn:"Restructuring monolith to microservices — changes across dozens of files, decisions about service boundaries. Approach?", opts:[{en:"Direct execution, incremental changes"},{en:"Plan mode to explore, understand dependencies, design before making changes"},{en:"Direct execution with comprehensive upfront instructions"},{en:"Start direct, switch to plan mode if complexity increases"}], correct:1, expEn:"Plan mode is designed for complex multi-file architectural changes with multiple valid approaches. It enables safe exploration and design BEFORE committing — critical when early decisions have cascading consequences."},
+  {d:3, qEn:"Python formatting rules should activate ONLY for .py files anywhere in the monorepo. Best approach?", opts:[{en:"Directory-level CLAUDE.md in each Python directory"},{en:".claude/rules/ with YAML paths: ['**/*.py']"},{en:"Add Python rules to root CLAUDE.md with file extension notes"},{en:"Separate CLAUDE.md per language"}], correct:1, expEn:".claude/rules/ with glob paths activates rules conditionally for matching files ACROSS ALL directories. Directory CLAUDE.md only covers that specific directory. Root CLAUDE.md loads always (wastes tokens for non-Python work)."},
+  {d:3, qEn:"Skill generates 500 lines of verbose debug output cluttering main context. Fix?", opts:[{en:"Use /compact after skill completes"},{en:"Set context:fork in skill's SKILL.md"},{en:"Redirect skill output to log file"},{en:"Increase context window"}], correct:1, expEn:"context:fork runs skill in isolated sub-agent. Verbose output stays in sub-agent context; only summary/result returns to main context. Direct solution for context pollution."},
+  {d:3, qEn:"Claude Code fails in CI pipeline — interactively prompts for user confirmation. Fix?", opts:[{en:"-p / --print flag for non-interactive mode"},{en:"CLAUDE_INTERACTIVE=false env var"},{en:"--no-input flag"},{en:"'No interactive prompts' in CLAUDE.md"}], correct:0, expEn:"-p (--print) runs Claude Code in non-interactive CI mode. The env var, --no-input flag, and CLAUDE.md approach don't exist or can't override interactive behavior."},
+  {d:3, qEn:"Same CI session generates code then reviews it — missing obvious bugs. Why and fix?", opts:[{en:"Add more review criteria to system prompt"},{en:"Use separate Claude Code session for review"},{en:"Run multiple review passes in same session"},{en:"Use temperature=0 for deterministic review"}], correct:1, expEn:"Generating session is cognitively anchored to its decisions — less likely to question them. An independent review session without prior reasoning context catches significantly more issues."},
+  {d:3, qEn:"Monorepo with 8 packages each with different standards. Managing single CLAUDE.md is unwieldy. Best?", opts:[{en:"One comprehensive CLAUDE.md covering all"},{en:"Separate CLAUDE.md per package directory"},{en:"@import in root CLAUDE.md referencing each package's standards"},{en:"Environment variables to switch context"}], correct:2, expEn:"@import keeps CLAUDE.md modular — root file imports per-package standards. This is the designed solution for modular CLAUDE.md management in large repos. Option B (separate CLAUDE.md per directory) works but forces Claude to read multiple disconnected files without a unified root. @import in root CLAUDE.md is the designed solution: it creates ONE root that pulls in package-specific files — the root is always loaded, package files are pulled on demand."},
+  {d:3, qEn:"User invokes /analyze without required file path. Which SKILL.md property handles this?", opts:[{en:"required-args"},{en:"argument-hint"},{en:"default-args"},{en:"parameters"}], correct:1, expEn:"argument-hint prompts users for required parameters when skill is invoked without them, providing a helpful prompt rather than cryptic failure."},
+  {d:4, qEn:"Blocking pre-merge check AND overnight tech debt report. Manager wants both on Batch API for 50% savings. Evaluation?", opts:[{en:"Both batch — status polling handles the wait"},{en:"Batch for overnight only; real-time for pre-merge"},{en:"Both real-time to avoid ordering issues"},{en:"Both batch with timeout fallback to real-time"}], correct:1, expEn:"Batch API has up to 24h processing, no guaranteed SLA. Perfect for overnight reports (non-blocking). Completely unsuitable for blocking pre-merge checks where developers wait."},
+  {d:4, qEn:"14-file PR review: single pass produces inconsistent results — detailed for some files, superficial for others, contradictory comments. Fix?", opts:[{en:"Three independent passes; flag issues in 2+ passes"},{en:"Per-file local analysis + separate cross-file integration pass"},{en:"Increase context window to process all files together"},{en:"Run review twice, take intersection"}], correct:1, expEn:"Attention dilution: many files at once = inconsistent feedback. Split into per-file local passes (focused attention per file) + cross-file integration pass for cross-cutting issues."},
+  {d:4, qEn:"Extract invoice data into strict JSON schema. Most reliable approach for schema compliance?", opts:[{en:"'Return only valid JSON matching this schema' in system prompt"},{en:"tool_use with JSON schema + forced tool selection"},{en:"Parse JSON from any response with try/catch"},{en:"Output format instructions + post-processing validator"}], correct:1, expEn:"tool_use + JSON schema + forced selection: model MUST call the tool, SDK validates against schema. System prompt is probabilistic. Parsing arbitrary output is fragile."},
+  {d:4, qEn:"Extraction system fabricates values for optional invoice fields that are absent. Fix in schema?", opts:[{en:"Mark all optional fields as required with empty string defaults"},{en:"Use nullable fields to allow null when absent"},{en:"Post-process to remove suspicious values"},{en:"Query source again for absent fields"}], correct:1, expEn:"Nullable fields give the model a legitimate way to express absence without hallucinating. Required+empty-string is semantically wrong. Post-processing can't reliably detect fabrications."},
+  {d:4, qEn:"CI review: 40% false positives, developer trust eroding. Tried 'be conservative' — no improvement. Next?", opts:[{en:"'Only report high-confidence findings'"},{en:"Explicit categorical criteria: what to flag (bugs, security) vs skip (style, local patterns)"},{en:"Reduce number of checks"},{en:"Lower temperature"}], correct:1, expEn:"Vague instructions don't give concrete decision boundaries. Explicit categorical criteria define exactly what is and isn't reportable. Temperature affects randomness, not judgment quality."},
+  {d:4, qEn:"Retry-with-error-feedback keeps failing for invoices missing 'purchase_order_number'. Why?", opts:[{en:"Retry prompt format is wrong"},{en:"Need more retries"},{en:"Info is absent from source — retry is ineffective for absent data"},{en:"Validation logic has a bug"}], correct:2, expEn:"Retry-with-error-feedback works for FORMAT errors. It's ineffective when data simply doesn't exist in the source. For absent fields, use nullable schema fields and handle null gracefully downstream."},
+  {d:4, qEn:"Few-shot extraction prompt — how many examples and what should they show?", opts:[{en:"10+ examples covering all document variations"},{en:"1 example showing ideal case"},{en:"2-4 examples showing reasoning for ambiguous/edge cases"},{en:"As many as fit in context window"}], correct:2, expEn:"2-4 well-chosen examples demonstrating reasoning for ambiguous cases teach generalization. Too many add token overhead without proportionate benefit. The goal is teaching judgment, not memorization."},
+  {d:5, qEn:"Customer reports 3 issues. Agent handles first two perfectly but references 'standard processing times' instead of specific loyalty points lookup from earlier. Root cause?", opts:[{en:"Loyalty points system returned error agent is masking"},{en:"Agent handles only one issue per conversation"},{en:"Context degradation — earlier tool results being deprioritized as conversation grows"},{en:"System prompt instructs generic guidance for uncertain situations"}], correct:2, expEn:"Context degradation: in extended conversations, earlier tool results get deprioritized. Model falls back on general knowledge. Fix: extract key facts into a persistent case facts block at top of context."},
+  {d:5, qEn:"Long aggregated research document — key findings from middle consistently omitted from summaries. Fix?", opts:[{en:"Place key findings at end for better recall"},{en:"Place key findings at BEGINNING with explicit section headers"},{en:"Create separate summary document for middle findings"},{en:"Split document into smaller chunks"}], correct:1, expEn:"Lost-in-middle: models reliably process BEGINNING and END; middle may be omitted. Place critical information at the beginning with explicit headers."},
+  {d:5, qEn:"Tool returns 3 customers matching 'John Smith'. Agent should?", opts:[{en:"Select most recently active account using heuristics"},{en:"Request additional identifiers to disambiguate"},{en:"Present all 3 to customer and let them choose"},{en:"Escalate to human for disambiguation"}], correct:1, expEn:"Multiple matches require clarification via additional identifiers (account #, email, DOB) — NOT heuristic selection which risks wrong-customer processing. Presenting all 3 exposes PII. Escalation is disproportionate."},
+  {d:5, qEn:"Extended codebase exploration — model gives generic answers ('typically in MVC...') instead of referencing specific files discovered earlier. Fix?", opts:[{en:"Increase token limit"},{en:"Restart session from scratch"},{en:"/compact + subagents for specific investigations + scratchpad files for key findings"},{en:"Add all discovered files to system prompt"}], correct:2, expEn:"/compact reduces noise. Subagents for specific investigations keep focused questions out of main context. Scratchpad files persist findings across boundaries. Restart loses discovered context."},
+  {d:5, qEn:"Extraction system: 97% overall accuracy. Management wants to automate all high-confidence extractions. First step?", opts:[{en:"Automate immediately — 97% is excellent"},{en:"Validate accuracy by document type and field before automating"},{en:"Add human review for low-confidence only"},{en:"Monitor for 30 days"}], correct:1, expEn:"97% aggregate can hide 60% accuracy on specific document types or fields. Before automating, validate stratified by document type AND field. Use stratified random sampling even in high-confidence bucket."},
 ];
 
 const STRATEGY_DATA = {
@@ -3929,13 +3552,7 @@ const STRATEGY_DATA = {
     {title:"2. Tool Descriptions Before Everything Else", body:"When a tool is called incorrectly or confused with another: For 2–5 tools: first remediation step is to expand and clarify the description with input formats, examples, and boundaries vs similar tools. For 6+ tools: description improvement is insufficient — split into specialized sub-agents (max 4–5 tools each). Fixing descriptions when you have 18 tools will not work. Add few-shot examples only after descriptions are thorough."},
     {title:"3. Context Position Is Strategy", body:"Lost-in-middle is real: models deprioritize middle content. Place case facts blocks at TOP. Place key findings at BEGINNING with explicit headers. Use /compact + scratchpad files for extended sessions. Context degradation is a symptom, not a bug."},
     {title:"4. Match API to Workflow Latency", body:"Batch API: 50% cost savings, up to 24h, NO SLA. Use ONLY for non-blocking (overnight, weekly). NEVER for blocking workflows (pre-merge, real-time). Independent sessions for CI review (generating session has cognitive anchoring bias)."}
-  ],
-  principlesIt: [
-    {title:"1. Hook per Conformità Deterministica", body:"Per requisiti a zero-tolleranza (limiti finanziari, verifica identità, approvazioni obbligatorie): usa SEMPRE hook, non prompt. I prompt sono probabilistici — falliranno eventualmente. I hook intercettano programmaticamente prima dell\'esecuzione."},
-    {title:"2. Descrizioni Tool Prima di Tutto", body:"Quando un tool viene chiamato incorrettamente o confuso con un altro: Per 2–5 tool: il primo passo è espandere e chiarire la descrizione con formati di input, esempi e confini rispetto a tool simili. Per 6+ tool: migliorare la descrizione non è sufficiente — dividi in sub-agent specializzati (max 4–5 tool ciascuno). Correggere le descrizioni quando hai 18 tool non funzionerà. Aggiungi esempi few-shot solo dopo che le descrizioni sono complete."},
-    {title:"3. Posizione nel Contesto è Strategia", body:"Il lost-in-middle è reale: i modelli depriorizzano il contenuto centrale. Posiziona i case facts block in CIMA. Posiziona i risultati chiave all\'INIZIO con intestazioni esplicite. Usa /compact + file scratchpad per sessioni estese."},
-    {title:"4. Abbina API alla Latenza del Workflow", body:"API Batch: risparmio 50%, fino a 24h, NESSUN SLA. Usa SOLO per non-bloccante (notturno, settimanale). MAI per workflow bloccanti (pre-merge, real-time). Sessioni indipendenti per CI review (la sessione generante ha bias di ancoraggio cognitivo)."}
-  ],
+  ]
   distractorsEn: [
     ["Situation","Wrong Answer (Distractor)","Correct Answer"],
     ["Tool confusion","Few-shot examples first","Expand tool descriptions first"],
@@ -3946,37 +3563,18 @@ const STRATEGY_DATA = {
     ["97% accuracy","Automate all","Validate by doc type first"],
     ["Sentiment escalation","Reliable complexity proxy","Unreliable — use explicit triggers"],
     ["18 tools per agent","Better descriptions","Split into 4-5 tool agents"]
-  ],
-  distractorsIt: [
-    ["Situazione","Risposta Sbagliata (Distractor)","Risposta Corretta"],
-    ["Confusione tool","Esempi few-shot prima","Espandi descrizioni tool prima"],
-    ["Terminazione ciclo","Analizza 'completato' nel testo","Controlla il campo stop_reason"],
-    ["Dati mancanti subagent","Abilita ereditarietà contesto","Includi esplicitamente nel prompt"],
-    ["Regola zero-tolleranza","System prompt forte","Hook PreToolUse (blocca esecuzione)"],
-    ["Batch per pre-merge","Sì, risparmia 50%","No — workflow bloccante"],
-    ["Accuratezza 97%","Automatizza tutto","Valida per tipo doc prima"],
-    ["Escalation sentiment","Proxy affidabile complessità","Inaffidabile — usa trigger espliciti"],
-    ["18 tool per agent","Descrizioni migliori","Dividi in agent da 4-5 tool"]
   ]
 };
 
 const QUICKREF_DATA = {
   examEn: {title:"Exam Facts", rows:[["Format","65 questions, 90 minutes, multiple choice"],["Passing","72% (approx 47/65)"],["Domains","D1:27% D2:18% D3:20% D4:20% D5:15%"],["Provider","Anthropic / Certiverse"],["Validity","2 years"]]},
-  examIt: {title:"Fatti sull\'Esame", rows:[["Formato","65 domande, 90 minuti, scelta multipla"],["Superamento","72% (circa 47/65)"],["Domini","D1:27% D2:18% D3:20% D4:20% D5:15%"],["Provider","Anthropic / Certiverse"],["Validità","2 anni"]]},
   toolChoiceEn: {title:"tool_choice Modes", rows:[["auto","May return plain text — NOT guaranteed tool call"],["any","MUST call SOME tool — guaranteed tool call"],["forced","MUST call THAT SPECIFIC tool — most reliable for schema compliance"]]},
-  toolChoiceIt: {title:"Modalità tool_choice", rows:[["auto","Può restituire testo normale — chiamata tool NON garantita"],["any","DEVE chiamare UN QUALSIASI tool — chiamata tool garantita"],["forced","DEVE chiamare QUEL SPECIFICO tool — più affidabile per conformità schema"]]},
   claudemdEn: {title:"CLAUDE.md Hierarchy", rows:[["Level 1","~/.claude/CLAUDE.md — User level (all projects)"],["Level 2",".claude/CLAUDE.md — Project level (this project)"],["Level 3","subdirectory/CLAUDE.md — Directory level (subdirectory only)"],["Modular","@import references external files"],["Rules",".claude/rules/ with YAML frontmatter paths:"]]},
-  claudemdIt: {title:"Gerarchia CLAUDE.md", rows:[["Livello 1","~/.claude/CLAUDE.md — Livello utente (tutti i progetti)"],["Livello 2",".claude/CLAUDE.md — Livello progetto (questo progetto)"],["Livello 3","subdirectory/CLAUDE.md — Livello directory (solo sottodirectory)"],["Modulare","@import referenzia file esterni"],["Regole",".claude/rules/ con YAML frontmatter paths:"]]},
   errorCatsEn: {title:"Error Categories", rows:[["Transient","Timeout, network — isRetryable: true"],["Validation","Bad input format — isRetryable: true (corrected input)"],["Business","Policy violation — isRetryable: false (needs state change)"],["Permission","Access denied — isRetryable: false (needs privilege change)"]]},
-  errorCatsIt: {title:"Categorie di Errore", rows:[["Transient","Timeout, rete — isRetryable: true"],["Validation","Formato input errato — isRetryable: true (input corretto)"],["Business","Violazione policy — isRetryable: false (serve cambio stato)"],["Permission","Accesso negato — isRetryable: false (serve cambio privilegi)"]]},
   modelsEn: {title:"Current Claude Models", rows:[["Model","Context","Max Out","Price in/out (MTok)"],["Fable 5 (claude-fable-5)","1M","128k","$10 / $50"],["Opus 4.8 (claude-opus-4-8)","1M","128k","$5 / $25"],["Sonnet 5 (claude-sonnet-5)","1M","128k","$3 / $15"],["Haiku 4.5 (claude-haiku-4-5)","200k","64k","$1 / $5"],["Adaptive thinking","Fable5/Opus4.8/Sonnet5","NO budget_tokens","use effort:low|medium|high"],["Manual budget_tokens","Haiku4.5/Opus4.5/4.6","supported","older models"]]},
-  modelsIt: {title:"Modelli Claude Attuali", rows:[["Modello","Contesto","Max Out","Prezzo in/out (MTok)"],["Fable 5 (claude-fable-5)","1M","128k","$10 / $50"],["Opus 4.8 (claude-opus-4-8)","1M","128k","$5 / $25"],["Sonnet 5 (claude-sonnet-5)","1M","128k","$3 / $15"],["Haiku 4.5 (claude-haiku-4-5)","200k","64k","$1 / $5"],["Adaptive thinking","Fable5/Opus4.8/Sonnet5","NO budget_tokens","usa effort:low|medium|high"],["budget_tokens manuale","Haiku4.5/Opus4.5/4.6","supportato","modelli precedenti"]]},
   promptCachingEn: {title:"Prompt Caching", rows:[["Cache write (5-min)","1.25x base price"],["Cache write (1-hour)","2x base price"],["Cache read","0.1x base price (90% savings)"],["Default TTL","5 minutes"],["Alt TTL","1 hour (2x write cost)"],["Max breakpoints","4"],["Min tokens — Fable5","512 tokens"],["Min tokens — Opus4.8/Sonnet5/Sonnet4.6","1024 tokens"],["Min tokens — Haiku4.5/Opus4.6/Opus4.5","4096 tokens"]]},
-  promptCachingIt: {title:"Prompt Caching", rows:[["Write cache (5-min)","1.25x prezzo base"],["Write cache (1-ora)","2x prezzo base"],["Read cache","0.1x prezzo base (risparmio 90%)"],["TTL default","5 minuti"],["TTL alternativo","1 ora (costo write 2x)"],["Max breakpoint","4"],["Min token — Fable5","512 token"],["Min token — Opus4.8/Sonnet5/Sonnet4.6","1024 token"],["Min token — Haiku4.5/Opus4.6/Opus4.5","4096 token"]]},
   stopReasonsEn: {title:"stop_reason Values", rows:[["end_turn","Response completed normally"],["tool_use","Claude wants to call a client tool → execute and return tool_result"],["max_tokens","Output hit max_tokens limit"],["stop_sequence","A stop sequence was encountered"],["refusal","Claude refused the request — do not retry same"],["pause_turn","Server tool loop hit iteration limit — resend request"],["model_context_window_exceeded","Context too large (models 4.5+ only)"]]},
-  stopReasonsIt: {title:"Valori stop_reason", rows:[["end_turn","Risposta completata normalmente"],["tool_use","Claude vuole chiamare un tool client → esegui e restituisci tool_result"],["max_tokens","Output ha raggiunto il limite max_tokens"],["stop_sequence","Incontrata una stop sequence"],["refusal","Claude ha rifiutato la richiesta — non riprovare uguale"],["pause_turn","Loop server tool ha raggiunto limite iterazioni — reinvia richiesta"],["model_context_window_exceeded","Contesto troppo grande (solo modelli 4.5+)"]]},
   keyNumbersEn: {title:"Key Numbers to Memorize", rows:[["65","Questions on the exam (MCQ, 1 correct out of 4)"],["90 min","Time allowed (~1.5 hours)"],["720/1000","Passing score (scaled 100–1000, no guessing penalty)"],["4 of 6","Scenarios presented at random per sitting"],["4-5","Max tools per agent before reliability degrades"],["2-4","Optimal few-shot examples"],["50%","Batch API cost savings (most batches < 1 hour, max 24h, no ZDR)"],["4","Max prompt cache breakpoints (min 512–4096 tokens depending on model)"],["90%","Prompt cache read savings (0.1x base price)"],["3","CLAUDE.md hierarchy levels"]]},
-  keyNumbersIt: {title:"Numeri Chiave da Memorizzare", rows:[["65","Domande nell\'esame (MCQ, 1 risposta corretta su 4)"],["90 min","Tempo a disposizione (~1.5 ore)"],["720/1000","Punteggio minimo (scala 100–1000, nessuna penalità per indovinare)"],["4 di 6","Scenari presentati a random per sessione"],["4-5","Max tool per agent prima che l\'affidabilità degradi"],["2-4","Esempi few-shot ottimali"],["50%","Risparmio costo API Batch (max 24h, nessun ZDR)"],["4","Max breakpoint cache prompt (min 512–4096 token secondo il modello)"],["90%","Risparmio lettura cache prompt (0.1x prezzo base)"],["3","Livelli gerarchia CLAUDE.md"]]}
 };
 
 // ─── STATE (rendering engine) ─────────────────────────────────────────────────
@@ -3990,22 +3588,6 @@ let quizAnswered = false;
 let quizFinished = false;
 let quizQuestions = [];
 
-// ─── LANGUAGE ────────────────────────────────────────────────────────────────
-function getLang() {
-  return localStorage.getItem('ccaf_lang') || 'en';
-}
-function setLang(l) {
-  localStorage.setItem('ccaf_lang', l);
-  applyLang();
-}
-function applyLang() {
-  const l = getLang();
-  document.getElementById('lang-toggle').textContent = l === 'en' ? 'IT' : 'EN';
-  document.querySelectorAll('[data-en]').forEach(el => {
-    el.textContent = l === 'en' ? el.dataset.en : el.dataset.it;
-  });
-  renderCurrentSection();
-}
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────────────
 function navigate(id) {
@@ -4041,25 +3623,24 @@ function renderCurrentSection() {
 
 // ─── HOME ────────────────────────────────────────────────────────────────────
 function renderHome() {
-  const l = getLang();
   const el = document.getElementById('sec-home');
   el.innerHTML = `
     <div class="home-hero">
       <div class="home-badge">CCA-F</div>
-      <h1>${l==='en'?'Claude Certified Architect – Foundations':'Claude Certified Architect – Foundations'}</h1>
-      <p class="home-subtitle">${l==='en'?'Complete exam preparation portal with domain reviews, 98 flashcards, and 38 scenario questions':'Portale completo di preparazione all\'esame con revisione domini, 98 flashcard e 38 domande scenario'}</p>
+      <h1>Claude Certified Architect – Foundations</h1>
+      <p class="home-subtitle">Complete exam preparation portal with domain reviews, 98 flashcards, and 38 scenario questions</p>
     </div>
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-num">65</div><div class="stat-label">${l==='en'?'Questions':'Domande'}</div></div>
-      <div class="stat-card"><div class="stat-num">90</div><div class="stat-label">${l==='en'?'Minutes':'Minuti'}</div></div>
-      <div class="stat-card"><div class="stat-num">72%</div><div class="stat-label">${l==='en'?'Passing Score':'Punteggio Minimo'}</div></div>
-      <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">${l==='en'?'Domains':'Domini'}</div></div>
+      <div class="stat-card"><div class="stat-num">65</div><div class="stat-label">Questions</div></div>
+      <div class="stat-card"><div class="stat-num">90</div><div class="stat-label">Minutes</div></div>
+      <div class="stat-card"><div class="stat-num">72%</div><div class="stat-label">Passing Score</div></div>
+      <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">Domains</div></div>
     </div>
-    <h2 class="section-heading">${l==='en'?'Exam Domains':'Domini dell\'Esame'}</h2>
+    <h2 class="section-heading">Exam Domains</h2>
     <div class="domain-grid">
       ${['d1','d2','d3','d4','d5'].map(k => {
         const d = DOMAIN_DATA[k];
-        const title = l==='en' ? d.titleEn : d.titleIt;
+        const title = d.titleEn;
         return `<div class="domain-card" style="border-left:4px solid ${d.color}" onclick="navigate('${k}')">
           <div class="domain-card-header">
             <span class="domain-badge" style="background:${d.color}20;color:${d.color}">${d.weight}</span>
@@ -4071,8 +3652,8 @@ function renderHome() {
       }).join('')}
     </div>
     <div class="home-tip">
-      <strong>${l==='en'?'Study Tip:':'Consiglio di Studio:'}</strong>
-      ${l==='en'?'Recommended reading order: D1 → D2 → D3 → D4 → D5. D1 introduces agents and the agentic loop (27% of exam). D2 covers MCP and tool design — foundational concepts referenced in D3/D4. D3+D4 together are 40% of the exam. After reading all domains, do the full Quiz, then revisit any domain where you missed questions.':'Ordine di lettura consigliato: D1 → D2 → D3 → D4 → D5. D1 introduce gli agenti e il ciclo agentico (27% dell\'esame). D2 copre MCP e il design degli strumenti — concetti fondamentali citati in D3/D4. D3+D4 insieme rappresentano il 40% dell\'esame. Dopo aver letto tutti i domini, fai il Quiz completo, poi rivedi i domini dove hai sbagliato.'}
+      <strong>Study Tip:</strong>
+      Recommended reading order: D1 → D2 → D3 → D4 → D5. D1 introduces agents and the agentic loop (27% of exam). D2 covers MCP and tool design — foundational concepts referenced in D3/D4. D3+D4 together are 40% of the exam. After reading all domains, do the full Quiz, then revisit any domain where you missed questions.
     </div>`;
 }
 
@@ -4114,21 +3695,20 @@ function adaptSvgTheme(svgStr) {
 }
 
 function renderDomain(key) {
-  const l = getLang();
   const d = DOMAIN_DATA[key];
-  const title = l==='en' ? d.titleEn : d.titleIt;
-  const concepts = l==='en' ? d.conceptsEn : d.conceptsIt;
-  const framework = l==='en' ? d.frameworkEn : d.frameworkIt;
-  const traps = l==='en' ? d.trapsEn : d.trapsIt;
+  const title = d.titleEn;
+  const concepts = d.conceptsEn;
+  const framework = d.frameworkEn;
+  const traps = d.trapsEn;
   const el = document.getElementById('sec-'+key);
 
   el.innerHTML = `
     <div class="domain-header">
       <h1 style="color:${d.color}">${key.toUpperCase()} — ${title}</h1>
-      <span class="weight-badge" style="background:${d.color}20;color:${d.color};border:1px solid ${d.color}40">${d.weight} ${l==='en'?'of exam':'dell\'esame'}</span>
+      <span class="weight-badge" style="background:${d.color}20;color:${d.color};border:1px solid ${d.color}40">${d.weight} of exam</span>
     </div>
 
-    <h2 class="section-heading">${l==='en'?'Key Concepts':'Concetti Chiave'}</h2>
+    <h2 class="section-heading">Key Concepts</h2>
     <div class="concepts-grid">
       ${concepts.map(c => `
         <div class="concept-card" style="border-top:3px solid ${d.color}">
@@ -4137,13 +3717,13 @@ function renderDomain(key) {
         </div>`).join('')}
     </div>
 
-    <h2 class="section-heading">${l==='en'?'Decision Framework':'Framework Decisionale'}</h2>
+    <h2 class="section-heading">Decision Framework</h2>
     <div class="framework-box" style="border-left:4px solid ${d.color};background:${d.color}0d">
       <div class="framework-icon" style="color:${d.color}">⚡</div>
       <div class="framework-text">${framework}</div>
     </div>
 
-    <h2 class="section-heading">${l==='en'?'Exam Traps — Anti-Patterns':'Trappole dell\'Esame — Anti-Pattern'}</h2>
+    <h2 class="section-heading">Exam Traps — Anti-Patterns</h2>
     <div class="traps-list">
       ${traps.map(t => `
         <div class="trap-item">
@@ -4152,7 +3732,7 @@ function renderDomain(key) {
         </div>`).join('')}
     </div>
 
-    <h2 class="section-heading">${l==='en'?'Diagram':'Diagramma'}</h2>
+    <h2 class="section-heading">Diagram</h2>
     <div class="diagram-container">
       ${adaptSvgTheme(d.svg)}
     </div>`;
@@ -4165,24 +3745,23 @@ function getFilteredCards() {
 }
 
 function renderFlashcards() {
-  const l = getLang();
   const cards = getFilteredCards();
   const total = cards.length;
   const card = cards[fcIndex] || cards[0];
   if (!card) return;
   const domainColor = ['#818cf8','#34d399','#60a5fa','#fb923c','#e879f9'][card.d-1];
-  const q = l==='en' ? card.qEn : card.qIt;
-  const a = l==='en' ? card.aEn : card.aIt;
+  const q = card.qEn;
+  const a = card.aEn;
   const el = document.getElementById('sec-flashcards');
 
   el.innerHTML = `
-    <h1 class="page-title">${l==='en'?'Flashcards':'Flashcard'}</h1>
+    <h1 class="page-title">Flashcards</h1>
     <div class="fc-controls">
       <div class="fc-filter">
-        <span class="fc-filter-label">${l==='en'?'Domain:':'Dominio:'}</span>
+        <span class="fc-filter-label">Domain:</span>
         ${[0,1,2,3,4,5].map(d => {
           const colors = ['#94a3b8','#818cf8','#34d399','#60a5fa','#fb923c','#e879f9'];
-          const labels = l==='en' ? ['All','D1','D2','D3','D4','D5'] : ['Tutti','D1','D2','D3','D4','D5'];
+          const labels = ['All','D1','D2','D3','D4','D5'];
           return `<button class="fc-filter-btn ${fcDomain===d?'active':''}"
             style="${fcDomain===d?'background:'+colors[d]+';color:#0f172a;border-color:'+colors[d]:'border-color:'+colors[d]+';color:'+colors[d]}"
             onclick="setFcDomain(${d})">${labels[d]}</button>`;
@@ -4195,21 +3774,21 @@ function renderFlashcards() {
         <div class="fc-front" style="border-top:4px solid ${domainColor}">
           <div class="fc-domain-tag" style="color:${domainColor}">D${card.d} — ${[null,'Agentic Architecture','Tool Design & MCP','Claude Code','Prompt Engineering','Context Management'][card.d]}</div>
           <div class="fc-question">${q}</div>
-          <div class="fc-hint">${l==='en'?'Click to reveal answer':'Clicca per vedere la risposta'}</div>
+          <div class="fc-hint">Click to reveal answer</div>
         </div>
         <div class="fc-back" style="border-top:4px solid ${domainColor}">
-          <div class="fc-domain-tag" style="color:${domainColor}">D${card.d} — ${l==='en'?'Answer':'Risposta'}</div>
+          <div class="fc-domain-tag" style="color:${domainColor}">D${card.d} — Answer</div>
           <div class="fc-answer">${a}</div>
-          <div class="fc-hint">${l==='en'?'Click to see question':'Clicca per vedere la domanda'}</div>
+          <div class="fc-hint">Click to see question</div>
         </div>
       </div>
     </div>
     <div class="fc-nav">
-      <button class="btn-secondary" onclick="prevCard()">← ${l==='en'?'Previous':'Precedente'}</button>
-      <button class="btn-secondary" onclick="shuffleCards()">${l==='en'?'Shuffle':'Mescola'}</button>
-      <button class="btn-secondary" onclick="nextCard()">${l==='en'?'Next':'Prossima'} →</button>
+      <button class="btn-secondary" onclick="prevCard()">← Previous</button>
+      <button class="btn-secondary" onclick="shuffleCards()">Shuffle</button>
+      <button class="btn-secondary" onclick="nextCard()">Next →</button>
     </div>
-    <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:-8px">${l==='en'?'⌨️ Keyboard: ← → navigate · Space = flip':'⌨️ Tastiera: ← → naviga · Spazio = gira'}</div>`;
+    <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:-8px">⌨️ Keyboard: ← → navigate · Space = flip</div>`;
 }
 
 function flipCard() {
@@ -4253,17 +3832,16 @@ function startQuiz() {
 }
 
 function renderQuiz() {
-  const l = getLang();
   const el = document.getElementById('sec-quiz');
 
   if (!quizQuestions.length) {
     el.innerHTML = `
-      <h1 class="page-title">${l==='en'?'Quiz':'Quiz'}</h1>
+      <h1 class="page-title">Quiz</h1>
       <div class="quiz-start">
         <div class="quiz-start-icon">🎯</div>
-        <h2>${l==='en'?'38 Scenario Questions':'38 Domande Scenario'}</h2>
-        <p>${l==='en'?'Test your knowledge with scenario-based questions covering all 5 domains. Questions are randomized each attempt.':'Metti alla prova le tue conoscenze con domande scenario che coprono tutti e 5 i domini. Le domande sono randomizzate ad ogni tentativo.'}</p>
-        <button class="btn-primary" onclick="startQuiz()">${l==='en'?'Start Quiz':'Inizia Quiz'}</button>
+        <h2>38 Scenario Questions</h2>
+        <p>Test your knowledge with scenario-based questions covering all 5 domains. Questions are randomized each attempt.</p>
+        <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
       </div>`;
     return;
   }
@@ -4272,40 +3850,40 @@ function renderQuiz() {
     const pct = Math.round((quizScore / quizQuestions.length) * 100);
     const pass = pct >= 72;
     el.innerHTML = `
-      <h1 class="page-title">${l==='en'?'Quiz Complete':'Quiz Completato'}</h1>
+      <h1 class="page-title">Quiz Complete</h1>
       <div class="quiz-result">
         <div class="result-score" style="color:${pass?'var(--success)':'var(--danger)'}">${pct}%</div>
-        <div class="result-label">${quizScore} / ${quizQuestions.length} ${l==='en'?'correct':'corrette'}</div>
-        <div class="result-status ${pass?'pass':'fail'}">${pass?(l==='en'?'PASS — Above passing threshold':'PASS — Sopra la soglia di superamento'):(l==='en'?'FAIL — Below 72% passing threshold':'FAIL — Sotto la soglia di superamento del 72%')}</div>
+        <div class="result-label">${quizScore} / ${quizQuestions.length} correct</div>
+        <div class="result-status ${pass?'pass':'fail'}">${pass?'PASS — Above passing threshold':'FAIL — Below 72% passing threshold'}</div>
         <div class="result-buttons">
-          <button class="btn-primary" onclick="startQuiz()">${l==='en'?'Retry Quiz':'Riprova Quiz'}</button>
-          <button class="btn-secondary" onclick="quizQuestions=[];renderQuiz()">${l==='en'?'Back to Start':'Torna all\'Inizio'}</button>
+          <button class="btn-primary" onclick="startQuiz()">Retry Quiz</button>
+          <button class="btn-secondary" onclick="quizQuestions=[];renderQuiz()">Back to Start</button>
         </div>
       </div>`;
     return;
   }
 
   const q = quizQuestions[quizIndex];
-  const question = l==='en' ? q.qEn : q.qIt;
+  const question = q.qEn;
   const opts = q.opts;
-  const exp = l==='en' ? q.expEn : q.expIt;
+  const exp = q.expEn;
   const domainColor = ['#818cf8','#34d399','#60a5fa','#fb923c','#e879f9'][q.d-1];
 
   el.innerHTML = `
-    <h1 class="page-title">${l==='en'?'Quiz':'Quiz'}</h1>
+    <h1 class="page-title">Quiz</h1>
     <div class="quiz-progress-bar">
       <div class="quiz-progress-fill" style="width:${((quizIndex)/quizQuestions.length)*100}%;background:${domainColor}"></div>
     </div>
     <div class="quiz-meta">
-      <span class="quiz-counter">${l==='en'?'Question':'Domanda'} ${quizIndex+1} / ${quizQuestions.length}</span>
-      <span class="quiz-score-live">${l==='en'?'Score:':'Punteggio:'} ${quizScore}</span>
+      <span class="quiz-counter">Question ${quizIndex+1} / ${quizQuestions.length}</span>
+      <span class="quiz-score-live">Score: ${quizScore}</span>
       <span class="quiz-domain-tag" style="color:${domainColor}">D${q.d}</span>
     </div>
     <div class="quiz-question-card">
       <div class="quiz-question-text">${question}</div>
       <div class="quiz-options">
         ${opts.map((opt, i) => {
-          const text = l==='en' ? opt.en : opt.it;
+          const text = opt.en;
           let cls = 'quiz-option';
           if (quizAnswered) {
             if (i === q.correct) cls += ' correct';
@@ -4316,11 +3894,11 @@ function renderQuiz() {
       </div>
       ${quizAnswered ? `
         <div class="quiz-explanation">
-          <div class="quiz-exp-icon">${q.correct===quizQuestions[quizIndex]?'':'💡'} ${l==='en'?'Explanation:':'Spiegazione:'}</div>
+          <div class="quiz-exp-icon">${q.correct===quizQuestions[quizIndex]?'':'💡'} Explanation:</div>
           <div>${exp}</div>
         </div>
         <div class="quiz-next-row">
-          <button class="btn-primary" onclick="nextQuestion()">${quizIndex+1 < quizQuestions.length ? (l==='en'?'Next Question →':'Prossima Domanda →') : (l==='en'?'See Results':'Vedi Risultati')}</button>
+          <button class="btn-primary" onclick="nextQuestion()">${quizIndex+1 < quizQuestions.length ? 'Next Question →' : 'See Results'}</button>
         </div>` : ''}
     </div>`;
 }
@@ -4331,28 +3909,27 @@ function answerQuiz(chosen) {
   const q = quizQuestions[quizIndex];
   if (chosen === q.correct) quizScore++;
   // Re-render to show result
-  const l = getLang();
   const el = document.getElementById('sec-quiz');
   const opts = q.opts;
-  const exp = l==='en' ? q.expEn : q.expIt;
+  const exp = q.expEn;
   const domainColor = ['#818cf8','#34d399','#60a5fa','#fb923c','#e879f9'][q.d-1];
-  const question = l==='en' ? q.qEn : q.qIt;
+  const question = q.qEn;
 
   el.innerHTML = `
-    <h1 class="page-title">${l==='en'?'Quiz':'Quiz'}</h1>
+    <h1 class="page-title">Quiz</h1>
     <div class="quiz-progress-bar">
       <div class="quiz-progress-fill" style="width:${((quizIndex)/quizQuestions.length)*100}%;background:${domainColor}"></div>
     </div>
     <div class="quiz-meta">
-      <span class="quiz-counter">${l==='en'?'Question':'Domanda'} ${quizIndex+1} / ${quizQuestions.length}</span>
-      <span class="quiz-score-live">${l==='en'?'Score:':'Punteggio:'} ${quizScore}</span>
+      <span class="quiz-counter">Question ${quizIndex+1} / ${quizQuestions.length}</span>
+      <span class="quiz-score-live">Score: ${quizScore}</span>
       <span class="quiz-domain-tag" style="color:${domainColor}">D${q.d}</span>
     </div>
     <div class="quiz-question-card">
       <div class="quiz-question-text">${question}</div>
       <div class="quiz-options">
         ${opts.map((opt, i) => {
-          const text = l==='en' ? opt.en : opt.it;
+          const text = opt.en;
           let cls = 'quiz-option';
           if (i === q.correct) cls += ' correct';
           else if (i === chosen && chosen !== q.correct) cls += ' wrong';
@@ -4361,10 +3938,10 @@ function answerQuiz(chosen) {
         }).join('')}
       </div>
       <div class="quiz-explanation">
-        <strong>${l==='en'?'Explanation:':'Spiegazione:'}</strong> ${exp}
+        <strong>Explanation:</strong> ${exp}
       </div>
       <div class="quiz-next-row">
-        <button class="btn-primary" onclick="nextQuestion()">${quizIndex+1 < quizQuestions.length ? (l==='en'?'Next Question →':'Prossima Domanda →') : (l==='en'?'See Results':'Vedi Risultati')}</button>
+        <button class="btn-primary" onclick="nextQuestion()">${quizIndex+1 < quizQuestions.length ? 'Next Question →' : 'See Results'}</button>
       </div>
     </div>`;
 }
@@ -4380,14 +3957,13 @@ function nextQuestion() {
 
 // ─── STRATEGY ────────────────────────────────────────────────────────────────
 function renderStrategy() {
-  const l = getLang();
   const el = document.getElementById('sec-strategy');
-  const principles = l==='en' ? STRATEGY_DATA.principlesEn : STRATEGY_DATA.principlesIt;
-  const distractors = l==='en' ? STRATEGY_DATA.distractorsEn : STRATEGY_DATA.distractorsIt;
+  const principles = STRATEGY_DATA.principlesEn;
+  const distractors = STRATEGY_DATA.distractorsEn;
 
   el.innerHTML = `
-    <h1 class="page-title">${l==='en'?'Exam Strategy':'Strategia d\'Esame'}</h1>
-    <p class="page-subtitle">${l==='en'?'4 core principles that resolve most scenario questions':'4 principi fondamentali che risolvono la maggior parte delle domande scenario'}</p>
+    <h1 class="page-title">Exam Strategy</h1>
+    <p class="page-subtitle">4 core principles that resolve most scenario questions</p>
     <div class="strategy-grid">
       ${principles.map((p, i) => {
         const colors = ['#818cf8','#34d399','#60a5fa','#fb923c'];
@@ -4400,8 +3976,8 @@ function renderStrategy() {
         </div>`;
       }).join('')}
     </div>
-    <h2 class="section-heading">${l==='en'?'Common Distractors':'Distractors Comuni'}</h2>
-    <p class="section-subtitle">${l==='en'?'These wrong answers appear frequently — memorize why they fail:':'Queste risposte errate appaiono frequentemente — memorizza perché falliscono:'}</p>
+    <h2 class="section-heading">Common Distractors</h2>
+    <p class="section-subtitle">These wrong answers appear frequently — memorize why they fail:</p>
     <div class="distractor-table-wrap">
       <table class="distractor-table">
         ${distractors.map((row, i) => {
@@ -4415,9 +3991,8 @@ function renderStrategy() {
 
 // ─── QUICK REFERENCE ─────────────────────────────────────────────────────────
 function renderQuickRef() {
-  const l = getLang();
   const el = document.getElementById('sec-quickref');
-  const suffix = l==='en' ? 'En' : 'It';
+  const suffix = 'En';
 
   function makeTable(data) {
     return `<div class="qr-card" style="overflow-x:auto">
@@ -4429,8 +4004,8 @@ function renderQuickRef() {
   }
 
   el.innerHTML = `
-    <h1 class="page-title">${l==='en'?'Quick Reference':'Riferimento Rapido'}</h1>
-    <p class="page-subtitle">${l==='en'?'Last-minute cheat sheet — review before the exam':'Scheda di riferimento dell\'ultimo minuto — rivedi prima dell\'esame'}</p>
+    <h1 class="page-title">Quick Reference</h1>
+    <p class="page-subtitle">Last-minute cheat sheet — review before the exam</p>
     <div class="qr-grid">
       ${makeTable(QUICKREF_DATA['exam'+suffix])}
       ${makeTable(QUICKREF_DATA['models'+suffix])}
@@ -4442,23 +4017,16 @@ function renderQuickRef() {
       ${makeTable(QUICKREF_DATA['keyNumbers'+suffix])}
     </div>
     <div class="qr-scenarios">
-      <h2 class="section-heading">${l==='en'?'6 Key Scenarios':'6 Scenari Chiave'}</h2>
+      <h2 class="section-heading">6 Key Scenarios</h2>
       <div class="scenario-list">
-        ${(l==='en' ? [
+        ${[
           ['12% failure rate despite prompt rule','Use a hook (PreToolUse blocks execution; PostToolUse intercepts results) — never a prompt'],
           ['Tool confusion between 2 similar tools','Expand descriptions first — input formats, examples, boundaries'],
           ['Subagent missing coordinator context','Explicitly include all context in subagent prompt — no inheritance'],
           ['97% accuracy but want to automate','Validate per document type AND field first — aggregate hides failures'],
           ['CI review missing obvious bugs','Use independent session — generating session has cognitive anchoring'],
           ['Batch API for pre-merge check','NO — Batch has 24h max, no SLA. Use real-time for blocking workflows']
-        ] : [
-          ['12% tasso fallimento nonostante regola prompt','Usa un hook (PreToolUse blocca esecuzione; PostToolUse intercetta risultati) — mai un prompt'],
-          ['Confusione tool tra 2 tool simili','Espandi prima le descrizioni — formati input, esempi, confini'],
-          ['Subagent manca contesto coordinator','Includi esplicitamente tutto il contesto nel prompt subagent — no ereditarietà'],
-          ['97% accuratezza ma vuoi automatizzare','Valida per tipo documento E campo prima — aggregato nasconde fallimenti'],
-          ['CI review manca bug ovvi','Usa sessione indipendente — sessione generante ha ancoraggio cognitivo'],
-          ['API Batch per controllo pre-merge','NO — Batch ha max 24h, nessun SLA. Usa real-time per workflow bloccanti']
-        ]).map(([s,a]) => `
+        ].map(([s,a]) => `
           <div class="scenario-item">
             <div class="scenario-situation">📋 ${s}</div>
             <div class="scenario-answer">✓ ${a}</div>
@@ -4487,10 +4055,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Lang toggle
-  document.getElementById('lang-toggle').addEventListener('click', () => {
-    setLang(getLang() === 'en' ? 'it' : 'en');
-  });
 
   // Nav links
   document.querySelectorAll('.nav-link').forEach(a => {
@@ -4539,7 +4103,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial render
   navigate('home');
-  applyLang();
 });
 </script>
 </body>
