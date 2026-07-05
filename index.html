@@ -3552,7 +3552,7 @@ const STRATEGY_DATA = {
     {title:"2. Tool Descriptions Before Everything Else", body:"When a tool is called incorrectly or confused with another: For 2–5 tools: first remediation step is to expand and clarify the description with input formats, examples, and boundaries vs similar tools. For 6+ tools: description improvement is insufficient — split into specialized sub-agents (max 4–5 tools each). Fixing descriptions when you have 18 tools will not work. Add few-shot examples only after descriptions are thorough."},
     {title:"3. Context Position Is Strategy", body:"Lost-in-middle is real: models deprioritize middle content. Place case facts blocks at TOP. Place key findings at BEGINNING with explicit headers. Use /compact + scratchpad files for extended sessions. Context degradation is a symptom, not a bug."},
     {title:"4. Match API to Workflow Latency", body:"Batch API: 50% cost savings, up to 24h, NO SLA. Use ONLY for non-blocking (overnight, weekly). NEVER for blocking workflows (pre-merge, real-time). Independent sessions for CI review (generating session has cognitive anchoring bias)."}
-  ]
+  ],
   distractorsEn: [
     ["Situation","Wrong Answer (Distractor)","Correct Answer"],
     ["Tool confusion","Few-shot examples first","Expand tool descriptions first"],
